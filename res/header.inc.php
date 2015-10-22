@@ -22,24 +22,25 @@
   <body>
   	<div class="container">
   	<header class="my_header">
-      <div class="my_header__inner">
-        <img class="my_header__logo" src="img/Leica_Geosystems.png" alt="Leica geosystems logo">
-        <h1 class="my_header__title"><?php echo $titel ?></h1>
+      <div class="my_header_inner">
+        <img class="my_header_logo" src="img/Leica_Geosystems.png" alt="Leica geosystems logo">
+        <h1 class="my_header_title"><?php echo $titel ?></h1>
 
-<!--         <a id="menu" class="my_header__menu">
+         <a id="menu" class="my_header_menu">
+          <!-- Draws a hamburger icon -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
           </svg>
-        </a> -->
+        </a>
 
       </div>
     </header>
     <nav id="drawer" class="my_nav">
       <ul class="my_nav_list">
-        <li class="my_nav_item"><a href="/overview/">Overview</a></li>
-        <li class="my_nav_item"><a href="/systems/">Systems</a></li>
-        <li class="my_nav_item"><a href="/parts/">Parts</a></li>
-        <li class="my_nav_item"><a href="/log/">Log</a></li>
+        <li class="my_nav_item"><a href="index.php">Overview</a></li>
+        <li class="my_nav_item"><a href="systems.php">Systems</a></li>
+        <li class="my_nav_item"><a href="parts/">Parts</a></li>
+        <li class="my_nav_item"><a href="log/">Log</a></li>
       </ul>
     </nav>
     <main>

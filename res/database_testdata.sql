@@ -15,6 +15,12 @@ INSERT INTO sensor_unit
 	VALUES('0','1310','3210','123-4567','1710','1810');
 INSERT INTO sensor_unit
 	VALUES('1','1311','3211','123-4568','1711','1811');
+INSERT INTO sensor_unit
+	VALUES('2','1312','3212','123-4569','1712','1812');
+INSERT INTO sensor_unit
+	VALUES('3','1313','3213','123-4570','1713','1813');
+INSERT INTO sensor_unit
+	VALUES('4','1314','3214','123-4571','1714','1814');
 
 DELETE FROM control_unit;
 INSERT INTO control_unit

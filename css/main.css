@@ -1,13 +1,4 @@
-.table {
-  table-layout:fixed;
-  min-width: 950px;
-}
 
-.table td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 /*
 dl
@@ -83,20 +74,20 @@ dl {
   transition: min-height 0.3s;
 }
 
-.my_header__inner {
+.my_header_inner {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
-.my_header__logo {
+.my_header_logo {
   height: 72px;
   margin-right: 1em;
   vertical-align: top;
   margin-top: 12px;
 }
 
-.my_header__title {
+.my_header_title {
   font-weight: 200;
   font-size: 3em;
   margin: 0.75em 0.25em;
@@ -286,7 +277,23 @@ main {
  *
  * Table
  *
- *
+ */
+
+ .table th {
+  color: #fff;
+  font-weight: 300;
+  background-color: #78909C;
+}
+
+.table {
+  table-layout:fixed;
+  min-width: 950px;
+  background-color: white;
+}
+
+
+
+/*
  
 i{
 	margin-left: 0.5em;
@@ -456,3 +463,50 @@ footer a {
   }
 
 */
+
+.my_header_menu {
+  display: none;
+}
+
+@media screen and (max-width: 610px) {
+/*  .header__logo {
+    height: 48px;
+    margin-right: 0.5em;
+  }
+  .header__title {
+    margin-left: 0;
+    font-size: 2em;
+    vertical-align: bottom; 
+  }*/
+  .my_nav {
+    z-index: 10;
+    background-color: #fff;
+    width: 300px;
+    position: absolute;
+    /* This trasform moves the drawer off canvas. */
+    -webkit-transform: translate(-300px, 0);
+    transform: translate(-300px, 0);
+    /* Optionally, we animate the drawer. */
+    transition: transform 0.3s ease;
+  }
+  .my_nav.open {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  .my_nav_item {
+    display: list-item;
+    border-bottom: 1px solid #E0E0E0;
+    width: 100%;
+    text-align: left;
+  }
+  .my_header_menu {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    padding: 1em;
+  }
+  .my_header_menu svg {
+    width: 32px;
+    fill: #E0E0E0;
+  }
+}

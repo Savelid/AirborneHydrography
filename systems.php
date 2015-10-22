@@ -4,33 +4,30 @@ include 'res/header.inc.php';
 ?>
 
 <section class="content">
+  <a href="edit_system.php" class="btn btn-default" role="button">New system</a>
+</section>
 
-  <section>
-    <a href="#" class="btn btn-default" role="button">New system</a>
-  </section>
-
-
-  <section class="all__systems">
-    <table class="large__table table table-striped table-responsive">
+<section class="all__systems">
+  <table class="large__table table table-striped table-responsive">
     <thead>
       <tr>
-        <th>Serial nr.</th>
-        <th>Client</th>
-        <th>Config.</th>
-        <th>Sensor unit</th>
-        <th>Control unit</th>
-        <th>Deep system</th>
-        <th>Control system</th>
-        <th>Topo</th>
-        <th>Shallow</th>
-        <th>Deep</th>
-        <th>SCU</th>
-        <th>PDU</th>
-        <th>Status</th>
-        <th colspan=2>Comments</th>
+        <th colspan=2>Serial nr.</th>
+        <th colspan=3>Client</th>
+        <th colspan=3>Config.</th>
+        <th colspan=2>Sensor unit</th>
+        <th colspan=2>Control unit</th>
+        <th colspan=2>Deep system</th>
+        <th colspan=2>Control system</th>
+        <th colspan=2>Topo</th>
+        <th colspan=2>Shallow</th>
+        <th colspan=2>Deep</th>
+        <th colspan=2>SCU</th>
+        <th colspan=2>PDU</th>
+        <th colspan=2>Status</th>
+        <th colspan=5>Comments</th>
       </tr>
-      </thead>
-      <tbody>
+    </thead>
+    <tbody>
 
 <?php
 include 'res/config.inc.php';
@@ -52,81 +49,189 @@ $sql = "  SELECT system.serial_nr, system.client, system.configuration, system.s
 $result = $conn->query($sql);
 
 // %s will be replaced with variables later
-$table_row_formating =
-'
-<tr>
-  <td>
+
+$serial_nr_formating = '
+  <td colspan=2>
     <div class="btn-group">
       <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         %1$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <li><a href="view_system.php?system=%1$s">View</a></li>
+        <li role="separator" class="divider"></li>
         <li><a href="edit_system.php?system=%1$s">Edit</a></li>
         <li><a href="delete.php?system=%1$s">Delete</a></li>
       </ul>
     </div>
   </td>
-
-  <td>
-    %2$s
+';
+$client_formating = '
+  <td colspan=3>
+    <div class="btn-group">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      %2$s<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
+      </ul>
+    </div>
   </td>
-
-  <td>
-    %3$s
+';
+$config_formating = '
+  <td colspan=3>
+    <div class="btn-group">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      %3$s<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="edit_system.php?system=%1$s&configuration=DualDragon">DualDragon</a></li>
+        <li><a href="edit_system.php?system=%1$s&configuration=HawkEyeIII">HawkEyeIII</a></li>
+        <li><a href="edit_system.php?system=%1$s&configuration=Chiroptera">Chiroptera</a></li>
+      </ul>
+    </div>
   </td>
-
-  <td>
-    %4$s
+';
+// %% escapes the input spot for later
+$sensor_unit_formating = '
+  <td colspan=2>
+    <div class="btn-group">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        %%4$s <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="view_system.php?system=s">View</a></li>
+        <li role="separator" class="divider"></li>
+        %s
+        <li><a href="edit_system.php?system=">Edit</a></li>
+        <li><a href="delete.php?system=">Remove</a></li>
+      </ul>
+    </div>
   </td>
+';
+// Add all unused sensor units to the list
+$sql_sensor_unit = "  SELECT sensor_unit.serial_nr
+          FROM sensor_unit
+          WHERE sensor_unit.serial_nr NOT IN (
+            SELECT system.sensor_unit_sn 
+            FROM system) ";
+$result_sensor_unit = $conn->query($sql_sensor_unit);
+$add_rows_sensor_unit = '';
+while($row_sensor_unit = $result_sensor_unit->fetch_assoc()) {
+  $add_rows_sensor_unit = $add_rows_sensor_unit
+                          . '<li><a href="delete.php?system=">' 
+                          . $row_sensor_unit["serial_nr"] 
+                          . '</a></li>';
+}
+if($add_rows_sensor_unit != ''){
+  $add_rows_sensor_unit = $add_rows_sensor_unit
+                          . '<li role="separator" class="divider"></li>';
+}
+$sensor_unit_formating = sprintf($sensor_unit_formating, $add_rows_sensor_unit);
 
-  <td>
-    %5$s
+$control_unit_formating = '
+  <td colspan=2>
+    <div class="btn-group">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        %5$s <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="view_system.php?system=%1$s">View</a></li>
+        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
+        <li><a href="delete.php?system=%1$s">Remove</a></li>
+      </ul>
+    </div>
   </td>
-
-  <td>
-    %6$s
+';
+$deep_system_formating = '
+  <td colspan=2>
+    <div class="btn-group">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        %6$s <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="view_system.php?system=%1$s">View</a></li>
+        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
+        <li><a href="delete.php?system=%1$s">Remove</a></li>
+      </ul>
+    </div>
   </td>
-
-  <td>
-    %7$s
+';
+$control_system_formating = '
+  <td colspan=2>
+    <div class="btn-group">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        %6$s <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="view_system.php?system=%1$s">View</a></li>
+        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
+        <li><a href="delete.php?system=%1$s">Remove</a></li>
+      </ul>
+    </div>
   </td>
+';
 
-  <td>
-    %8$s
-  </td>
 
-  <td>
-    %9$s
-  </td>
-
-  <td>
-    %10$s
-  </td>
-
-  <td>
-    %11$s
-  </td>
-
-  <td>
-    %12$s
-  </td>
-
-  <td>
-    Ready
+$table_row_formating = '<tr>'
+                        . $serial_nr_formating
+                        . $client_formating
+                        . $config_formating
+                        . $sensor_unit_formating
+                        . $control_unit_formating
+                        . $deep_system_formating
+                        . $control_system_formating
+                        . '
+ <td colspan=2>
+      <a href="#" class="btn btn-default btn-xs">
+        %8$s
+      </a>
   </td>
 
   <td colspan=2>
+      <a href="#" class="btn btn-default btn-xs">
+        %9$s
+      </a>
+  </td>
+
+  <td colspan=2>
+      <a href="#" class="btn btn-default btn-xs">
+        %10$s
+      </a>
+  </td>
+
+  <td colspan=2>
+      <a href="#" class="btn btn-default btn-xs">
+        %11$s
+      </a>
+  </td>
+
+  <td colspan=2>
+    %12$s
+  </td>
+
+  <td colspan=2>
+    Ready
+  </td>
+
+  <td colspan=5>
     %13$s
   </td>
 </tr>
 ';
+
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
+
+      // shorten too long client names
+      $client = $row["client"];
+      if (strlen ($client) >= 11) {
+        $client = substr($client, 0, 9) . "..";
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
-          $row["client"],
+          $client,
           $row["configuration"],
           $row["sensor_unit_sn"],
           $row["control_unit_sn"],
@@ -146,9 +251,7 @@ $conn->close();
 ?>
 
     </tbody>
-    </table>
-  </section>
-
+  </table>
 </section>
 <footer>
 
