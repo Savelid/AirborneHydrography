@@ -1,3 +1,4 @@
+DROP TABLE overview;
 CREATE TABLE overview (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -9,6 +10,7 @@ CREATE TABLE overview (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE system;
 CREATE TABLE system (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -29,9 +31,14 @@ CREATE TABLE system (
 	-- foreign key & Relatinship
 	cooling_system VARCHAR(10),
 
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	FOREIGN KEY (system_status_sn) REFERENCES system_status(id)
+	FOREIGN KEY (sensor_unit_sn) REFERENCES sensor_unit(serial_nr)
+	FOREIGN KEY (control_unit_sn) REFERENCES control_unit(serial_nr)
+	FOREIGN KEY (deep_system_sn) REFERENCES deep_system(serial_nr)
 );
-	
+
+DROP TABLE system_status;
 CREATE TABLE system_status (
 
 	id INTEGER NOT NULL,
@@ -43,6 +50,7 @@ CREATE TABLE system_status (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE sensor_unit;
 CREATE TABLE sensor_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -58,7 +66,7 @@ CREATE TABLE sensor_unit (
 
 	PRIMARY KEY (id)
 );
-
+DROP TABLE control_unit;
 CREATE TABLE control_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -73,6 +81,7 @@ CREATE TABLE control_unit (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE deep_system;
 CREATE TABLE deep_system (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -87,6 +96,7 @@ CREATE TABLE deep_system (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE scu;
 CREATE TABLE scu (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -103,6 +113,7 @@ CREATE TABLE scu (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE sensor;
 CREATE TABLE sensor (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -132,6 +143,7 @@ CREATE TABLE sensor (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE hv_card;
 CREATE TABLE hv_card (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -153,6 +165,7 @@ CREATE TABLE hv_card (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE laser;
 CREATE TABLE laser (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -176,6 +189,7 @@ CREATE TABLE laser (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE leica_cam;
 CREATE TABLE leica_cam (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -188,6 +202,7 @@ CREATE TABLE leica_cam (
 	PRIMARY KEY (id)
 );
 
+DROP TABLE receiver_chip;
 CREATE TABLE receiver_chip (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,

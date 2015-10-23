@@ -44,10 +44,10 @@ if ($result->num_rows > 0) {
 } else {
     echo "No messages";
 }
-$conn->close();
+
 ?>
 	</dl>
-    <form action="post.php" method="post">
+    <form action="post.php?type=add_message" method="post">
   	  <div class="form-group">
     	<label for="input_message">Message</label>
     	<textarea class="form-control" name="input_message" rows="3"></textarea>
@@ -59,6 +59,76 @@ $conn->close();
   	  <button type="submit" class="btn btn-default">Submit</button>
 	</form>
   </div><!--end column-->
+
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Systems</h3>
+      </div>
+      <div class="panel-body panel_table">
+
+    <table class="table table-striped table-responsive">
+        <thead>
+          <tr>
+            <th>Serial nr.</th>
+            <th>Client</th>
+            <th>Config.</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+
+<?php
+
+$sql = "  SELECT system.serial_nr, client, configuration
+          FROM system
+          ORDER BY datetime DESC
+          LIMIT 5";
+$result = $conn->query($sql);
+if (!$result) {
+    die("Query failed!");
+}
+
+// %s will be replaced with variables later
+
+$table_row_formating = '
+<tr>
+  <td><a href="view_system.php?system=%s" class="btn btn-default btn-sm">%s</a></td>
+  <td>%s</td>
+  <td>%s</td>
+  <td>Ready</td>
+</tr>
+';
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+
+      // shorten too long client names
+      $client = $row["client"];
+      if (strlen ($client) >= 11) {
+        $client = substr($client, 0, 9) . "..";
+      }
+
+        echo sprintf($table_row_formating,
+          $row["serial_nr"],
+          $row["serial_nr"],
+          $client,
+          $row["configuration"]);
+    }
+} else {
+    echo "No messages";
+}
+$conn->close();
+?>
+
+      </tbody>
+    </table>
+    </div>
+    </div>
+
+  </div><!--end column-->
+
 </div><!--end row-->
 
 </section>

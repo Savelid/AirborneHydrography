@@ -1,5 +1,5 @@
 <?php
-$titel = 'Overview';
+$titel = 'Systems';
 include 'res/header.inc.php'; 
 ?>
 
@@ -41,12 +41,19 @@ if ($conn->connect_error) {
 
 //
 
-$sql = "  SELECT system.serial_nr, system.client, system.configuration, system.sensor_unit_sn, system.control_unit_sn, system.deep_system_sn, deep_system.control_system, sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn, control_unit.scu_sn, control_unit.pdu, system.comment
-          FROM system, sensor_unit, control_unit, deep_system 
-          WHERE system.sensor_unit_sn = sensor_unit.serial_nr and
-                system.control_unit_sn = control_unit.serial_nr and
-                system.deep_system_sn = deep_system.serial_nr";
+$sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn,
+          deep_system.control_system, sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
+          control_unit.scu_sn, control_unit.pdu, comment,
+          status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable
+          FROM system
+          LEFT JOIN sensor_unit ON sensor_unit_sn = sensor_unit.serial_nr
+          LEFT JOIN control_unit ON control_unit_sn = control_unit.serial_nr
+          LEFT JOIN deep_system ON deep_system_sn = deep_system.serial_nr
+          ORDER BY datetime DESC";
 $result = $conn->query($sql);
+if (!$result) {
+    die("Query failed!");
+}
 
 // %s will be replaced with variables later
 
@@ -60,7 +67,7 @@ $serial_nr_formating = '
         <li><a href="view_system.php?system=%1$s">View</a></li>
         <li role="separator" class="divider"></li>
         <li><a href="edit_system.php?system=%1$s">Edit</a></li>
-        <li><a href="delete.php?system=%1$s">Delete</a></li>
+        <li><a href="delete.php?type=system&serial_nr=%1$s" onclick="return confirm(\'Are you sure that you want to delete this system: %1$s\'); ">Delete</a></li>
       </ul>
     </div>
   </td>
@@ -69,7 +76,7 @@ $client_formating = '
   <td colspan=3>
     <div class="btn-group">
       <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      %2$s<span class="caret"></span>
+      %2$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <li><a href="edit_system.php?system=%1$s">Edit</a></li>
@@ -81,7 +88,7 @@ $config_formating = '
   <td colspan=3>
     <div class="btn-group">
       <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      %3$s<span class="caret"></span>
+      %3$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <li><a href="edit_system.php?system=%1$s&configuration=DualDragon">DualDragon</a></li>
@@ -99,11 +106,11 @@ $sensor_unit_formating = '
         %%4$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="view_system.php?system=s">View</a></li>
+        <li><a href="parts.php">View</a></li>
         <li role="separator" class="divider"></li>
-        %s
-        <li><a href="edit_system.php?system=">Edit</a></li>
-        <li><a href="delete.php?system=">Remove</a></li>
+        %1$s
+        <li><a href="edit_sensor_unit.php?serial_nr=%%4$s">Edit</a></li>
+        <li><a href="#">Remove</a></li>
       </ul>
     </div>
   </td>
@@ -118,7 +125,9 @@ $result_sensor_unit = $conn->query($sql_sensor_unit);
 $add_rows_sensor_unit = '';
 while($row_sensor_unit = $result_sensor_unit->fetch_assoc()) {
   $add_rows_sensor_unit = $add_rows_sensor_unit
-                          . '<li><a href="delete.php?system=">' 
+                          . '<li><a href="edit_system.php?system=%1$s&sensor_unit_sn='
+                          . $row_sensor_unit["serial_nr"] 
+                          . '">' 
                           . $row_sensor_unit["serial_nr"] 
                           . '</a></li>';
 }
@@ -135,9 +144,10 @@ $control_unit_formating = '
         %5$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="view_system.php?system=%1$s">View</a></li>
-        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
-        <li><a href="delete.php?system=%1$s">Remove</a></li>
+        <li><a href="parts.php">View</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="edit_control_unit.php?serial_nr=%5$s">Edit</a></li>
+        <li><a href="#">Remove</a></li>
       </ul>
     </div>
   </td>
@@ -149,9 +159,10 @@ $deep_system_formating = '
         %6$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="view_system.php?system=%1$s">View</a></li>
-        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
-        <li><a href="delete.php?system=%1$s">Remove</a></li>
+        <li><a href="parts.php">View</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="edit_deep_system.php?serial_nr=%6$s">Edit</a></li>
+        <li><a href="#">Remove</a></li>
       </ul>
     </div>
   </td>
@@ -160,45 +171,37 @@ $control_system_formating = '
   <td colspan=2>
     <div class="btn-group">
       <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        %6$s <span class="caret"></span>
+        %7$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="view_system.php?system=%1$s">View</a></li>
-        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
-        <li><a href="delete.php?system=%1$s">Remove</a></li>
+        <li><a href="parts.php">View</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="edit_control_system.php?serial_nr=%7$s">Edit</a></li>
+        <li><a href="#">Remove</a></li>
       </ul>
     </div>
   </td>
 ';
-
-
-$table_row_formating = '<tr>'
-                        . $serial_nr_formating
-                        . $client_formating
-                        . $config_formating
-                        . $sensor_unit_formating
-                        . $control_unit_formating
-                        . $deep_system_formating
-                        . $control_system_formating
-                        . '
+$topo_shallow_deep_formating = '
  <td colspan=2>
-      <a href="#" class="btn btn-default btn-xs">
+      <a href="view_sensor.php?serial_nr=%8$s" class="btn btn-default btn-xs">
         %8$s
       </a>
   </td>
 
   <td colspan=2>
-      <a href="#" class="btn btn-default btn-xs">
+      <a href="view_sensor.php?serial_nr=%9$s" class="btn btn-default btn-xs">
         %9$s
       </a>
   </td>
 
   <td colspan=2>
-      <a href="#" class="btn btn-default btn-xs">
+      <a href="view_sensor.php?serial_nr=%10$s" class="btn btn-default btn-xs">
         %10$s
       </a>
   </td>
-
+';
+$scu_pdu_formating = '
   <td colspan=2>
       <a href="#" class="btn btn-default btn-xs">
         %11$s
@@ -208,16 +211,31 @@ $table_row_formating = '<tr>'
   <td colspan=2>
     %12$s
   </td>
-
+';
+$system_status_formating = '
   <td colspan=2>
-    Ready
-  </td>
-
-  <td colspan=5>
     %13$s
   </td>
-</tr>
 ';
+$comment_formating = '
+  <td colspan=5>
+    %14$s
+  </td>
+';
+
+$table_row_formating = '<tr>'
+                        . $serial_nr_formating
+                        . $client_formating
+                        . $config_formating
+                        . $sensor_unit_formating
+                        . $control_unit_formating
+                        . $deep_system_formating
+                        . $control_system_formating
+                        . $topo_shallow_deep_formating
+                        . $scu_pdu_formating
+                        . $system_status_formating
+                        . $comment_formating
+                        .'</tr>';
 
 if ($result->num_rows > 0) {
     // output data of each row
@@ -227,6 +245,23 @@ if ($result->num_rows > 0) {
       $client = $row["client"];
       if (strlen ($client) >= 11) {
         $client = substr($client, 0, 9) . "..";
+      }
+      // shorten too long comments
+      $comment = $row["comment"];
+      if (strlen ($comment) >= 18) {
+        $comment = substr($comment, 0, 16) . "..";
+      }
+
+      // Merge the 8 status options into ready or not
+      if(       $row['status_potta_heat'] &&
+                $row['status_shallow_heat']&&
+                $row['status_scu_pdu']){
+        $status = 'Ready';
+      }else if( !$row['status_potta_heat'] &&
+                !$row['status_shallow_heat']){
+        $status = 'Nothing';
+      } else {
+        $status = 'Some';
       }
 
         echo sprintf($table_row_formating,
@@ -242,7 +277,8 @@ if ($result->num_rows > 0) {
           $row["deep_sensor_sn"],
           $row["scu_sn"],
           $row["pdu"],
-          $row["comment"]);
+          $status,
+          $comment);
     }
 } else {
     echo "No messages";

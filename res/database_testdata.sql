@@ -1,14 +1,14 @@
+DELETE FROM overview;
+INSERT INTO overview
+	VALUES('0', '2015-03-15 07:14:07', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.', 'Nisse');
+INSERT INTO overview
+	VALUES('0', '2015-04-15 06:14:07', 'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.', 'Knut');
+
 DELETE FROM system;
 INSERT INTO system
-	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB','HawkEyeIII','En kommentar','0','1310','1410','1510','1610');
+	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB','HawkEyeIII','En kommentar','1310','1410','1510','1610','0','1','1','1','1','0','1','1');
 INSERT INTO system
-	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska','DualDragon','','1','1311','1411','1511','1611');
-
-DELETE FROM system_status;
-INSERT INTO system_status
-	VALUES('0','1','1');
-INSERT INTO system_status
-	VALUES('1','1','0');
+	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska','DualDragon','','1311','1411','1511','1611','1','1','1','1','1','1','1','1');
 
 DELETE FROM sensor_unit;
 INSERT INTO sensor_unit

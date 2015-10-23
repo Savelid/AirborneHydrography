@@ -11,7 +11,7 @@ CREATE TABLE overview (
 
 CREATE TABLE system (
 
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
 	datetime TIMESTAMP,
 
@@ -19,8 +19,6 @@ CREATE TABLE system (
 	client VARCHAR(50),
 	configuration VARCHAR(50),
 	comment TEXT,
-	system_status_sn INTEGER,
-	-- foreign key & Relatinship
 	sensor_unit_sn VARCHAR(10),
 	-- foreign key & Relatinship
 	control_unit_sn VARCHAR(10),
@@ -29,16 +27,14 @@ CREATE TABLE system (
 	-- foreign key & Relatinship
 	cooling_system VARCHAR(10),
 
-	PRIMARY KEY (id)
-);
-	
-CREATE TABLE system_status (
-
-	id INTEGER NOT NULL,
-
-	potta_heat BOOLEAN,
-	shallow_heat BOOLEAN,
-	-- TODO: add rest
+	status_potta_heat BOOLEAN,
+	status_shallow_heat BOOLEAN,
+	status_scu_pdu BOOLEAN,
+	status_hv_topo BOOLEAN,
+	status_hv_shallow BOOLEAN,
+	status_hv_deep BOOLEAN,
+	status_cat BOOLEAN,
+	status_pwr_cable BOOLEAN,
 
 	PRIMARY KEY (id)
 );
@@ -46,7 +42,7 @@ CREATE TABLE system_status (
 CREATE TABLE sensor_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(10) NOT NULL,
+	serial_nr VARCHAR(10),
 
 	imu VARCHAR(10),
 	leica_cam_sn VARCHAR(10),

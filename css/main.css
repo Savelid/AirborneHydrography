@@ -279,18 +279,22 @@ main {
  *
  */
 
- .table th {
+ .large__table th {
   color: #fff;
   font-weight: 300;
   background-color: #78909C;
 }
 
-.table {
+.large__table {
   table-layout:fixed;
   min-width: 950px;
   background-color: white;
 }
 
+.panel_table {
+  padding-left: 0px;
+  padding-right: 0px;
+}
 
 
 /*
