@@ -10,6 +10,27 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Add all requests saved by this page to LOG
+function postToLog($sql_string) {
+
+	// Create connection
+	include 'res/config.inc.php';
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+	    die("Connection failed: " . $conn->connect_error);
+	}
+
+	$sql_log = "INSERT INTO log (type, user, sql_string, serial_nr) 
+				VALUES ('$_GET[type]', '$_POST[user]', '$sql_string', '$_POST[serial_nr]')";
+	if ($conn->query($sql_log) === TRUE) {
+		echo "Log created successfully";
+		
+	} else {
+		echo "Error: " . $sql_log . "<br>" . $conn->error;
+	}
+}
+
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
@@ -35,6 +56,7 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[status_pwr_cable]')";
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
+		postToLog(mysqli_real_escape_string($conn, $sql_insert));
 		header("Location: systems.php?new_system");
 		die();
 	} else {
@@ -45,7 +67,7 @@ if($_GET['type'] == 'add_system') {
 // UPDATE system
 if ($_GET['type'] == 'update_system') {
 
-	$sql_update2 = " UPDATE system
+	$sql_update = " UPDATE system
 					SET serial_nr = '$_POST[serial_nr]',
 						art_nr = '$_POST[art_nr]',
 						client = '$_POST[client]',
@@ -65,13 +87,13 @@ if ($_GET['type'] == 'update_system') {
 						status_cat = '$_POST[status_cat]',
 						status_pwr_cable = '$_POST[status_pwr_cable]'
 					WHERE serial_nr = $_POST[serial_nr]";
-	if ($conn->query($sql_update2) === TRUE) {
+	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
-		//header("Location: systems.php?updated_system");
-		//die();
-		echo "Error2: " . $sql_update2 . "<br><br>" . $conn->error;
+		postToLog(mysqli_real_escape_string($conn, $sql_update));
+		header("Location: systems.php?updated_system");
+		die();
 	} else {
-		echo "Error2: " . $sql_update2 . "<br><br>" . $conn->error;
+		echo "Error2: " . $sql_update . "<br><br>" . $conn->error;
 	}
 }
 
@@ -97,7 +119,8 @@ if($_GET['type'] == 'add_sensor') {
 					'$_POST[status]')";
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
-		header("Location: systems.php?new_system");
+		postToLog(mysqli_real_escape_string($conn, $sql_insert));
+		header("Location: parts.php?added_sensor");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -107,7 +130,7 @@ if($_GET['type'] == 'add_sensor') {
 // UPDATE sensor
 if ($_GET['type'] == 'update_sensor') {
 
-	$sql_update2 = " UPDATE sensor
+	$sql_update = " UPDATE sensor
 					SET serial_nr = '$_POST[serial_nr]',
 						sensor_type = '$_POST[sensor_type]',
 						cat = '$_POST[cat]',
@@ -126,13 +149,13 @@ if ($_GET['type'] == 'update_sensor') {
 						dps_value_pulse_width_rec = '$_POST[dps_value_pulse_width_rec]',
 						status = '$_POST[status]'
 					WHERE serial_nr = $_POST[serial_nr]";
-	if ($conn->query($sql_update2) === TRUE) {
+	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
-		//header("Location: systems.php?updated_system");
-		//die();
-		echo " SQL: " . $sql_update2 . "<br><br>" . $conn->error;
+		postToLog(mysqli_real_escape_string($conn, $sql_update));
+		header("Location: parts.php?updated_sensor");
+		die();
 	} else {
-		echo "Error2: " . $sql_update2 . "<br><br>" . $conn->error;
+		echo "Error2: " . $sql_update . "<br><br>" . $conn->error;
 	}
 }
 

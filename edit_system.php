@@ -179,6 +179,13 @@ listUnused('deep_system', $sn);
 	  	</div>
 	  </div>
 
+	  <div class="form-group">
+		<label for="user" class="col-xs-5 control-label">User</label>
+	  <div class="col-xs-7">
+	  	<input type="text" class="form-control" name="user" required />
+	  	</div>
+	  </div>
+
 	</div>
 	<div class="col-sm-4">
 
