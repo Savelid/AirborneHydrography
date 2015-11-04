@@ -30,7 +30,51 @@ if (!empty($_GET['system'])) {
 }
 $path = 'post.php?type=' . $type;
 ?>
+<?php
+function listUnused($name, $serial_nr){
+	$name_sn = $name . '_sn';
 
+	if($serial_nr != NULL && $serial_nr != ''){
+		echo '<option value="' . $serial_nr . '">' . $serial_nr . '</option>';
+	}
+	else {
+		echo '<option></option>';
+	}
+	echo '<option>-----</option>';
+
+	// open db
+	include 'res/config.inc.php';
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	// Add all unused sensor units to the list
+	$sql_unused = "  SELECT serial_nr
+	          FROM %s
+	          WHERE serial_nr NOT IN (
+	            SELECT system.%s 
+	            FROM system) ";
+	$result_unused = $conn->query(sprintf($sql_unused, $name, $name_sn));
+		if (!$result_unused) {
+			die("Query failed!");
+		}
+	while($row_unused = $result_unused->fetch_assoc()) {
+		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){
+			echo '<option value="' . $row_unused['serial_nr'] . '" autofocus selected="selected">' . $row_unused['serial_nr'] . '</option>';
+		}else {
+			echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
+		}
+	}
+	$conn->close();
+}
+?>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.combobox').combobox();
+  });
+</script>
 <section class="content">
 	
 <form action= <?php echo $path ?> method="post" class="form-horizontal">
@@ -40,7 +84,14 @@ $path = 'post.php?type=' . $type;
 	  <div class="form-group">
 		<label for="serial_nr" class="col-xs-5 control-label">Serial Number</label>
 	  	<div class="col-xs-7">
-		  <input type="text" class="form-control" name="serial_nr" <?= !empty($_GET['system']) ?  'value="' . $_GET['system'] . '"' : '' ; ?>>
+<?php
+if (!empty($_GET['system'])) {
+	echo '<input type="hidden" name="serial_nr" value="' . $_GET['system'] . '" />'
+	. '<input type="text" class="form-control" placeholder="' . $_GET['system'] . '" disabled />';
+}else {
+	echo '<input type="text" class="form-control" name="serial_nr" />';
+}
+?>
 	  	</div>
 	  </div>
 
@@ -72,30 +123,45 @@ $path = 'post.php?type=' . $type;
   	  <div class="form-group">
 		<label for="sensor_unit" class="col-xs-5 control-label">Sensor Unit</label>
 	  <div class="col-xs-7">
-	  	<input type="text" class="form-control" name="sensor_unit"
+	  	<select class="combobox form-control" name="sensor_unit">
+	  	  
 <?php
-if(isset($_GET['sensor_unit_sn'])){
-	echo 'value="' . $_GET['sensor_unit_sn'] . '"';
-}
-else if(!empty($row['sensor_unit_sn'])){
-	echo 'value="' . $row['sensor_unit_sn'] . '"';
-}
+$sn = '';
+if(!empty($row['sensor_unit_sn'])){ $sn = $row['sensor_unit_sn'];}
+listUnused('sensor_unit', $sn);
 ?>
-		/>
+
+		</select>
 	  	</div>
 	  </div>
 
   	  <div class="form-group">
 		<label for="control_unit" class="col-xs-5 control-label">Control Unit</label>
 	  <div class="col-xs-7">
-	  	<input type="text" class="form-control" name="control_unit" <?= !empty($row['control_unit_sn']) ?  'value="' . $row['control_unit_sn'] . '"' : '' ; ?>>
+	  	<select class="combobox form-control" name="control_unit">
+	  	  
+<?php
+$sn = '';
+if(!empty($row['control_unit_sn'])){ $sn = $row['control_unit_sn'];}
+listUnused('control_unit', $sn);
+?>
+
+		</select>
 	  	</div>
 	  </div>
 
   	  <div class="form-group">
 		<label for="deep_system" class="col-xs-5 control-label">Deep System</label>
 	  <div class="col-xs-7">
-	  	<input type="text" class="form-control" name="deep_system" <?= !empty($row['deep_system_sn']) ?  'value="' . $row['deep_system_sn'] . '"' : '' ; ?>>
+	  	<select class="combobox form-control" name="deep_system">
+	  	  
+<?php
+$sn = '';
+if(!empty($row['deep_system_sn'])){ $sn = $row['deep_system_sn'];}
+listUnused('deep_system', $sn);
+?>
+
+		</select>
 	  	</div>
 	  </div>
 

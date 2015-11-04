@@ -240,6 +240,10 @@ main {
  	padding: 1em;
  }
 
+  .top_content {
+  padding: 1em 1em 0 1em;
+ }
+
 
 
 /*
@@ -278,11 +282,18 @@ main {
  * Table
  *
  */
-
+/*
  .large__table th {
   color: #fff;
   font-weight: 300;
   background-color: #78909C;
+}*/
+.table td {
+  white-space: nowrap;
+}
+
+.my_table {
+  table-layout:fixed;
 }
 
 .large__table {

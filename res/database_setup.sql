@@ -42,7 +42,8 @@ CREATE TABLE system (
 CREATE TABLE sensor_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(10),
+	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	imu VARCHAR(10),
 	leica_cam_sn VARCHAR(10),
@@ -59,6 +60,7 @@ CREATE TABLE control_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	battery VARCHAR(10),
 	cc32 VARCHAR(10),
@@ -73,6 +75,7 @@ CREATE TABLE deep_system (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	control_system VARCHAR(10),
 	imu VARCHAR(10),
@@ -87,6 +90,7 @@ CREATE TABLE scu (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	configuration VARCHAR(20),
 	digitaizer1 VARCHAR(10),
@@ -103,6 +107,7 @@ CREATE TABLE sensor (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 	sensor_type ENUM('topo', 'shallow', 'deep'),
 
 	cat VARCHAR(10),
@@ -132,6 +137,7 @@ CREATE TABLE hv_card (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	configuration VARCHAR(20),
 	art_nr VARCHAR(20),
@@ -153,6 +159,7 @@ CREATE TABLE laser (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	v_0 FLOAT,
 	v_5 FLOAT,
@@ -176,6 +183,7 @@ CREATE TABLE leica_cam (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	configuration VARCHAR(20),
 	breakdown INTEGER,
@@ -188,6 +196,7 @@ CREATE TABLE receiver_chip (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
+	datetime TIMESTAMP,
 
 	unit VARCHAR(30),
 	firmware VARCHAR(10),

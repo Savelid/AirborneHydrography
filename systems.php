@@ -2,6 +2,54 @@
 $titel = 'Systems';
 include 'res/header.inc.php'; 
 ?>
+<?php
+function listWithUnused($type, $serial_nr) {
+  $type_sn = $type . '_sn';
+
+// Create connection
+include 'res/config.inc.php';
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+  // Add all unused sensor units to the list
+  $sql_ = "  SELECT serial_nr
+            FROM %s
+            WHERE serial_nr NOT IN (
+              SELECT system.%s
+              FROM system) ";
+  $result_ = $conn->query(sprintf($sql_, $type, $type_sn));
+  $list_string = '';
+  while($row_ = $result_->fetch_assoc()) {
+    $list_string = $list_string . '<li><a href="edit_system.php?system=%1$s&sensor_unit_sn=' . $row_["serial_nr"] . '">' . $row_["serial_nr"] . '</a></li>';
+  }
+$conn->close(); // close connection
+  if($list_string != ''){
+    $list_string = $list_string . '<li role="separator" class="divider"></li>';
+  }
+$return_string = '
+<td colspan=2>
+  <div class="btn-group">
+    <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      ' .$serial_nr. ' <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="parts.php">View</a></li>
+      <li role="separator" class="divider"></li>
+      '
+      . $list_string .
+      '
+      <li><a href="edit_' .$type. '.php?serial_nr=' .$serial_nr. '">Edit</a></li>
+      <li><a href="#">Remove</a></li>
+    </ul>
+  </div>
+</td>
+';
+return $return_string;
+}
+?>
 
 <section class="content">
   <a href="edit_system.php" class="btn btn-default" role="button">New system</a>
@@ -30,16 +78,14 @@ include 'res/header.inc.php';
     <tbody>
 
 <?php
-include 'res/config.inc.php';
 
 // Create connection
+include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-//
 
 $sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn,
           deep_system.control_system, sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
@@ -49,11 +95,13 @@ $sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, contro
           LEFT JOIN sensor_unit ON sensor_unit_sn = sensor_unit.serial_nr
           LEFT JOIN control_unit ON control_unit_sn = control_unit.serial_nr
           LEFT JOIN deep_system ON deep_system_sn = deep_system.serial_nr
-          ORDER BY datetime DESC";
+          ORDER BY system.datetime DESC";
 $result = $conn->query($sql);
 if (!$result) {
+    echo $sql . "<br><br>" . $conn->error;
     die("Query failed!");
 }
+$conn->close();
 
 // %s will be replaced with variables later
 
@@ -74,99 +122,34 @@ $serial_nr_formating = '
 ';
 $client_formating = '
   <td colspan=3>
-    <div class="btn-group">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      %2$s <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="edit_system.php?system=%1$s">Edit</a></li>
-      </ul>
-    </div>
+    %2$s
   </td>
 ';
 $config_formating = '
   <td colspan=3>
-    <div class="btn-group">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      %3$s <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="edit_system.php?system=%1$s&configuration=DualDragon">DualDragon</a></li>
-        <li><a href="edit_system.php?system=%1$s&configuration=HawkEyeIII">HawkEyeIII</a></li>
-        <li><a href="edit_system.php?system=%1$s&configuration=Chiroptera">Chiroptera</a></li>
-      </ul>
-    </div>
+    %3$s
   </td>
 ';
-// %% escapes the input spot for later
-$sensor_unit_formating = '
-  <td colspan=2>
-    <div class="btn-group">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        %%4$s <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="parts.php">View</a></li>
-        <li role="separator" class="divider"></li>
-        %1$s
-        <li><a href="edit_sensor_unit.php?serial_nr=%%4$s">Edit</a></li>
-        <li><a href="#">Remove</a></li>
-      </ul>
-    </div>
-  </td>
-';
-// Add all unused sensor units to the list
-$sql_sensor_unit = "  SELECT sensor_unit.serial_nr
-          FROM sensor_unit
-          WHERE sensor_unit.serial_nr NOT IN (
-            SELECT system.sensor_unit_sn 
-            FROM system) ";
-$result_sensor_unit = $conn->query($sql_sensor_unit);
-$add_rows_sensor_unit = '';
-while($row_sensor_unit = $result_sensor_unit->fetch_assoc()) {
-  $add_rows_sensor_unit = $add_rows_sensor_unit
-                          . '<li><a href="edit_system.php?system=%1$s&sensor_unit_sn='
-                          . $row_sensor_unit["serial_nr"] 
-                          . '">' 
-                          . $row_sensor_unit["serial_nr"] 
-                          . '</a></li>';
-}
-if($add_rows_sensor_unit != ''){
-  $add_rows_sensor_unit = $add_rows_sensor_unit
-                          . '<li role="separator" class="divider"></li>';
-}
-$sensor_unit_formating = sprintf($sensor_unit_formating, $add_rows_sensor_unit);
+  // <td colspan=3>
+  //   <div class="btn-group">
+  //     <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  //     %3$s <span class="caret"></span>
+  //     </button>
+  //     <ul class="dropdown-menu" role="menu">
+  //       <li><a href="edit_system.php?system=%1$s&configuration=DualDragon">DualDragon</a></li>
+  //       <li><a href="edit_system.php?system=%1$s&configuration=HawkEyeIII">HawkEyeIII</a></li>
+  //       <li><a href="edit_system.php?system=%1$s&configuration=Chiroptera">Chiroptera</a></li>
+  //     </ul>
+  //   </div>
+  // </td>
 
-$control_unit_formating = '
-  <td colspan=2>
-    <div class="btn-group">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        %5$s <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="parts.php">View</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="edit_control_unit.php?serial_nr=%5$s">Edit</a></li>
-        <li><a href="#">Remove</a></li>
-      </ul>
-    </div>
-  </td>
-';
-$deep_system_formating = '
-  <td colspan=2>
-    <div class="btn-group">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        %6$s <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="parts.php">View</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="edit_deep_system.php?serial_nr=%6$s">Edit</a></li>
-        <li><a href="#">Remove</a></li>
-      </ul>
-    </div>
-  </td>
-';
+// %% escapes the input spot for later
+$sensor_unit_formating = listWithUnused('sensor_unit', '%4$s');
+
+$control_unit_formating = listWithUnused('control_unit', '%5$s');
+
+$deep_system_formating = listWithUnused('deep_system', '%6$s');
+
 $control_system_formating = '
   <td colspan=2>
     <div class="btn-group">
@@ -255,10 +238,21 @@ if ($result->num_rows > 0) {
       // Merge the 8 status options into ready or not
       if(       $row['status_potta_heat'] &&
                 $row['status_shallow_heat']&&
-                $row['status_scu_pdu']){
+                $row['status_scu_pdu']&&
+                $row['status_hv_topo']&&
+                $row['status_hv_shallow']&&
+                $row['status_hv_deep']&&
+                $row['status_cat']&&
+                $row['status_pwr_cable']){
         $status = 'Ready';
       }else if( !$row['status_potta_heat'] &&
-                !$row['status_shallow_heat']){
+                !$row['status_shallow_heat']&&
+                !$row['status_scu_pdu']&&
+                !$row['status_hv_topo']&&
+                !$row['status_hv_shallow']&&
+                !$row['status_hv_deep']&&
+                !$row['status_cat']&&
+                !$row['status_pwr_cable']){
         $status = 'Nothing';
       } else {
         $status = 'Some';
@@ -283,7 +277,6 @@ if ($result->num_rows > 0) {
 } else {
     echo "No messages";
 }
-$conn->close();
 ?>
 
     </tbody>

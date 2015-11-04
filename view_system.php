@@ -13,8 +13,7 @@ if (!empty($_GET['system'])) {
     	die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql = " SELECT serial_nr, art_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment,
-          status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable
+	$sql = " SELECT *
 			     FROM system 
            WHERE serial_nr = $_GET[system]";
 	$result = $conn->query($sql);
@@ -30,6 +29,11 @@ if (!empty($_GET['system'])) {
 
 $conn->close();
 ?>
+
+<section class="top_content">
+  <a href="edit_system.php?system=<?php echo $_GET['system']; ?>" class="btn btn-default" role="button">Edit system</a>
+</section>
+
 <section class="content">
 <div class="row">
 <div class="col-sm-7">
@@ -41,22 +45,22 @@ $conn->close();
 
     <div class="row">
       <div class="col-xs-6"><strong>Serial Number</strong></div>
-      <div class="col-xs-6"><?php echo $row['serial_nr']?></div>
+      <div class="col-xs-6"><?php echo $row['serial_nr'];?></div>
     </div>
 
     <div class="row">
       <div class="col-xs-6"><strong>Article Number</strong></div>
-      <div class="col-xs-6"><?php echo $row['art_nr']?></div>
+      <div class="col-xs-6"><?php echo $row['art_nr'];?></div>
     </div>
 
     <div class="row">
       <div class="col-xs-6"><strong>Client</strong></div>
-      <div class="col-xs-6"><?php echo $row['client']?></div>
+      <div class="col-xs-6"><?php echo $row['client'];?></div>
     </div>
 
     <div class="row">
       <div class="col-xs-6"><strong>Configuration</strong></div>
-      <div class="col-xs-6"><?php echo $row['configuration']?></div>
+      <div class="col-xs-6"><?php echo $row['configuration'];?></div>
     </div>
 
     </div>
@@ -67,7 +71,7 @@ $conn->close();
       <h3 class="panel-title">Comment</h3>
     </div>
     <div class="panel-body">
-      <?php echo $row['comment']?>
+      <?php echo nl2br($row['comment']); ?>
     </div>
   </div><!-- end panel -->
 
