@@ -14,11 +14,10 @@ if (!empty($_GET['system'])) {
     	die("Connection failed: " . $conn->connect_error);
 	}
 
-	//
-	$sn = $_GET['system'];
 	$sql = "SELECT *
 			FROM system
-			WHERE serial_nr = $sn";
+			LEFT JOIN system_status ON system_status.serial_nr = system.serial_nr
+            WHERE system.serial_nr = $_GET[system]";
 	$result = $conn->query($sql);
 	if (!$result) {
 		die("Query failed!");

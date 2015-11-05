@@ -14,11 +14,12 @@ if (!empty($_GET['system'])) {
 	}
 
 	$sql = " SELECT *
-			     FROM system 
-           WHERE serial_nr = $_GET[system]";
+			     FROM system
+           LEFT JOIN system_status ON system_status.serial_nr = system.serial_nr
+           WHERE system.serial_nr = $_GET[system]";
 	$result = $conn->query($sql);
 	if (!$result) {
-		die("Query failed!");
+		die("Query failed! <br>Error:" . $sql . "<br>" . $conn->error);
 	}
 
     $row = $result->fetch_array(MYSQLI_ASSOC);
