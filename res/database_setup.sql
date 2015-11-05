@@ -41,6 +41,14 @@ CREATE TABLE system (
 	-- foreign key & Relatinship
 	cooling_system VARCHAR(10),
 
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE system_status (
+
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	serial_nr VARCHAR(10) NOT NULL,
+
 	status_potta_heat BOOLEAN,
 	status_shallow_heat BOOLEAN,
 	status_scu_pdu BOOLEAN,

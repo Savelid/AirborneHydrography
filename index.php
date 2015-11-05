@@ -98,7 +98,7 @@ $table_row_formating = '
   <td>%s</td>
   <td>%s</td>
   <td>%s</td>
-  <td>Ready</td>
+  <td>Temp</td>
 </tr>
 <tr>
   <td colspan=5>%s</td>

@@ -34,8 +34,7 @@ function postToLog($sql_string) {
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
-	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment,
-				status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable)
+	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[art_nr]',
 					'$_POST[client]', 
@@ -45,8 +44,9 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[control_unit]', 
 					'$_POST[deep_system]', 
 					'$_POST[cooling_system]', 
-					'$_POST[comment]',
-
+					'$_POST[comment]');";
+	$sql_insert .= "INSERT INTO system_status (serial_nr, status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable)
+	VALUES (		'$_POST[serial_nr]', 
 					'$_POST[status_potta_heat]', 
 					'$_POST[status_shallow_heat]', 
 					'$_POST[status_scu_pdu]', 
@@ -54,8 +54,8 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[status_hv_shallow]', 
 					'$_POST[status_hv_deep]', 
 					'$_POST[status_cat]', 
-					'$_POST[status_pwr_cable]')";
-	if ($conn->query($sql_insert) === TRUE) {
+					'$_POST[status_pwr_cable]');";
+	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
 		header("Location: systems.php?new_system");
@@ -69,8 +69,7 @@ if($_GET['type'] == 'add_system') {
 if ($_GET['type'] == 'update_system') {
 
 	$sql_update = " UPDATE system
-					SET serial_nr = '$_POST[serial_nr]',
-						art_nr = '$_POST[art_nr]',
+					SET art_nr = '$_POST[art_nr]',
 						client = '$_POST[client]',
 						place = '$_POST[place]',
 						configuration = '$_POST[config]',
@@ -78,9 +77,10 @@ if ($_GET['type'] == 'update_system') {
 						control_unit_sn = '$_POST[control_unit]', 
 						deep_system_sn = '$_POST[deep_system]', 
 						cooling_system = '$_POST[cooling_system]',
-						comment = '$_POST[comment]',
-
-						status_potta_heat = '$_POST[status_potta_heat]',
+						comment = '$_POST[comment]'
+					WHERE serial_nr = $_POST[serial_nr];";
+	$sql_update .= "UPDATE system_status
+					SET status_potta_heat = '$_POST[status_potta_heat]',
 						status_shallow_heat = '$_POST[status_shallow_heat]',
 						status_scu_pdu = '$_POST[status_scu_pdu]',
 						status_hv_topo = '$_POST[status_hv_topo]',
@@ -88,14 +88,14 @@ if ($_GET['type'] == 'update_system') {
 						status_hv_deep = '$_POST[status_hv_deep]',
 						status_cat = '$_POST[status_cat]',
 						status_pwr_cable = '$_POST[status_pwr_cable]'
-					WHERE serial_nr = $_POST[serial_nr]";
-	if ($conn->query($sql_update) === TRUE) {
+					WHERE serial_nr = $_POST[serial_nr];";
+	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
 		header("Location: systems.php?updated_system");
 		die();
 	} else {
-		echo "Error2: " . $sql_update . "<br><br>" . $conn->error;
+		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
 	}
 }
 

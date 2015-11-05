@@ -37,8 +37,7 @@ if ($conn->connect_error) {
 
 $sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn,
           deep_system.control_system, sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
-          control_unit.scu_sn, control_unit.pdu, comment,
-          status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable
+          control_unit.scu_sn, control_unit.pdu, comment
           FROM system
           LEFT JOIN sensor_unit ON sensor_unit_sn = sensor_unit.serial_nr
           LEFT JOIN control_unit ON control_unit_sn = control_unit.serial_nr
@@ -132,37 +131,38 @@ if ($result->num_rows > 0) {
 
       // shorten too long client names
       $client = $row["client"];
-      if (strlen ($client) >= 11) {
-        $client = substr($client, 0, 9) . "..";
+      if (strlen ($client) >= 14) {
+        $client = substr($client, 0, 12) . "..";
       }
       // shorten too long comments
       $comment = $row["comment"];
-      if (strlen ($comment) >= 18) {
-        $comment = substr($comment, 0, 16) . "..";
+      if (strlen ($comment) >= 32) {
+        $comment = substr($comment, 0, 30) . "..";
       }
 
-      // Merge the 8 status options into ready or not
-      if(       $row['status_potta_heat'] &&
-                $row['status_shallow_heat']&&
-                $row['status_scu_pdu']&&
-                $row['status_hv_topo']&&
-                $row['status_hv_shallow']&&
-                $row['status_hv_deep']&&
-                $row['status_cat']&&
-                $row['status_pwr_cable']){
-        $status = 'Ready';
-      }else if( !$row['status_potta_heat'] &&
-                !$row['status_shallow_heat']&&
-                !$row['status_scu_pdu']&&
-                !$row['status_hv_topo']&&
-                !$row['status_hv_shallow']&&
-                !$row['status_hv_deep']&&
-                !$row['status_cat']&&
-                !$row['status_pwr_cable']){
-        $status = 'Nothing';
-      } else {
-        $status = 'Some';
-      }
+      // // Merge the 8 status options into ready or not
+      // if(       $row['status_potta_heat'] &&
+      //           $row['status_shallow_heat']&&
+      //           $row['status_scu_pdu']&&
+      //           $row['status_hv_topo']&&
+      //           $row['status_hv_shallow']&&
+      //           $row['status_hv_deep']&&
+      //           $row['status_cat']&&
+      //           $row['status_pwr_cable']){
+      //   $status = 'Ready';
+      // }else if( !$row['status_potta_heat'] &&
+      //           !$row['status_shallow_heat']&&
+      //           !$row['status_scu_pdu']&&
+      //           !$row['status_hv_topo']&&
+      //           !$row['status_hv_shallow']&&
+      //           !$row['status_hv_deep']&&
+      //           !$row['status_cat']&&
+      //           !$row['status_pwr_cable']){
+      //   $status = 'Nothing';
+      // } else {
+      //   $status = 'Some';
+      // }
+      $status = 'Temp';
 
         echo sprintf($table_row_formating,
           $row["serial_nr"],
