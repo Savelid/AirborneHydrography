@@ -64,6 +64,11 @@ $conn->close();
       <div class="col-xs-6"><?php echo $row['configuration'];?></div>
     </div>
 
+    <div class="row">
+      <div class="col-xs-6"><strong>Status</strong></div>
+      <div class="col-xs-6"><?php echo $row['status'];?></div>
+    </div>
+
     </div>
   </div><!-- end panel -->
 

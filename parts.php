@@ -1,5 +1,5 @@
 <?php
-$titel = 'Systems';
+$titel = 'Parts';
 include 'res/header.inc.php'; 
 ?>
 <?php
@@ -54,8 +54,12 @@ return $return_string;
 <section class="top_content">
   <a href="edit_sensor.php" class="btn btn-default" role="button">New sensor</a>
   <a href="edit_sensor_unit.php" class="btn btn-default" role="button">New sensor unit</a>
-  <a href="edit_control_unit.php" class="btn btn-default" role="button">New control unit</a>
+  <a href="edit_control_system.php" class="btn btn-default" role="button">New control system</a>
   <a href="edit_deep_system.php" class="btn btn-default" role="button">New deep system</a>
+  <a href="edit_scu.php" class="btn btn-default" role="button">New SCU</a>
+  <a href="edit_laser.php" class="btn btn-default" role="button">New laser</a>
+  <a href="edit_hv_card.php" class="btn btn-default" role="button">New HV card</a>
+  <a href="edit_receiver_chip.php" class="btn btn-default" role="button">New receiver chip</a>
 </section>
 <section class="content">
 
@@ -75,7 +79,8 @@ return $return_string;
           <tr>
             <th>Serial nr.</th>
             <th>IMU</th>
-            <th>Leica cam.</th>
+            <th>Leica camera</th>
+            <th>Leica lens</th>
             <th>Topo sensor</th>
             <th>Shallow sensor</th>
           </tr>
@@ -104,11 +109,12 @@ $conn->close(); // close connection
 
 $table_row_formating = '
 <tr>
-  <td><a href="edit_sensor_unit.php?serial_nr=%5$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
+  <td><a href="edit_sensor_unit.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
   <td>%2$s</td>
   <td><a href="view_leica_cam.php?serial_nr=%3$s" class="btn btn-default btn-sm">%3$s</a></td>
-  <td><a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">%4$s</a></td>
+  <td>%4$s</td>
   <td><a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a></td>
+  <td><a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a></td>
 </tr>
 ';
 
@@ -120,6 +126,7 @@ if ($result->num_rows > 0) {
           $row["serial_nr"],
           $row["imu"],
           $row["leica_cam_sn"],
+          $row["leica_lens"],
           $row["topo_sensor_sn"],
           $row["shallow_sensor_sn"]);
     }
@@ -135,16 +142,16 @@ if ($result->num_rows > 0) {
 </div>
 
 
-<!--###### Control Unit Table ######-->
+<!--###### Control System Table ######-->
 <div class="panel panel-default">
-  <div class="panel-heading" role="tab" id="headingControlUnit">
+  <div class="panel-heading" role="tab" id="headingControlSystem">
     <h4 class="panel-title">
-      <a role="button" data-toggle="collapse" href="#collapseControlUnit" aria-expanded="false" aria-controls="collapseControlUnit">
-        Control Units
+      <a role="button" data-toggle="collapse" href="#collapseControlSystem" aria-expanded="false" aria-controls="collapseControlSystem">
+        Control Systems
       </a>
     </h4>
   </div>
-  <div id="collapseControlUnit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingControlUnit">
+  <div id="collapseControlSystem" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingControlSystem">
     <div class="panel-body panel_table">
           <table class="table table-striped table-responsive my_table">
         <thead>
@@ -167,7 +174,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $sql = "  SELECT *
-          FROM control_unit
+          FROM control_system
           ORDER BY datetime DESC";
 $result = $conn->query($sql);
 if (!$result) {
@@ -180,7 +187,7 @@ $conn->close(); // close connection
 
 $table_row_formating = '
 <tr>
-  <td><a href="edit_control_unit.php?serial_nr=%5$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
+  <td><a href="edit_control_system.php?serial_nr=%5$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
   <td>%2$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
@@ -225,7 +232,7 @@ if ($result->num_rows > 0) {
         <thead>
           <tr>
             <th>Serial nr.</th>
-            <th>Control system</th>
+            <th>Cooling system</th>
             <th>IMU</th>
             <th>Pro pack</th>
             <th>Deep sensor</th>
@@ -269,7 +276,7 @@ if ($result->num_rows > 0) {
 
         echo sprintf($table_row_formating,
           $row["serial_nr"],
-          $row["control_system"],
+          $row["cooling_system"],
           $row["imu"],
           $row["pro_pack"],
           $row["deep_sensor_sn"]);

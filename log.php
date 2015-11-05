@@ -16,6 +16,7 @@ $(function () {
         <th>Type</th>
         <th>User</th>
         <th>Serial nr.</th>
+        <th>Comment</th>
         <th>SQL</th>
       </tr>
     </thead>
@@ -44,6 +45,10 @@ $conn->close();
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
+      $commentButton = '
+      <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
+      . $row["comment"] . 
+      '">View</button>';
       $sqlButton = '
       <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
       . $row["sql_string"] . 
@@ -53,6 +58,7 @@ if ($result->num_rows > 0) {
       echo '<td>' . $row["type"]      . '</td>';
       echo '<td>' . $row["user"]      . '</td>';
       echo '<td>' . $row["serial_nr"] . '</td>';
+      echo '<td>' . $commentButton . '</td>';
       echo '<td>' . $sqlButton . '</td>';
       echo '</tr>';
     }

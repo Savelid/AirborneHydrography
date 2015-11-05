@@ -98,7 +98,7 @@ $table_row_formating = '
   <td>%s</td>
   <td>%s</td>
   <td>%s</td>
-  <td>Temp</td>
+  <td>%s</td>
 </tr>
 <tr>
   <td colspan=5>%s</td>
@@ -126,6 +126,7 @@ if ($result->num_rows > 0) {
           $client,
           $place,
           $row["configuration"],
+          $row["status"],
           $row["comment"]);
     }
 } else {

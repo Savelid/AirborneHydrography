@@ -21,8 +21,8 @@ function postToLog($sql_string) {
 	    die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql_log = "INSERT INTO log (type, user, sql_string, serial_nr) 
-				VALUES ('$_GET[type]', '$_POST[user]', '$sql_string', '$_POST[serial_nr]')";
+	$sql_log = "INSERT INTO log (type, user, sql_string, serial_nr, comment) 
+				VALUES ('$_GET[type]', '$_POST[user]', '$sql_string', '$_POST[serial_nr]', '$_POST[log_comment]')";
 	if ($conn->query($sql_log) === TRUE) {
 		echo "Log created successfully";
 		
@@ -34,16 +34,16 @@ function postToLog($sql_string) {
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
-	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment)
+	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, status, comment)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[art_nr]',
 					'$_POST[client]', 
 					'$_POST[place]',
 					'$_POST[config]', 
 					'$_POST[sensor_unit]', 
-					'$_POST[control_unit]', 
+					'$_POST[control_system]', 
 					'$_POST[deep_system]', 
-					'$_POST[cooling_system]', 
+					'$_POST[status]',
 					'$_POST[comment]');";
 	$sql_insert .= "INSERT INTO system_status (serial_nr, status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable)
 	VALUES (		'$_POST[serial_nr]', 
@@ -74,9 +74,9 @@ if ($_GET['type'] == 'update_system') {
 						place = '$_POST[place]',
 						configuration = '$_POST[config]',
 						sensor_unit_sn = '$_POST[sensor_unit]', 
-						control_unit_sn = '$_POST[control_unit]', 
+						control_system_sn = '$_POST[control_system]', 
 						deep_system_sn = '$_POST[deep_system]', 
-						cooling_system = '$_POST[cooling_system]',
+						status = '$_POST[status]',
 						comment = '$_POST[comment]'
 					WHERE serial_nr = $_POST[serial_nr];";
 	$sql_update .= "UPDATE system_status

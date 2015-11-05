@@ -20,7 +20,7 @@ include 'res/header.inc.php';
         <th colspan=2>Deep</th>
         <th colspan=2>SCU</th>
         <th colspan=2>Status</th>
-        <th colspan=5>Comments</th>
+        <th colspan=7>Comments</th>
       </tr>
     </thead>
     <tbody>
@@ -35,12 +35,12 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn,
-          deep_system.control_system, sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
-          control_unit.scu_sn, control_unit.pdu, comment
+$sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_system_sn, deep_system_sn,
+          sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
+          control_system.scu_sn, status, comment
           FROM system
           LEFT JOIN sensor_unit ON sensor_unit_sn = sensor_unit.serial_nr
-          LEFT JOIN control_unit ON control_unit_sn = control_unit.serial_nr
+          LEFT JOIN control_system ON control_system_sn = control_system.serial_nr
           LEFT JOIN deep_system ON deep_system_sn = deep_system.serial_nr
           ORDER BY system.datetime DESC";
 $result = $conn->query($sql);
@@ -55,7 +55,7 @@ $conn->close();
 $serial_nr_formating = '
   <td colspan=2>
     <div class="btn-group">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         %1$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
@@ -80,37 +80,37 @@ $config_formating = '
 
 $topo_shallow_deep_formating = '
  <td colspan=2>
-      <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-xs">
+      <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">
         %4$s
       </a>
   </td>
 
   <td colspan=2>
-      <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-xs">
+      <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">
         %5$s
       </a>
   </td>
 
   <td colspan=2>
-      <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-xs">
+      <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">
         %6$s
       </a>
   </td>
 ';
 $scu_formating = '
   <td colspan=2>
-      <a href="#" class="btn btn-default btn-xs">
+      <a href="#" class="btn btn-default btn-sm">
         %7$s
       </a>
   </td>
 ';
-$system_status_formating = '
+$system_formating = '
   <td colspan=2>
     %8$s
   </td>
 ';
 $comment_formating = '
-  <td colspan=5>
+  <td colspan=7>
     %9$s
   </td>
 ';
@@ -121,7 +121,7 @@ $table_row_formating = '<tr>'
                         . $config_formating
                         . $topo_shallow_deep_formating
                         . $scu_formating
-                        . $system_status_formating
+                        . $system_formating
                         . $comment_formating
                         .'</tr>';
 
@@ -140,30 +140,6 @@ if ($result->num_rows > 0) {
         $comment = substr($comment, 0, 30) . "..";
       }
 
-      // // Merge the 8 status options into ready or not
-      // if(       $row['status_potta_heat'] &&
-      //           $row['status_shallow_heat']&&
-      //           $row['status_scu_pdu']&&
-      //           $row['status_hv_topo']&&
-      //           $row['status_hv_shallow']&&
-      //           $row['status_hv_deep']&&
-      //           $row['status_cat']&&
-      //           $row['status_pwr_cable']){
-      //   $status = 'Ready';
-      // }else if( !$row['status_potta_heat'] &&
-      //           !$row['status_shallow_heat']&&
-      //           !$row['status_scu_pdu']&&
-      //           !$row['status_hv_topo']&&
-      //           !$row['status_hv_shallow']&&
-      //           !$row['status_hv_deep']&&
-      //           !$row['status_cat']&&
-      //           !$row['status_pwr_cable']){
-      //   $status = 'Nothing';
-      // } else {
-      //   $status = 'Some';
-      // }
-      $status = 'Temp';
-
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $client,
@@ -172,7 +148,7 @@ if ($result->num_rows > 0) {
           $row["shallow_sensor_sn"],
           $row["deep_sensor_sn"],
           $row["scu_sn"],
-          $status,
+          $row["status"],
           $comment);
     }
 } else {

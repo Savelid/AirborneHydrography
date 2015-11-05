@@ -30,45 +30,7 @@ if (!empty($_GET['serial_nr'])) {
 }
 $path = 'post.php?type=' . $type; // path for form
 ?>
-<?php
-function listUnused($tablename, $address, $serial_nr){
-
-	if($serial_nr != NULL && $serial_nr != ''){
-		echo '<option value="' . $serial_nr . '">' . $serial_nr . '</option>';
-	}
-	else {
-		echo '<option></option>';
-	}
-	echo '<option>-----</option>';
-
-	// open db
-	include 'res/config.inc.php';
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	// Add all unused sensor units to the list
-	$sql_unused = "  SELECT serial_nr
-	          FROM %s
-	          WHERE serial_nr NOT IN (
-	            SELECT %s 
-	            FROM sensor) ";
-	$result_unused = $conn->query(sprintf($sql_unused, $tablename, $address));
-		if (!$result_unused) {
-			die("Query failed!");
-		}
-	while($row_unused = $result_unused->fetch_assoc()) {
-		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){
-			echo '<option value="' . $row_unused['serial_nr'] . '" autofocus selected="selected">' . $row_unused['serial_nr'] . '</option>';
-		}else {
-			echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
-		}
-	}
-	$conn->close();
-}
-?>
+<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
   $(document).ready(function(){
     $('.combobox').combobox();
@@ -78,11 +40,13 @@ function listUnused($tablename, $address, $serial_nr){
 	
 <form action= <?php echo $path ?> method="post" class="form-horizontal">
   <div class="row">
-	<div class="col-sm-8">
+	<div class="col-sm-6 col-sm-offset-1">
+
+	<div class="col-xs-8 col-xs-offset-4"><h4>Sensor</h4></div>
 
 	  <div class="form-group">
-		<label for="serial_nr" class="col-xs-5 control-label">Serial Number</label>
-	  	<div class="col-xs-7">
+		<label for="serial_nr" class="col-xs-4 control-label">Serial Number</label>
+	  	<div class="col-xs-8">
 <?php
 if (!empty($_GET['serial_nr'])) {
 	echo '<input type="hidden" name="serial_nr" value="' . $_GET['serial_nr'] . '" />'
@@ -95,8 +59,8 @@ if (!empty($_GET['serial_nr'])) {
 	  </div>
 
   	  <div class="form-group">
-		<label for="sensor_type" class="col-xs-5 control-label">Configuration</label>
-	  <div class="col-xs-7">
+		<label for="sensor_type" class="col-xs-4 control-label">Configuration</label>
+	  <div class="col-xs-8">
 		<select class="form-control" name="sensor_type" id="sensor_type">
 		  <option value="topo" <?= !empty($row['sensor_type']) && $row['sensor_type'] == 'topo' ? 'selected="selected"' : '' ; ?>>Topo</option>
 		  <option value="shallow" <?= !empty($row['sensor_type']) && $row['sensor_type'] == 'shallow' ? 'selected="selected"' : '' ; ?>>Shallow</option>
@@ -106,28 +70,29 @@ if (!empty($_GET['serial_nr'])) {
 	  </div>
 
   	  <div class="form-group">
-		<label for="cat" class="col-xs-5 control-label">CAT</label>
-	  <div class="col-xs-7">
+		<label for="cat" class="col-xs-4 control-label">CAT</label>
+	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="cat" <?= !empty($row['cat']) ?  'value="' . $row['cat'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
-		<label for="fpga_id" class="col-xs-5 control-label">FPGA ID</label>
-	  <div class="col-xs-7">
+		<label for="fpga_id" class="col-xs-4 control-label">FPGA ID</label>
+	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="fpga_id" <?= !empty($row['fpga_id']) ?  'value="' . $row['fpga_id'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
   	  <div class="form-group">
-		<label for="laser" class="col-xs-5 control-label">Laser</label>
-	  <div class="col-xs-7">
+		<label for="laser" class="col-xs-4 control-label">Laser</label>
+	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="laser">
 	  	  
 <?php
 $sn = '';
 if(!empty($row['laser_sn'])){ $sn = $row['laser_sn'];}
-listUnused('laser', 'sensor.laser_sn', $sn);
+listUnusedSerialNr('laser', 'serial_nr NOT IN
+	(SELECT sensor.laser_sn FROM sensor)', $sn);
 ?>
 
 		</select>
@@ -135,16 +100,17 @@ listUnused('laser', 'sensor.laser_sn', $sn);
 	  </div>
 
   	  <div class="form-group">
-		<label for="hv_card" class="col-xs-5 control-label">HV Card</label>
-	  <div class="col-xs-7">
+		<label for="hv_card" class="col-xs-4 control-label">HV Card</label>
+	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="hv_card">
 	  	  
 <?php
 $sn = '';
 if(!empty($row['hv_card_sn'])){ $sn = $row['hv_card_sn'];}
-listUnused('hv_card', 'sensor.hv_card_sn FROM sensor)
-						AND serial_nr NOT IN (
-	            		SELECT sensor.hv_card_2_sn', $sn); // workaround to be able to use the same function for something used under 2 names
+listUnusedSerialNr('hv_card', 'serial_nr NOT IN
+	(SELECT sensor.hv_card_sn FROM sensor)
+	AND serial_nr NOT IN
+	(SELECT sensor.hv_card_2_sn FROM sensor)', $sn);
 ?>
 
 		</select>
@@ -152,23 +118,24 @@ listUnused('hv_card', 'sensor.hv_card_sn FROM sensor)
 	  </div>
 
   	  <div class="form-group">
-		<label for="receiver_unit" class="col-xs-5 control-label">Receiver Unit</label>
-	  <div class="col-xs-7">
+		<label for="receiver_unit" class="col-xs-4 control-label">Receiver Unit</label>
+	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="receiver_unit" <?= !empty($row['receiver_unit']) ?  'value="' . $row['receiver_unit'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
-		<label for="receiver_chip" class="col-xs-5 control-label">Receiver Chip</label>
-	  <div class="col-xs-7">
+		<label for="receiver_chip" class="col-xs-4 control-label">Receiver Chip</label>
+	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="receiver_chip">
 	  	  
 <?php
 $sn = '';
 if(!empty($row['receiver_chip_sn'])){ $sn = $row['receiver_chip_sn'];}
-listUnused('hv_card', 'sensor.receiver_chip_sn FROM sensor)
-						AND serial_nr NOT IN (
-	            		SELECT sensor.receiver_chip_2_sn', $sn); // workaround to be able to use the same function for something used under 2 names
+listUnusedSerialNr('hv_card', 'serial_nr NOT IN
+	(SELECT sensor.receiver_chip_sn FROM sensor)
+	AND serial_nr NOT IN
+	(SELECT sensor.receiver_chip_2_sn FROM sensor)', $sn);
 ?>
 
 		</select>
@@ -190,16 +157,17 @@ $(function() {
 </script>
 
 	  <div class="form-group deepSensor">
-		<label for="hv_card_2" class="col-xs-5 control-label">HV Card 2</label>
-	  <div class="col-xs-7">
+		<label for="hv_card_2" class="col-xs-4 control-label">HV Card 2</label>
+	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="hv_card_2">
 	  	  
 <?php
 $sn = '';
 if(!empty($row['hv_card_2_sn'])){ $sn = $row['hv_card_2_sn'];}
-listUnused('hv_card', 'sensor.hv_card_sn FROM sensor)
-						AND serial_nr NOT IN (
-	            		SELECT sensor.hv_card_2_sn', $sn); // workaround to be able to use the same function for something used under 2 names
+listUnusedSerialNr('hv_card', 'serial_nr NOT IN
+	(SELECT sensor.hv_card_sn FROM sensor)
+	AND serial_nr NOT IN
+	(SELECT sensor.hv_card_2_sn FROM sensor)', $sn);
 ?>
 
 		</select>
@@ -207,23 +175,24 @@ listUnused('hv_card', 'sensor.hv_card_sn FROM sensor)
 	  </div>
 
   	  <div class="form-group deepSensor">
-		<label for="receiver_unit_2" class="col-xs-5 control-label">Receiver Unit 2</label>
-	  <div class="col-xs-7">
+		<label for="receiver_unit_2" class="col-xs-4 control-label">Receiver Unit 2</label>
+	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="receiver_unit_2" <?= !empty($row['receiver_unit_2']) ?  'value="' . $row['receiver_unit_2'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group deepSensor">
-		<label for="receiver_chip_2" class="col-xs-5 control-label">Receiver Chip 2</label>
-	  <div class="col-xs-7">
+		<label for="receiver_chip_2" class="col-xs-4 control-label">Receiver Chip 2</label>
+	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="receiver_chip_2">
 	  	  
 <?php
 $sn = '';
 if(!empty($row['receiver_chip_2_sn'])){ $sn = $row['receiver_chip_2_sn'];}
-listUnused('hv_card', 'sensor.receiver_chip_sn FROM sensor)
-						AND serial_nr NOT IN (
-	            		SELECT sensor.receiver_chip_2_sn', $sn); // workaround to be able to use the same function for something used under 2 names
+listUnusedSerialNr('hv_card', 'serial_nr NOT IN 
+	(SELECT sensor.receiver_chip_sn FROM sensor)
+	AND serial_nr NOT IN
+	(SELECT sensor.receiver_chip_2_sn FROM sensor)', $sn);
 ?>
 
 		</select>
@@ -231,46 +200,71 @@ listUnused('hv_card', 'sensor.receiver_chip_sn FROM sensor)
 	  </div>
 
 	  <div class="form-group">
-		<label for="dps_value_input_offset_t0" class="col-xs-5 control-label">dps_value_input_offset_t0</label>
-	  <div class="col-xs-7">
+		<label for="config" class="col-xs-4 control-label">Status</label>
+	  <div class="col-xs-8">
+		<select class="form-control" name="status">
+		  <option value="New" <?= !empty($row['status']) && $row['status'] == 'New' ? 'selected="selected"' : '' ; ?>>New</option>
+		  <option value="Done" <?= !empty($row['status']) && $row['status'] == 'Done' ? 'selected="selected"' : '' ; ?>>Done</option>
+		  <option value="Service" <?= !empty($row['status']) && $row['status'] == 'Service' ? 'selected="selected"' : '' ; ?>>Service</option>
+		  <option value="PIA" <?= !empty($row['status']) && $row['status'] == 'PIA' ? 'selected="selected"' : '' ; ?>>PIA</option>
+		</select>
+	  	</div>
+	  </div>
+	</div> <!-- end col -->
+
+	<div class="col-sm-3 col-sm-offset-1">
+	  <h4>Pulse Values</h4>
+
+	  <div class="form-group col-xs-12">
+		<label for="dps_value_input_offset_t0">Input Offset t0</label>
+	  <div>
 	  	<input type="text" class="form-control" name="dps_value_input_offset_t0" <?= !empty($row['dps_value_input_offset_t0']) ?  'value="' . $row['dps_value_input_offset_t0'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="dps_value_input_offset_rec" class="col-xs-5 control-label">dps_value_input_offset_rec</label>
-	  <div class="col-xs-7">
+	  <div class="form-group col-xs-12">
+		<label for="dps_value_input_offset_rec">Input Offset Rec</label>
+	  <div>
 	  	<input type="text" class="form-control" name="dps_value_input_offset_rec" <?= !empty($row['dps_value_input_offset_rec']) ?  'value="' . $row['dps_value_input_offset_rec'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="dps_value_pulse_width_t0" class="col-xs-5 control-label">dps_value_pulse_width_t0</label>
-	  <div class="col-xs-7">
+	  <div class="form-group col-xs-12">
+		<label for="dps_value_pulse_width_t0">Pulse Width t0</label>
+	  <div>
 	  	<input type="text" class="form-control" name="dps_value_pulse_width_t0" <?= !empty($row['dps_value_pulse_width_t0']) ?  'value="' . $row['dps_value_pulse_width_t0'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="dps_value_pulse_width_rec" class="col-xs-5 control-label">dps_value_pulse_width_rec</label>
-	  <div class="col-xs-7">
+	  <div class="form-group col-xs-12">
+		<label for="dps_value_pulse_width_rec">Pulse Width Rec</label>
+	  <div>
 	  	<input type="text" class="form-control" name="dps_value_pulse_width_rec" <?= !empty($row['dps_value_pulse_width_rec']) ?  'value="' . $row['dps_value_pulse_width_rec'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="status" class="col-xs-5 control-label">Status</label>
-	  <div class="col-xs-7">
-	  	<input type="text" class="form-control" name="status" <?= !empty($row['status']) ?  'value="' . $row['status'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
+	  <h4>Log</h4>
+		<div class="form-group col-xs-12">
+			<label for="user">User</label>
+			<div>
+				<input type="text" class="form-control" name="user" required />
+			</div>
+		</div>
 
-	</div> <!-- end col sm8 -->
+		<div class="form-group col-xs-12">
+			<label for="log_comment">Log Comment</label>
+			<div>
+				<textarea class="form-control" name="log_comment" rows="3"><?= !empty($row['log_comment']) ? $row['log_comment'] : ''; ?></textarea>
+			</div>
+		</div>
+	</div>
 
   </div><!-- end row -->
   <div class="row">
-	  <div class="col-sm-offset-7 col-sm-5">
+	  <div class="col-sm-12">
 	    <button type="submit" class="btn btn-default">Apply</button>
+	    <a href="parts.php" class="btn btn-default">Cancel</a>
+	    <a href="view_sensor.php?serial_nr=<?php echo $_GET['serial_nr']; ?>" class="btn btn-default">Go to Sensor</a>
 	  </div>
   </div>
 </form>

@@ -7,6 +7,7 @@ CREATE TABLE log (
 	user VARCHAR(40),
 	sql_string TEXT,
 	serial_nr VARCHAR(30),
+	comment TEXT,
 
 	PRIMARY KEY (id)
 );
@@ -32,14 +33,14 @@ CREATE TABLE system (
 	client VARCHAR(50),
 	place VARCHAR(50),
 	configuration VARCHAR(50),
+	status VARCHAR(50),
 	comment TEXT,
 	sensor_unit_sn VARCHAR(10),
 	-- foreign key & Relatinship
-	control_unit_sn VARCHAR(10),
+	control_system_sn VARCHAR(10),
 	-- foreign key & Relatinship
 	deep_system_sn VARCHAR(10),
 	-- foreign key & Relatinship
-	cooling_system VARCHAR(10),
 
 	PRIMARY KEY (id)
 );
@@ -69,6 +70,7 @@ CREATE TABLE sensor_unit (
 
 	imu VARCHAR(10),
 	leica_cam_sn VARCHAR(10),
+	leica_lens VARCHAR(10),
 	-- foreign key & Relatinship
 	topo_sensor_sn VARCHAR(10),
 	-- foreign key & Relatinship
@@ -78,7 +80,7 @@ CREATE TABLE sensor_unit (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE control_unit (
+CREATE TABLE control_system (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(10) NOT NULL,
@@ -99,7 +101,7 @@ CREATE TABLE deep_system (
 	serial_nr VARCHAR(10) NOT NULL,
 	datetime TIMESTAMP,
 
-	control_system VARCHAR(10),
+	cooling_system VARCHAR(10),
 	imu VARCHAR(10),
 	pro_pack VARCHAR(10),
 	deep_sensor_sn VARCHAR(10),

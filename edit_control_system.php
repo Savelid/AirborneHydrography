@@ -1,10 +1,10 @@
 <?php
 
-$titel = 'Edit Sensor Unit';
+$titel = 'Edit Control System';
 include 'res/header.inc.php';
-$type = 'add_sensor_unit';
+$type = 'add_control_system';
 if (!empty($_GET['serial_nr'])) {
-	$type = 'update_sensor_unit';
+	$type = 'update_control_system';
 
 	// Create connection
 	include 'res/config.inc.php';
@@ -17,7 +17,7 @@ if (!empty($_GET['serial_nr'])) {
 	//
 	$sn = $_GET['serial_nr'];
 	$sql = "SELECT *
-			FROM sensor_unit
+			FROM control_system
 			WHERE serial_nr = $sn";
 	$result = $conn->query($sql);
 	if (!$result) {
@@ -42,7 +42,7 @@ $path = 'post.php?type=' . $type; // path for form
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
 
-	<div class="col-xs-8 col-xs-offset-4"><h4>Sensor Unit</h4></div>
+	<div class="col-xs-8 col-xs-offset-4"><h4>Control System</h4></div>
 
 	  <div class="form-group">
 		<label for="serial_nr" class="col-xs-4 control-label">Serial Number</label>
@@ -59,66 +59,37 @@ if (!empty($_GET['serial_nr'])) {
 	  </div>
 
   	  <div class="form-group">
-		<label for="imu" class="col-xs-4 control-label">IMU</label>
+		<label for="battery" class="col-xs-4 control-label">Battery</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="imu" <?= !empty($row['imu']) ?  'value="' . $row['imu'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="battery" <?= !empty($row['battery']) ?  'value="' . $row['battery'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
   	  <div class="form-group">
-		<label for="leica_cam" class="col-xs-4 control-label">Leica Camera</label>
+		<label for="cc32" class="col-xs-4 control-label">CC32</label>
 	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="leica_cam">
-	  	  
-<?php
-$sn = '';
-if(!empty($row['leica_cam'])){ $sn = $row['leica_cam'];}
-listUnusedSerialNr('leica_cam', '	serial_nr NOT IN (
-	            			SELECT sensor_unit.leica_cam_sn
-	            			FROM sensor_unit)'	, $sn);
-?>
-
-		</select>
+	  	<input type="text" class="form-control" name="cc32" <?= !empty($row['cc32']) ?  'value="' . $row['cc32'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="leica_lens" class="col-xs-4 control-label">Leica Lens</label>
+  	  <div class="form-group">
+		<label for="pdu" class="col-xs-4 control-label">PDU</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="leica_lens" <?= !empty($row['leica_lens']) ?  'value="' . $row['leica_lens'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="pdu" <?= !empty($row['pdu']) ?  'value="' . $row['pdu'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="topo_sensor" class="col-xs-4 control-label">Topo Sensor</label>
+  	  <div class="form-group">
+		<label for="scu" class="col-xs-4 control-label">SCU</label>
 	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="topo_sensor">
+	  	<select class="combobox form-control" name="scu">
 	  	  
 <?php
 $sn = '';
-if(!empty($row['topo_sensor'])){ $sn = $row['topo_sensor'];}
-listUnusedSerialNr('sensor', '		sensor_type = "topo" AND
-							serial_nr NOT IN (
-	            			SELECT sensor_unit.topo_sensor_sn
-	            			FROM sensor_unit)', $sn);
-?>
-
-		</select>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="shallow_sensor" class="col-xs-4 control-label">Shallow Sensor</label>
-	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="shallow_sensor">
-	  	  
-<?php
-$sn = '';
-if(!empty($row['topo_sensor'])){ $sn = $row['topo_sensor'];}
-listUnusedSerialNr('sensor', '		sensor_type = "shallow" AND
-							serial_nr NOT IN (
-	            			SELECT sensor_unit.shallow_sensor_sn
-	            			FROM sensor_unit)', $sn);
+if(!empty($row['scu'])){ $sn = $row['scu'];}
+listUnusedSerialNr('scu', '	serial_nr NOT IN (
+	            			SELECT control_system.scu_sn
+	            			FROM control_system)'	, $sn);
 ?>
 
 		</select>

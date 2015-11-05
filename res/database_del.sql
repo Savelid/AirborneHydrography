@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS system_status;
 
 DROP TABLE IF EXISTS sensor_unit;
 
-DROP TABLE IF EXISTS control_unit;
+DROP TABLE IF EXISTS control_system;
 
 DROP TABLE IF EXISTS deep_system;
 

@@ -240,8 +240,12 @@ main {
  	padding: 1em;
  }
 
-  .top_content {
+.top_content {
   padding: 1em 1em 0 1em;
+ }
+
+ .top_content .btn{
+  margin: 0.2em;
  }
 
 
