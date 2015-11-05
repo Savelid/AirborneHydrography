@@ -16,8 +16,7 @@ if (!empty($_GET['system'])) {
 
 	//
 	$sn = $_GET['system'];
-	$sql = "SELECT serial_nr, art_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment,
-			status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable
+	$sql = "SELECT *
 			FROM system
 			WHERE serial_nr = $sn";
 	$result = $conn->query($sql);
@@ -61,11 +60,7 @@ function listUnused($name, $serial_nr){
 			die("Query failed!");
 		}
 	while($row_unused = $result_unused->fetch_assoc()) {
-		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){
-			echo '<option value="' . $row_unused['serial_nr'] . '" autofocus selected="selected">' . $row_unused['serial_nr'] . '</option>';
-		}else {
-			echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
-		}
+		echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
 	}
 	$conn->close();
 }
@@ -89,7 +84,7 @@ if (!empty($_GET['system'])) {
 	echo '<input type="hidden" name="serial_nr" value="' . $_GET['system'] . '" />'
 	. '<input type="text" class="form-control" placeholder="' . $_GET['system'] . '" disabled />';
 }else {
-	echo '<input type="text" class="form-control" name="serial_nr" />';
+	echo '<input type="text" class="form-control" name="serial_nr" required />';
 }
 ?>
 	  	</div>
