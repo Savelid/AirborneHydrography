@@ -1,5 +1,7 @@
 USE ahab_db;
 
+DROP TABLE IF EXISTS log;
+
 DROP TABLE IF EXISTS overview;
 
 DROP TABLE IF EXISTS system;

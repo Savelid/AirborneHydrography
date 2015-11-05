@@ -34,11 +34,12 @@ function postToLog($sql_string) {
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
-	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment,
+	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_unit_sn, deep_system_sn, cooling_system, comment,
 				status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[art_nr]',
 					'$_POST[client]', 
+					'$_POST[place]',
 					'$_POST[config]', 
 					'$_POST[sensor_unit]', 
 					'$_POST[control_unit]', 
@@ -71,6 +72,7 @@ if ($_GET['type'] == 'update_system') {
 					SET serial_nr = '$_POST[serial_nr]',
 						art_nr = '$_POST[art_nr]',
 						client = '$_POST[client]',
+						place = '$_POST[place]',
 						configuration = '$_POST[config]',
 						sensor_unit_sn = '$_POST[sensor_unit]', 
 						control_unit_sn = '$_POST[control_unit]', 

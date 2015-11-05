@@ -6,9 +6,9 @@ INSERT INTO overview
 
 DELETE FROM system;
 INSERT INTO system
-	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB','HawkEyeIII','En kommentar','1310','1410','1510','1610','0','1','1','1','1','0','1','1');
+	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB', 'Home', 'HawkEyeIII','En kommentar','1310','1410','1510','1610','0','1','1','1','1','0','1','1');
 INSERT INTO system
-	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska','DualDragon','','1311','1411','1511','1611','1','1','1','1','1','1','1','1');
+	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska', 'Piteå', 'DualDragon','','1311','1411','1511','1611','1','1','1','1','1','1','1','1');
 
 DELETE FROM sensor_unit;
 INSERT INTO sensor_unit

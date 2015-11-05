@@ -30,6 +30,7 @@ CREATE TABLE system (
 
 	art_nr VARCHAR(20),
 	client VARCHAR(50),
+	place VARCHAR(50),
 	configuration VARCHAR(50),
 	comment TEXT,
 	sensor_unit_sn VARCHAR(10),
@@ -111,7 +112,7 @@ CREATE TABLE scu (
 	sat VARCHAR(10),
 	cpu VARCHAR(10),
 	version VARCHAR(20),
-	status VARCHAR(30),
+	status TEXT,
 
 	PRIMARY KEY (id)
 );

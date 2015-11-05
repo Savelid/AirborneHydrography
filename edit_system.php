@@ -109,6 +109,13 @@ if (!empty($_GET['system'])) {
 	  	</div>
 	  </div>
 
+	  <div class="form-group">
+		<label for="place" class="col-xs-5 control-label">Place</label>
+	  <div class="col-xs-7">
+	  	<input type="text" class="form-control" name="place" <?= !empty($row['place']) ?  'value="' . $row['place'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
   	  <div class="form-group">
 		<label for="config" class="col-xs-5 control-label">Configuration</label>
 	  <div class="col-xs-7">

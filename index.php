@@ -72,6 +72,7 @@ if ($result->num_rows > 0) {
           <tr>
             <th>Serial nr.</th>
             <th>Client</th>
+            <th>Place</th>
             <th>Config.</th>
             <th>Status</th>
           </tr>
@@ -80,7 +81,7 @@ if ($result->num_rows > 0) {
 
 <?php
 
-$sql = "  SELECT system.serial_nr, client, configuration
+$sql = "  SELECT *
           FROM system
           ORDER BY datetime DESC
           LIMIT 5";
@@ -96,7 +97,11 @@ $table_row_formating = '
   <td><a href="view_system.php?system=%s" class="btn btn-default btn-sm">%s</a></td>
   <td>%s</td>
   <td>%s</td>
+  <td>%s</td>
   <td>Ready</td>
+</tr>
+<tr>
+  <td colspan=5>%s</td>
 </tr>
 ';
 
@@ -109,12 +114,19 @@ if ($result->num_rows > 0) {
       if (strlen ($client) >= 11) {
         $client = substr($client, 0, 9) . "..";
       }
+      // shorten too long place names
+      $place = $row["place"];
+      if (strlen ($client) >= 11) {
+        $client = substr($client, 0, 9) . "..";
+      }
 
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $row["serial_nr"],
           $client,
-          $row["configuration"]);
+          $place,
+          $row["configuration"],
+          $row["comment"]);
     }
 } else {
     echo "No messages";

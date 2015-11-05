@@ -288,7 +288,9 @@ main {
   font-weight: 300;
   background-color: #78909C;
 }*/
-.table td {
+
+
+.nowrap {
   white-space: nowrap;
 }
 
