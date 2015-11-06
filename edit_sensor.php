@@ -210,6 +210,7 @@ listUnusedSerialNr('hv_card', 'serial_nr NOT IN
 		</select>
 	  	</div>
 	  </div>
+	  
 	</div> <!-- end col -->
 
 	<div class="col-sm-3 col-sm-offset-1">

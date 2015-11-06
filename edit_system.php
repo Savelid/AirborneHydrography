@@ -115,7 +115,7 @@ if (!empty($_GET['system'])) {
   	  <div class="form-group">
 		<label for="config" class="col-xs-4 control-label">Configuration</label>
 	  <div class="col-xs-8">
-		<select class="form-control" name="config">
+		<select class="form-control" name="configuration">
 		  <option value="Chiroptera" <?= !empty($row['configuration']) && $row['configuration'] == 'Chiroptera' ? 'selected="selected"' : '' ; ?>>Chiroptera</option>
 		  <option value="DualDragon" <?= !empty($row['configuration']) && $row['configuration'] == 'DualDragon' ? 'selected="selected"' : '' ; ?>>DualDragon</option>
 		  <option value="HawkEyeIII" <?= !empty($row['configuration']) && $row['configuration'] == 'HawkEyeIII' ? 'selected="selected"' : '' ; ?>>HawkEyeIII</option>

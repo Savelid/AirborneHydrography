@@ -612,8 +612,8 @@ if ($result->num_rows > 0) {
 
         echo sprintf($table_row_formating,
           $row["serial_nr"],
-          $row["configuration"],
           $row["art_nr"],
+          $row["configuration"],
           $row["k_value"],
           $row["m_value"],
           $row["v_0"],

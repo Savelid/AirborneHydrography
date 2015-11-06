@@ -39,7 +39,7 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[art_nr]',
 					'$_POST[client]', 
 					'$_POST[place]',
-					'$_POST[config]', 
+					'$_POST[configuration]', 
 					'$_POST[sensor_unit]', 
 					'$_POST[control_system]', 
 					'$_POST[deep_system]', 
@@ -72,7 +72,7 @@ if ($_GET['type'] == 'update_system') {
 					SET
 						client = '$_POST[client]',
 						place = '$_POST[place]',
-						configuration = '$_POST[config]',
+						configuration = '$_POST[configuration]',
 						sensor_unit_sn = '$_POST[sensor_unit]', 
 						control_system_sn = '$_POST[control_system]', 
 						deep_system_sn = '$_POST[deep_system]', 
@@ -284,11 +284,11 @@ if ($_GET['type'] == 'update_deep_system') {
 // INSERT scu
 if($_GET['type'] == 'add_scu') {
 
-	$sql_insert = "INSERT INTO scu (serial_nr, configuration, digitizer1, digitizer2, sat, cpu, version, status)
+	$sql_insert = "INSERT INTO scu (serial_nr, configuration, digitaizer1, digitaizer2, sat, cpu, version, status)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[configuration]',
-					'$_POST[digitizer1]', 
-					'$_POST[digitizer2]', 
+					'$_POST[digitaizer1]', 
+					'$_POST[digitaizer2]', 
 					'$_POST[sat]', 
 					'$_POST[cpu]', 
 					'$_POST[version]', 
@@ -309,8 +309,8 @@ if ($_GET['type'] == 'update_scu') {
 	$sql_update = " UPDATE scu
 					SET
 					configuration = '$_POST[configuration]',
-					digitizer1 = '$_POST[digitizer1]', 
-					digitizer2 = '$_POST[digitizer2]', 
+					digitaizer1 = '$_POST[digitaizer1]', 
+					digitaizer2 = '$_POST[digitaizer2]', 
 					sat = '$_POST[sat]', 
 					cpu = '$_POST[cpu]', 
 					version = '$_POST[version]', 
