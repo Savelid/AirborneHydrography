@@ -58,7 +58,7 @@ if($_GET['type'] == 'add_system') {
 	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: systems.php?new_system");
+		header("Location: systems.php?alert=SystemAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -93,7 +93,7 @@ if ($_GET['type'] == 'update_system') {
 	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: systems.php?updated_system");
+		header("Location: systems.php?alert=SystemUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -123,7 +123,7 @@ if($_GET['type'] == 'add_sensor') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_sensor");
+		header("Location: parts.php?alert=SensorAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -155,7 +155,7 @@ if ($_GET['type'] == 'update_sensor') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_sensor");
+		header("Location: parts.php?alert=SensorUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -175,7 +175,7 @@ if($_GET['type'] == 'add_sensor_unit') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_sensor_unit");
+		header("Location: parts.php?alert=SensorUnitAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -196,7 +196,7 @@ if ($_GET['type'] == 'update_sensor_unit') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_sensor_unit");
+		header("Location: parts.php?alert=SensorUnitUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -215,7 +215,7 @@ if($_GET['type'] == 'add_control_system') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_control_system");
+		header("Location: parts.php?alert=ControlSystemAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -235,7 +235,7 @@ if ($_GET['type'] == 'update_control_system') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_control_system");
+		header("Location: parts.php?alert=ControlSystemUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -254,7 +254,7 @@ if($_GET['type'] == 'add_deep_system') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_deep_system");
+		header("Location: parts.php?alert=DeepSystemAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -274,7 +274,7 @@ if ($_GET['type'] == 'update_deep_system') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_deep_system");
+		header("Location: parts.php?alert=DeepSystemUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -296,7 +296,7 @@ if($_GET['type'] == 'add_scu') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_scu");
+		header("Location: parts.php?alert=SCUAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -319,7 +319,7 @@ if ($_GET['type'] == 'update_scu') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_scu");
+		header("Location: parts.php?SCUUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -346,7 +346,7 @@ if($_GET['type'] == 'add_hv_card') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_hv_card");
+		header("Location: parts.php?alert=HVCardAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -374,7 +374,7 @@ if ($_GET['type'] == 'update_hv_card') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_hv_card");
+		header("Location: parts.php?alert=HVCardUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -403,7 +403,7 @@ if($_GET['type'] == 'add_laser') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_laser");
+		header("Location: parts.php?alert=LaserAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -433,7 +433,7 @@ if ($_GET['type'] == 'update_laser') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_laser");
+		header("Location: parts.php?alert=LaserUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -451,7 +451,7 @@ if($_GET['type'] == 'add_leica_cam') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_leica_cam");
+		header("Location: parts.php?alert=LeicaCameraAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -470,7 +470,7 @@ if ($_GET['type'] == 'update_leica_cam') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_leica_cam");
+		header("Location: parts.php?alert=LeicaCameraUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -488,7 +488,7 @@ if($_GET['type'] == 'add_receiver_chip') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?added_receiver_chip");
+		header("Location: parts.php?alert=ReceiverChipAdded");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -507,7 +507,7 @@ if ($_GET['type'] == 'update_receiver_chip') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?updated_receiver_chip");
+		header("Location: parts.php?alert=ReceiverChipUpdated");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -521,7 +521,7 @@ if($_GET["type"] == 'add_message') {
 
 	if ($conn->query($sql_insert) === TRUE) {
     	echo "New record created successfully";
-    	header("Location: index.php?new_post");
+    	header("Location: index.php?alert=MessageAdded");
 		die();
 	} else {
     	echo "Error: " . $sql_insert . "<br>" . $conn->error;

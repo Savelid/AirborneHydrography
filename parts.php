@@ -53,6 +53,19 @@ return $return_string;
 
 <section class="top_content">
 
+<?php
+if(isset($_GET['alert'])) {
+  echo '
+    <div class="alert alert-success alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  ';
+  echo $_GET['alert'];
+  echo '
+    </div>
+  ';
+}
+?>
+
 <ul class="nav nav-pills">
   <li role="presentation">
 
