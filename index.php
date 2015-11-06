@@ -49,15 +49,15 @@ if ($result->num_rows > 0) {
 	</dl>
     <form action="post.php?type=add_message" method="post">
   	  <div class="form-group">
-    	<label for="input_message">Message</label>
-    	<textarea class="form-control" name="input_message" rows="3"></textarea>
+    	  <label for="input_message">Message</label>
+    	  <textarea class="form-control" name="input_message" rows="3"></textarea>
   	  </div>
   	  <div class="form-group">
-    	<label for="input_name">Name</label>
- 		<input type="text" class="form-control" name="input_name" placeholder="Name">
+    	  <label for="input_name">Name</label>
+ 		    <input type="text" class="form-control" name="input_name" placeholder="Name">
   	  </div>
-  	  <button type="submit" class="btn btn-default">Submit</button>
-	</form>
+  	  <button type="submit" class="btn btn-default">Submit</button><br><br>
+	  </form>
   </div><!--end column-->
 
   <div class="col-md-6">
