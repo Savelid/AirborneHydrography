@@ -101,7 +101,7 @@ $(function () {
   <div class="row">
     <div class="col-sm-12">
 
-  <!--###### Control Unit Table ######-->
+  <!--###### Table ######-->
       <div class="panel panel-default">
         <div class="panel-heading" id="headingComponents">
           <h4 class="panel-title">

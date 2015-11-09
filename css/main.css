@@ -1,4 +1,5 @@
 
+.sub_item { padding-left: 3em;}
 
 /*
 dl
@@ -82,7 +83,7 @@ dl {
 
 .my_header_logo {
   height: 72px;
-  margin-right: 1em;
+  margin: 0.3em;
   vertical-align: top;
   margin-top: 12px;
 }
@@ -490,15 +491,7 @@ footer a {
 }
 
 @media screen and (max-width: 610px) {
-/*  .header__logo {
-    height: 48px;
-    margin-right: 0.5em;
-  }
-  .header__title {
-    margin-left: 0;
-    font-size: 2em;
-    vertical-align: bottom; 
-  }*/
+
   .my_nav {
     z-index: 10;
     background-color: #fff;
@@ -529,5 +522,14 @@ footer a {
   .my_header_menu svg {
     width: 32px;
     fill: #E0E0E0;
+  }
+  .my_header_title {
+    font-weight: 150;
+    font-size: 2em;
+    margin: 0.5em 0.25em;
+    vertical-align: bottom; 
+  }
+  .my_header_logo {
+    height: 48px;
   }
 }
