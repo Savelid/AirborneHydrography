@@ -2,11 +2,6 @@
 $titel = 'Log';
 include 'res/header.inc.php'; 
 ?>
-<script>
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
-</script>
 
 <section class="all__systems">
   <table class="large__table table table-striped table-responsive">
@@ -25,7 +20,6 @@ $(function () {
 <?php
 
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -75,3 +69,9 @@ if ($result->num_rows > 0) {
 </footer>
 
 <?php include 'res/footer.inc.php'; ?>
+
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>

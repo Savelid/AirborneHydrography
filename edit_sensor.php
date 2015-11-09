@@ -7,7 +7,6 @@ if (!empty($_GET['serial_nr'])) {
 	$type = 'update_sensor';
 
 	// Create connection
-	include 'res/config.inc.php';
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
@@ -203,10 +202,14 @@ listUnusedSerialNr('hv_card', 'serial_nr NOT IN
 		<label for="config" class="col-xs-4 control-label">Status</label>
 	  <div class="col-xs-8">
 		<select class="form-control" name="status">
-		  <option value="New" <?= !empty($row['status']) && $row['status'] == 'New' ? 'selected="selected"' : '' ; ?>>New</option>
-		  <option value="Done" <?= !empty($row['status']) && $row['status'] == 'Done' ? 'selected="selected"' : '' ; ?>>Done</option>
-		  <option value="Service" <?= !empty($row['status']) && $row['status'] == 'Service' ? 'selected="selected"' : '' ; ?>>Service</option>
-		  <option value="PIA" <?= !empty($row['status']) && $row['status'] == 'PIA' ? 'selected="selected"' : '' ; ?>>PIA</option>
+<?php
+foreach($sensor_status_values as $i){
+	$selected = '';
+	if(!empty($row['status']) && $row['status'] == $i){$selected = 'selected';}
+	$s = '<option value="%s" %s>%s</option>';
+	echo sprintf($s, $i, $selected, $i);
+}
+?>
 		</select>
 	  	</div>
 	  </div>

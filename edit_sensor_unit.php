@@ -7,7 +7,6 @@ if (!empty($_GET['serial_nr'])) {
 	$type = 'update_sensor_unit';
 
 	// Create connection
-	include 'res/config.inc.php';
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
@@ -72,7 +71,7 @@ if (!empty($_GET['serial_nr'])) {
 	  	  
 <?php
 $sn = '';
-if(!empty($row['leica_cam'])){ $sn = $row['leica_cam'];}
+if(!empty($row['leica_cam_sn'])){ $sn = $row['leica_cam_sn'];}
 listUnusedSerialNr('leica_cam', '	serial_nr NOT IN (
 	            			SELECT sensor_unit.leica_cam_sn
 	            			FROM sensor_unit)'	, $sn);
@@ -96,7 +95,7 @@ listUnusedSerialNr('leica_cam', '	serial_nr NOT IN (
 	  	  
 <?php
 $sn = '';
-if(!empty($row['topo_sensor'])){ $sn = $row['topo_sensor'];}
+if(!empty($row['topo_sensor_sn'])){ $sn = $row['topo_sensor_sn'];}
 listUnusedSerialNr('sensor', '		sensor_type = "topo" AND
 							serial_nr NOT IN (
 	            			SELECT sensor_unit.topo_sensor_sn
@@ -114,7 +113,7 @@ listUnusedSerialNr('sensor', '		sensor_type = "topo" AND
 	  	  
 <?php
 $sn = '';
-if(!empty($row['topo_sensor'])){ $sn = $row['topo_sensor'];}
+if(!empty($row['topo_sensor_sn'])){ $sn = $row['topo_sensor_sn'];}
 listUnusedSerialNr('sensor', '		sensor_type = "shallow" AND
 							serial_nr NOT IN (
 	            			SELECT sensor_unit.shallow_sensor_sn

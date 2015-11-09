@@ -7,7 +7,6 @@ if (!empty($_GET['serial_nr'])) {
 	$type = 'update_deep_system';
 
 	// Create connection
-	include 'res/config.inc.php';
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
@@ -86,7 +85,7 @@ if (!empty($_GET['serial_nr'])) {
 	  	  
 <?php
 $sn = '';
-if(!empty($row['deep_sensor'])){ $sn = $row['deep_sensor'];}
+if(!empty($row['deep_sensor_sn'])){ $sn = $row['deep_sensor_sn'];}
 listUnusedSerialNr('sensor', '	serial_nr NOT IN (
 	            			SELECT deep_system.deep_sensor_sn
 	            			FROM deep_system)'	, $sn);

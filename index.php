@@ -9,8 +9,6 @@ include 'res/header.inc.php';
   <div class="col-md-6">
   	<dl>
 <?php
-include 'res/config.inc.php';
-
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection

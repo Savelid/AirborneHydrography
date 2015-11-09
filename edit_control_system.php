@@ -7,7 +7,6 @@ if (!empty($_GET['serial_nr'])) {
 	$type = 'update_control_system';
 
 	// Create connection
-	include 'res/config.inc.php';
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
@@ -86,7 +85,7 @@ if (!empty($_GET['serial_nr'])) {
 	  	  
 <?php
 $sn = '';
-if(!empty($row['scu'])){ $sn = $row['scu'];}
+if(!empty($row['scu_sn'])){ $sn = $row['scu_sn'];}
 listUnusedSerialNr('scu', '	serial_nr NOT IN (
 	            			SELECT control_system.scu_sn
 	            			FROM control_system)'	, $sn);

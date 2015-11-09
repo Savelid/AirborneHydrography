@@ -6,7 +6,6 @@ $type = 'add_system';
 if (!empty($_GET['system'])) {
 	$type = 'update_system';
 
-	include 'res/config.inc.php';
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
@@ -28,42 +27,7 @@ if (!empty($_GET['system'])) {
 }
 $path = 'post.php?type=' . $type;
 ?>
-<?php
-function listUnused($name, $serial_nr){
-	$name_sn = $name . '_sn';
-
-	if($serial_nr != NULL && $serial_nr != ''){
-		echo '<option value="' . $serial_nr . '">' . $serial_nr . '</option>';
-	}
-	else {
-		echo '<option></option>';
-	}
-	echo '<option>-----</option>';
-
-	// open db
-	include 'res/config.inc.php';
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	// Add all unused sensor units to the list
-	$sql_unused = "  SELECT serial_nr
-	          FROM %s
-	          WHERE serial_nr NOT IN (
-	            SELECT system.%s 
-	            FROM system) ";
-	$result_unused = $conn->query(sprintf($sql_unused, $name, $name_sn));
-		if (!$result_unused) {
-			die("Query failed!");
-		}
-	while($row_unused = $result_unused->fetch_assoc()) {
-		echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
-	}
-	$conn->close();
-}
-?>
+<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
   $(document).ready(function(){
     $('.combobox').combobox();
@@ -116,9 +80,14 @@ if (!empty($_GET['system'])) {
 		<label for="config" class="col-xs-4 control-label">Configuration</label>
 	  <div class="col-xs-8">
 		<select class="form-control" name="configuration">
-		  <option value="Chiroptera" <?= !empty($row['configuration']) && $row['configuration'] == 'Chiroptera' ? 'selected="selected"' : '' ; ?>>Chiroptera</option>
-		  <option value="DualDragon" <?= !empty($row['configuration']) && $row['configuration'] == 'DualDragon' ? 'selected="selected"' : '' ; ?>>DualDragon</option>
-		  <option value="HawkEyeIII" <?= !empty($row['configuration']) && $row['configuration'] == 'HawkEyeIII' ? 'selected="selected"' : '' ; ?>>HawkEyeIII</option>
+<?php
+foreach($configuration_values as $i){
+	$selected = '';
+	if(!empty($row['configuration']) && $row['configuration'] == $i){$selected = 'selected';}
+	$s = '<option value="%s" %s>%s</option>';
+	echo sprintf($s, $i, $selected, $i);
+}
+?>
 		</select>
 	  	</div>
 	  </div>
@@ -131,9 +100,10 @@ if (!empty($_GET['system'])) {
 <?php
 $sn = '';
 if(!empty($row['sensor_unit_sn'])){ $sn = $row['sensor_unit_sn'];}
-listUnused('sensor_unit', $sn);
+listUnusedSerialNr('sensor_unit', '	serial_nr NOT IN (
+	            			SELECT system.sensor_unit_sn
+	            			FROM system)'	, $sn);
 ?>
-
 		</select>
 	  	</div>
 	  </div>
@@ -146,9 +116,10 @@ listUnused('sensor_unit', $sn);
 <?php
 $sn = '';
 if(!empty($row['control_system_sn'])){ $sn = $row['control_system_sn'];}
-listUnused('control_system', $sn);
+listUnusedSerialNr('control_system', '	serial_nr NOT IN (
+	            			SELECT system.control_system_sn
+	            			FROM system)'	, $sn);
 ?>
-
 		</select>
 	  	</div>
 	  </div>
@@ -161,9 +132,10 @@ listUnused('control_system', $sn);
 <?php
 $sn = '';
 if(!empty($row['deep_system_sn'])){ $sn = $row['deep_system_sn'];}
-listUnused('deep_system', $sn);
+listUnusedSerialNr('deep_system', '	serial_nr NOT IN (
+	            			SELECT system.deep_system_sn
+	            			FROM system)'	, $sn);
 ?>
-
 		</select>
 	  	</div>
 	  </div>
@@ -172,9 +144,14 @@ listUnused('deep_system', $sn);
 		<label for="config" class="col-xs-4 control-label">Status</label>
 	  <div class="col-xs-8">
 		<select class="form-control" name="status">
-		  <option value="Done" <?= !empty($row['status']) && $row['status'] == 'Done' ? 'selected="selected"' : '' ; ?>>Done</option>
-		  <option value="Service" <?= !empty($row['status']) && $row['status'] == 'Service' ? 'selected="selected"' : '' ; ?>>Service</option>
-		  <option value="PIA" <?= !empty($row['status']) && $row['status'] == 'PIA' ? 'selected="selected"' : '' ; ?>>PIA</option>
+<?php
+foreach($system_status_values as $i){
+	$selected = '';
+	if(!empty($row['status']) && $row['status'] == $i){$selected = 'selected';}
+	$s = '<option value="%s" %s>%s</option>';
+	echo sprintf($s, $i, $selected, $i);
+}
+?>
 		</select>
 	  	</div>
 	  </div>

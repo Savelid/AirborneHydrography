@@ -7,7 +7,6 @@ function listWithUnused($type, $serial_nr) {
   $type_sn = $type . '_sn';
 
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -149,7 +148,6 @@ if(isset($_GET['alert'])) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -227,7 +225,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -302,7 +299,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -381,7 +377,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -481,7 +476,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -570,7 +564,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -671,7 +664,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -765,7 +757,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -837,7 +828,6 @@ if ($result->num_rows > 0) {
 
 <?php
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {

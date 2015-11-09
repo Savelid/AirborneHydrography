@@ -7,7 +7,6 @@ if (!empty($_GET['serial_nr'])) {
 	$type = 'update_scu';
 
 	// Create connection
-	include 'res/config.inc.php';
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
@@ -60,9 +59,14 @@ if (!empty($_GET['serial_nr'])) {
 		<label for="config" class="col-xs-4 control-label">Configuration</label>
 	  <div class="col-xs-8">
 		<select class="form-control" name="configuration">
-		  <option value="Chiroptera" <?= !empty($row['configuration']) && $row['configuration'] == 'Chiroptera' ? 'selected="selected"' : '' ; ?>>Chiroptera</option>
-		  <option value="DualDragon" <?= !empty($row['configuration']) && $row['configuration'] == 'DualDragon' ? 'selected="selected"' : '' ; ?>>DualDragon</option>
-		  <option value="HawkEyeIII" <?= !empty($row['configuration']) && $row['configuration'] == 'HawkEyeIII' ? 'selected="selected"' : '' ; ?>>HawkEyeIII</option>
+<?php
+foreach($configuration_values as $i){
+	$selected = '';
+	if(!empty($row['configuration']) && $row['configuration'] == $i){$selected = 'selected';}
+	$s = '<option value="%s" %s>%s</option>';
+	echo sprintf($s, $i, $selected, $i);
+}
+?>
 		</select>
 	  	</div>
 	  </div>
@@ -106,10 +110,14 @@ if (!empty($_GET['serial_nr'])) {
 		<label for="config" class="col-xs-4 control-label">Status</label>
 	  <div class="col-xs-8">
 		<select class="form-control" name="status">
-		  <option value="New" <?= !empty($row['status']) && $row['status'] == 'New' ? 'selected="selected"' : '' ; ?>>New</option>
-		  <option value="Done" <?= !empty($row['status']) && $row['status'] == 'Done' ? 'selected="selected"' : '' ; ?>>Done</option>
-		  <option value="Service" <?= !empty($row['status']) && $row['status'] == 'Service' ? 'selected="selected"' : '' ; ?>>Service</option>
-		  <option value="PIA" <?= !empty($row['status']) && $row['status'] == 'PIA' ? 'selected="selected"' : '' ; ?>>PIA</option>
+<?php
+foreach($scu_status_values as $i){
+	$selected = '';
+	if(!empty($row['status']) && $row['status'] == $i){$selected = 'selected';}
+	$s = '<option value="%s" %s>%s</option>';
+	echo sprintf($s, $i, $selected, $i);
+}
+?>
 		</select>
 	  	</div>
 	  </div>

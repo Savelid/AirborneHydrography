@@ -7,7 +7,6 @@ if (!empty($_GET['serial_nr'])) {
 	$type = 'update_receiver_chip';
 
 	// Create connection
-	include 'res/config.inc.php';
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
@@ -28,12 +27,6 @@ if (!empty($_GET['serial_nr'])) {
 }
 $path = 'post.php?type=' . $type; // path for form
 ?>
-<?php require_once('res/functions.inc.php'); ?>
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('.combobox').combobox();
-  });
-</script>
 <section class="content">
 	
 <form action= <?php echo $path ?> method="post" class="form-horizontal">

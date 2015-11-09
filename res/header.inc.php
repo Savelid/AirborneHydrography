@@ -1,4 +1,6 @@
-
+<?php
+  include 'res/config.inc.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

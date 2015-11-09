@@ -1,9 +1,9 @@
 <?php
+include 'res/config.inc.php';
 // Check that type is deffined
 if(isset($_GET['type'])){
 
 // Create connection
-include 'res/config.inc.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
