@@ -22,17 +22,26 @@ if (!empty($_GET['serial_nr'])) {
   }
   $parent = $result->fetch_array(MYSQLI_ASSOC);
 
-
   $sql = " SELECT *
            FROM sensor 
-           LEFT JOIN laser ON sensor.laser_sn = laser.serial_nr
-           WHERE sensor.serial_nr = $_GET[serial_nr]
+           WHERE serial_nr = '$_GET[serial_nr]'
            LIMIT 1";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query failed!" . $sql . "<br><br>" . $conn->error);
   }
   $sensor = $result->fetch_array(MYSQLI_ASSOC);
+
+  if(empty($sensor['laser_sn']) || $sensor['laser_sn'] == ''){$sensor['laser_sn'] = '0000';}
+  $sql = " SELECT *
+           FROM laser
+           WHERE serial_nr = $sensor[laser_sn]
+           LIMIT 1";
+  $result = $conn->query($sql);
+  if (!$result) {
+    die("Query failed!" . $sql . "<br><br>" . $conn->error);
+  }
+  $laser = $result->fetch_array(MYSQLI_ASSOC);
 
   if(empty($sensor['hv_card_sn']) || $sensor['hv_card_sn'] == ''){$sensor['hv_card_sn'] = '0000';}
   $sql = " SELECT *
@@ -81,9 +90,13 @@ if (!empty($_GET['serial_nr'])) {
   $conn->close();
 } 
 else {  
-  header("Location: parts.php?NoSerialNumber");
+  header("Location: parts.php?alert=NoSerialNumber");
   die();
 }
+if(!isset($sensor['serial_nr'])){
+  header("Location: parts.php?alert=NoSerialNumber");
+  die();
+} 
 ?>
 <script>
 $(function () {
@@ -217,20 +230,20 @@ else if($sensor['sensor_type'] == 'deep') {
                   <td>Laser:</td>
 
 <?php
-$infoText = "0: " . $sensor['v_0'] . "<br>";
-$infoText .= "5: " . $sensor['v_5'] . "<br>";
-$infoText .= "10: " . $sensor['v_10'] . "<br>";
-$infoText .= "15: " . $sensor['v_15'] . "<br>";
-$infoText .= "20: " . $sensor['v_20'] . "<br>";
-$infoText .= "25: " . $sensor['v_25'] . "<br>";
-$infoText .= "30: " . $sensor['v_30'] . "<br>";
-$infoText .= "40: " . $sensor['v_40'] . "<br>";
-$infoText .= "50: " . $sensor['v_50'] . "<br>";
-$infoText .= "60: " . $sensor['v_60'] . "<br>";
-$infoText .= "70: " . $sensor['v_70'] . "<br>";
-$infoText .= "80: " . $sensor['v_80'] . "<br>";
-$infoText .= "90: " . $sensor['v_90'] . "<br>";
-$infoText .= "100: " . $sensor['v_100'] . "<br>";
+$infoText = "0: " . $laser['v_0'] . "<br>";
+$infoText .= "5: " . $laser['v_5'] . "<br>";
+$infoText .= "10: " . $laser['v_10'] . "<br>";
+$infoText .= "15: " . $laser['v_15'] . "<br>";
+$infoText .= "20: " . $laser['v_20'] . "<br>";
+$infoText .= "25: " . $laser['v_25'] . "<br>";
+$infoText .= "30: " . $laser['v_30'] . "<br>";
+$infoText .= "40: " . $laser['v_40'] . "<br>";
+$infoText .= "50: " . $laser['v_50'] . "<br>";
+$infoText .= "60: " . $laser['v_60'] . "<br>";
+$infoText .= "70: " . $laser['v_70'] . "<br>";
+$infoText .= "80: " . $laser['v_80'] . "<br>";
+$infoText .= "90: " . $laser['v_90'] . "<br>";
+$infoText .= "100: " . $laser['v_100'] . "<br>";
 $linkAdr = "edit_laser.php?serial_nr=" . $sensor['laser_sn'];
 ?>
                   <td>
