@@ -51,7 +51,7 @@ if (!empty($_GET['serial_nr'])) {
 	echo '<input type="hidden" name="serial_nr" value="' . $_GET['serial_nr'] . '" />'
 	. '<input type="text" class="form-control" placeholder="' . $_GET['serial_nr'] . '" disabled />';
 }else {
-	echo '<input type="text" class="form-control" name="serial_nr" />';
+	echo '<input type="text" class="form-control" name="serial_nr" required />';
 }
 ?>
 	  	</div>

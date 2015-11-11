@@ -545,19 +545,10 @@ if ($result->num_rows > 0) {
           <table class="table table-striped table-responsive my_table">
         <thead>
           <tr>
-            <th colspan=2>Serial nr.</th>
-            <th colspan=2>Art. nr.</th>
-            <th colspan=2>Config</th>
+            <th>Serial nr.</th>
+            <th>Art. nr.</th>
             <th>K</th>
             <th>M</th>
-            <th>0</th>
-            <th>500</th>
-            <th>1000</th>
-            <th>1500</th>
-            <th>2000</th>
-            <th>2500</th>
-            <th>3000</th>
-            <th>3250</th>
           </tr>
         </thead>
         <tbody>
@@ -583,19 +574,10 @@ $conn->close(); // close connection
 
 $table_row_formating = '
 <tr>
-  <td colspan=2><a href="edit_hv_card.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td colspan=2>%2$s</td>
-  <td colspan=2>%3$s</td>
+  <td><a href="edit_hv_card.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
+  <td>%2$s</td>
+  <td>%3$s</td>
   <td>%4$s</td>
-  <td>%5$s</td>
-  <td>%6$s</td>
-  <td>%7$s</td>
-  <td>%8$s</td>
-  <td>%9$s</td>
-  <td>%10$s</td>
-  <td>%11$s</td>
-  <td>%12$s</td>
-  <td>%13$s</td>
 </tr>
 ';
 
@@ -606,17 +588,8 @@ if ($result->num_rows > 0) {
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $row["art_nr"],
-          $row["configuration"],
           $row["k_value"],
-          $row["m_value"],
-          $row["v_0"],
-          $row["v_500"],
-          $row["v_1000"],
-          $row["v_1500"],
-          $row["v_2000"],
-          $row["v_2500"],
-          $row["v_3000"],
-          $row["v_3250"]);
+          $row["m_value"]);
     }
 } else {
     echo "No rows";

@@ -51,30 +51,14 @@ if (!empty($_GET['serial_nr'])) {
 	echo '<input type="hidden" name="serial_nr" value="' . $_GET['serial_nr'] . '" />'
 	. '<input type="text" class="form-control" placeholder="' . $_GET['serial_nr'] . '" disabled />';
 }else {
-	echo '<input type="text" class="form-control" name="serial_nr" />';
+	echo '<input type="text" class="form-control" name="serial_nr" required/>';
 }
 ?>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="config" class="col-xs-4 control-label">Configuration</label>
-	  <div class="col-xs-8">
-		<select class="form-control" name="configuration">
-<?php
-foreach($configuration_values as $i){
-	$selected = '';
-	if(!empty($row['configuration']) && $row['configuration'] == $i){$selected = 'selected';}
-	$s = '<option value="%s" %s>%s</option>';
-	echo sprintf($s, $i, $selected, $i);
-}
-?>
-		</select>
 	  	</div>
 	  </div>
 
   	  <div class="form-group">
-		<label for="art_nr" class="col-xs-4 control-label">Art. Nr.</label>
+		<label for="art_nr" class="col-xs-4 control-label">Article Nr.</label>
 	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="art_nr" <?= !empty($row['art_nr']) ?  'value="' . $row['art_nr'] . '"' : '' ; ?>>
 	  	</div>
@@ -91,62 +75,6 @@ foreach($configuration_values as $i){
 		<label for="m_value" class="col-xs-4 control-label">M-value</label>
 	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="m_value" <?= !empty($row['m_value']) ?  'value="' . $row['m_value'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_0" class="col-xs-4 control-label">Value 0</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_0" <?= !empty($row['v_0']) ?  'value="' . $row['v_0'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_500" class="col-xs-4 control-label">Value 500</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_500" <?= !empty($row['v_500']) ?  'value="' . $row['v_500'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_1000" class="col-xs-4 control-label">Value 1000</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_1000" <?= !empty($row['v_1000']) ?  'value="' . $row['v_1000'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_1500" class="col-xs-4 control-label">Value 1500</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_1500" <?= !empty($row['v_1500']) ?  'value="' . $row['v_1500'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_2000" class="col-xs-4 control-label">Value 2000</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_2000" <?= !empty($row['v_2000']) ?  'value="' . $row['v_2000'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_2500" class="col-xs-4 control-label">Value 2500</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_2500" <?= !empty($row['v_2500']) ?  'value="' . $row['v_2500'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_3000" class="col-xs-4 control-label">Value 3000</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_3000" <?= !empty($row['v_3000']) ?  'value="' . $row['v_3000'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="v_3250" class="col-xs-4 control-label">Value 3250</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="v_3250" <?= !empty($row['v_3250']) ?  'value="' . $row['v_3250'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 

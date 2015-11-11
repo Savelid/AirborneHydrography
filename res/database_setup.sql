@@ -163,18 +163,9 @@ CREATE TABLE hv_card (
 	serial_nr VARCHAR(10) NOT NULL,
 	datetime TIMESTAMP,
 
-	configuration VARCHAR(20),
 	art_nr VARCHAR(20),
 	k_value FLOAT,
 	m_value FLOAT,
-	v_0 FLOAT,
-	v_500 FLOAT,
-	v_1000 FLOAT,
-	v_1500 FLOAT,
-	v_2000 FLOAT,
-	v_2500 FLOAT,
-	v_3000 FLOAT,
-	v_3250 FLOAT,
 
 	PRIMARY KEY (id)
 );

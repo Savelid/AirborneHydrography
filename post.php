@@ -334,15 +334,7 @@ if($_GET['type'] == 'add_hv_card') {
 					'$_POST[configuration]',
 					'$_POST[art_nr]', 
 					'$_POST[k_value]', 
-					'$_POST[m_value]', 
-					'$_POST[v_0]', 
-					'$_POST[v_500]',
-					'$_POST[v_1000]',
-					'$_POST[v_1500]',
-					'$_POST[v_2000]',
-					'$_POST[v_2500]',
-					'$_POST[v_3000]',
-					'$_POST[v_3250]')";
+					'$_POST[m_value]')";
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
@@ -361,15 +353,7 @@ if ($_GET['type'] == 'update_hv_card') {
 					configuration = '$_POST[configuration]',
 					art_nr = '$_POST[art_nr]', 
 					k_value = '$_POST[k_value]', 
-					m_value = '$_POST[m_value]', 
-					v_0 = '$_POST[v_0]', 
-					v_500 = '$_POST[v_500]',
-					v_1000 = '$_POST[v_1000]',
-					v_1500 = '$_POST[v_1500]',
-					v_2000 = '$_POST[v_2000]',
-					v_2500 = '$_POST[v_2500]',
-					v_3000 = '$_POST[v_3000]',
-					v_3250 = '$_POST[v_3250]'
+					m_value = '$_POST[m_value]'
 					WHERE serial_nr = $_POST[serial_nr]";
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
