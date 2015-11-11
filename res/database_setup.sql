@@ -198,7 +198,7 @@ CREATE TABLE leica_cam (
 CREATE TABLE receiver_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	art_nr VARCHAR(30),
@@ -210,11 +210,11 @@ CREATE TABLE receiver_unit (
 CREATE TABLE receiver_chip (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
-	breakdown_voltage VARCHAR(30),
-	operating_voltage VARCHAR(30),
+	breakdown_voltage INTEGER,
+	operating_voltage INTEGER,
 
 	PRIMARY KEY (id)
 );

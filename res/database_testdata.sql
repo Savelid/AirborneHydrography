@@ -70,7 +70,7 @@ DELETE FROM hv_card;
 INSERT INTO hv_card
 	VALUES('0','4010','2013-07-25 08:15:07','1056 065-400 A','1.41','21.2');
 INSERT INTO hv_card
-	VALUES('1','4011','2013-07-25 08:25:07','1056 065-401 A','','');
+	VALUES('1','4011','2013-07-25 08:25:07','1056 065-401 A','1.41','1.41');
 INSERT INTO hv_card
 	VALUES('2','4017','2013-07-25 07:25:07','1056 065-407 A','1.10','21.1');
 
@@ -86,11 +86,11 @@ INSERT INTO laser
 
 DELETE FROM leica_cam;
 INSERT INTO leica_cam
-	VALUES ('0','123-4567','2013-07-11 01:15:45','HawkEyeIII','32','24V');
+	VALUES ('0','123-4567','2013-07-11 01:15:45','HawkEyeIII','32','24');
 INSERT INTO leica_cam
-	VALUES ('1','123-4568','2013-07-11 01:15:11','DualDragon','32','24V');
+	VALUES ('1','123-4568','2013-07-11 01:15:11','DualDragon','32','24');
 INSERT INTO leica_cam
-	VALUES ('2','123-4573','2013-07-11 01:24:07','HawkEyeIII','32','24V');
+	VALUES ('2','123-4573','2013-07-11 01:24:07','HawkEyeIII','32','24');
 
 DELETE FROM receiver_unit;
 INSERT INTO receiver_unit
@@ -102,8 +102,8 @@ INSERT INTO receiver_unit
 
 DELETE FROM receiver_chip;
 INSERT INTO receiver_chip
-	VALUES ('0','123-5510','2013-07-11 01:33:15','28V','24V');
+	VALUES ('0','123-5510','2013-07-11 01:33:15','28','24');
 INSERT INTO receiver_chip
-	VALUES ('1','123-5511','2013-07-11 01:43:15','28V','24V');
+	VALUES ('1','123-5511','2013-07-11 01:43:15','28','24');
 INSERT INTO receiver_chip
-	VALUES ('2','123-5517','2013-07-11 01:42:15','32V','28V');
+	VALUES ('2','123-5517','2013-07-11 01:42:15','32','28');

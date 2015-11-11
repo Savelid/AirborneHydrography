@@ -39,7 +39,7 @@ if(isset($_GET['alert'])) {
       <li><a href="edit_scu.php">SCU</a></li>
       <li><a href="edit_laser.php">Laser</a></li>
       <li><a href="edit_hv_card.php">HV card</a></li>
-      <li><a href="edit_receiver_chip.php">Receiver chip</a></li>
+      <li><a href="edit_receiver.php">Receiver</a></li>
       <li><a href="edit_leica_cam.php">Leica camera (Här?)</a></li>
     </ul>
   </div>
@@ -60,7 +60,7 @@ if(isset($_GET['alert'])) {
       <li><a href="#headingSCU">SCU</a></li>
       <li><a href="#headingLaser">Laser</a></li>
       <li><a href="#headingHVCard">HV card</a></li>
-      <li><a href="#headingReceiverChip">Receiver chip</a></li>
+      <li><a href="#headingReceiver">Receiver</a></li>
       <li><a href="#headingLeicaCam">Leica camera</a></li>
     </ul>
   </div>
@@ -682,14 +682,14 @@ if ($result->num_rows > 0) {
 
 <!--###### Receiver Chip Table ######-->
 <div class="panel panel-default">
-  <div class="panel-heading" role="tab" id="headingReceiverChip">
+  <div class="panel-heading" role="tab" id="headingReceiver">
     <h4 class="panel-title">
-      <a role="button" data-toggle="collapse" href="#collapseReceiverChip" aria-expanded="true" aria-controls="collapseReceiverChip">
+      <a role="button" data-toggle="collapse" href="#collapseReceiver" aria-expanded="true" aria-controls="collapseReceiver">
         Receiver Chip
       </a>
     </h4>
   </div>
-  <div id="collapseReceiverChip" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingReceiverChip">
+  <div id="collapseReceiver" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingReceiver">
     <div class="panel-body panel_table">
           <table class="table table-striped table-responsive my_table">
         <thead>
