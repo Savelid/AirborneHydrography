@@ -24,4 +24,6 @@ DROP TABLE IF EXISTS laser;
 
 DROP TABLE IF EXISTS leica_cam;
 
+DROP TABLE IF EXISTS receiver_unit;
+
 DROP TABLE IF EXISTS receiver_chip;

@@ -187,6 +187,7 @@ else {
                 <a href="view_sensor.php?serial_nr=<?php echo $sensor_unit['shallow_sensor_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View shallow sensor </a> 
               </div>
             </div>
+            <li class="list-group-item">Comment: <?php echo $sensor_unit['comment'];?></li>
           </ul>
           <div class="panel-footer"><a href="edit_sensor_unit.php?serial_nr=<?php echo $sensor_unit['serial_nr'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit sensor unit </a></div>
         </div>
@@ -214,6 +215,7 @@ else {
                 <a href="view_scu.php?serial_nr=<?php echo $control_system['scu_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View SCU </a> 
               </div>
             </div>
+            <li class="list-group-item">Comment: <?php echo $control_system['comment'];?></li>
           </ul>
           <div class="panel-footer"><a href="edit_control_system.php?serial_nr=<?php echo $control_system['serial_nr'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit control system </a></div>
         </div>
@@ -241,6 +243,7 @@ else {
                 <a href="view_sensor.php?serial_nr=<?php echo $deep_system['deep_sensor_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View deep sensor </a> 
               </div>
             </div>
+            <li class="list-group-item">Comment: <?php echo $deep_system['comment'];?></li>
           </ul>
           <div class="panel-footer"><a href="edit_deep_system.php?serial_nr=<?php echo $deep_system['serial_nr'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit deep system </a> </div>
         </div>
