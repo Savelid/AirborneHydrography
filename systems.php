@@ -2,6 +2,11 @@
 $titel = 'Systems';
 include 'res/header.inc.php'; 
 ?>
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
 
 
 <section class="content">
@@ -12,15 +17,15 @@ include 'res/header.inc.php';
   <table class="large__table table table-striped table-responsive">
     <thead>
       <tr>
-        <th colspan=2>Serial nr.</th>
-        <th colspan=3>Client</th>
-        <th colspan=3>Config.</th>
-        <th colspan=2>Topo</th>
-        <th colspan=2>Shallow</th>
-        <th colspan=2>Deep</th>
-        <th colspan=2>SCU</th>
-        <th colspan=2>Status</th>
-        <th colspan=7>Comments</th>
+        <th>Serial nr.</th>
+        <th>Client</th>
+        <th>Config.</th>
+        <th>Topo</th>
+        <th>Shallow</th>
+        <th>Deep</th>
+        <th>SCU</th>
+        <th>Status</th>
+        <th>Comments</th>
       </tr>
     </thead>
     <tbody>
@@ -52,7 +57,7 @@ $conn->close();
 // %s will be replaced with variables later
 
 $serial_nr_formating = '
-  <td colspan=2>
+  <td>
     <div class="btn-group">
       <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         %1$s <span class="caret"></span>
@@ -67,50 +72,50 @@ $serial_nr_formating = '
   </td>
 ';
 $client_formating = '
-  <td colspan=3>
+  <td>
     %2$s
   </td>
 ';
 $config_formating = '
-  <td colspan=3>
+  <td>
     %3$s
   </td>
 ';
 
 $topo_shallow_deep_formating = '
- <td colspan=2>
+ <td>
       <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">
         %4$s
       </a>
   </td>
 
-  <td colspan=2>
+  <td>
       <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">
         %5$s
       </a>
   </td>
 
-  <td colspan=2>
+  <td>
       <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">
         %6$s
       </a>
   </td>
 ';
 $scu_formating = '
-  <td colspan=2>
+  <td>
       <a href="#" class="btn btn-default btn-sm">
         %7$s
       </a>
   </td>
 ';
 $system_formating = '
-  <td colspan=2>
+  <td>
     %8$s
   </td>
 ';
 $comment_formating = '
-  <td colspan=7>
-    %9$s
+  <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%9$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
   </td>
 ';
 
@@ -148,7 +153,7 @@ if ($result->num_rows > 0) {
           $row["deep_sensor_sn"],
           $row["scu_sn"],
           $row["status"],
-          $comment);
+          $row["comment"]);
     }
 } else {
     echo "No messages";

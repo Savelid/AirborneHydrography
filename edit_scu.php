@@ -99,10 +99,10 @@ foreach($configuration_values as $i){
 	  	</div>
 	  </div>
 
-	  <div class="form-group">
-		<label for="version" class="col-xs-4 control-label">Version</label>
+  	  <div class="form-group">
+		<label for="comment" class="col-xs-4 control-label">Comment</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="version" <?= !empty($row['version']) ?  'value="' . $row['version'] . '"' : '' ; ?>>
+  		<textarea class="form-control" name="comment" rows="3"><?= !empty($row['comment']) ? $row['comment'] : ''; ?></textarea>
 	  	</div>
 	  </div>
 

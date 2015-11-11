@@ -95,6 +95,13 @@ listUnusedSerialNr('sensor', '	serial_nr NOT IN (
 	  	</div>
 	  </div>
 
+  	  <div class="form-group">
+		<label for="comment" class="col-xs-4 control-label">Comment</label>
+	  <div class="col-xs-8">
+  		<textarea class="form-control" name="comment" rows="3"><?= !empty($row['comment']) ? $row['comment'] : ''; ?></textarea>
+	  	</div>
+	  </div>
+
 	</div> <!-- end col -->
 	<div class="col-sm-3 col-sm-offset-1">
 

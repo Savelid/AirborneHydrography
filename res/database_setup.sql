@@ -36,11 +36,8 @@ CREATE TABLE system (
 	status VARCHAR(50),
 	comment TEXT,
 	sensor_unit_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	control_system_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	deep_system_sn VARCHAR(10),
-	-- foreign key & Relatinship
 
 	PRIMARY KEY (id)
 );
@@ -71,11 +68,9 @@ CREATE TABLE sensor_unit (
 	imu VARCHAR(10),
 	leica_cam_sn VARCHAR(10),
 	leica_lens VARCHAR(10),
-	-- foreign key & Relatinship
 	topo_sensor_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	shallow_sensor_sn VARCHAR(10),
-	-- foreign key & Relatinship
+	comment TEXT,
 
 	PRIMARY KEY (id)
 );
@@ -90,7 +85,7 @@ CREATE TABLE control_system (
 	cc32 VARCHAR(10),
 	pdu VARCHAR(10),
 	scu_sn VARCHAR(10),
-	-- foreign key & Relatinship
+	comment TEXT,
 
 	PRIMARY KEY (id)
 );
@@ -105,7 +100,7 @@ CREATE TABLE deep_system (
 	imu VARCHAR(10),
 	pro_pack VARCHAR(10),
 	deep_sensor_sn VARCHAR(10),
-	-- foreign key & Relatinship
+	comment TEXT,
 
 	PRIMARY KEY (id)
 );
@@ -121,7 +116,7 @@ CREATE TABLE scu (
 	digitaizer2 VARCHAR(10),
 	sat VARCHAR(10),
 	cpu VARCHAR(10),
-	version VARCHAR(20),
+	comment TEXT,
 	status TEXT,
 
 	PRIMARY KEY (id)
@@ -137,17 +132,12 @@ CREATE TABLE sensor (
 	cat VARCHAR(10),
 	fpga_id VARCHAR(10),
 	laser_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	hv_card_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	receiver_unit VARCHAR(10),
 	receiver_chip_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	hv_card_2_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	receiver_unit_2 VARCHAR(10),
 	receiver_chip_2_sn VARCHAR(10),
-	-- foreign key & Relatinship
 	dps_value_input_offset_t0 INTEGER,
 	dps_value_input_offset_rec INTEGER,
 	dps_value_pulse_width_t0 INTEGER,

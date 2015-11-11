@@ -2,53 +2,11 @@
 $titel = 'Parts';
 include 'res/header.inc.php'; 
 ?>
-<?php
-function listWithUnused($type, $serial_nr) {
-  $type_sn = $type . '_sn';
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-  // Add all unused sensor units to the list
-  $sql_ = "  SELECT serial_nr
-            FROM %s
-            WHERE serial_nr NOT IN (
-              SELECT system.%s
-              FROM system) ";
-  $result_ = $conn->query(sprintf($sql_, $type, $type_sn));
-  $list_string = '';
-  while($row_ = $result_->fetch_assoc()) {
-    $list_string = $list_string . '<li><a href="edit_system.php?system=%1$s&sensor_unit_sn=' . $row_["serial_nr"] . '">' . $row_["serial_nr"] . '</a></li>';
-  }
-$conn->close(); // close connection
-  if($list_string != ''){
-    $list_string = $list_string . '<li role="separator" class="divider"></li>';
-  }
-$return_string = '
-<td colspan=2>
-  <div class="btn-group">
-    <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      ' .$serial_nr. ' <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <li><a href="parts.php">View</a></li>
-      <li role="separator" class="divider"></li>
-      '
-      . $list_string .
-      '
-      <li><a href="edit_' .$type. '.php?serial_nr=' .$serial_nr. '">Edit</a></li>
-      <li><a href="#">Remove</a></li>
-    </ul>
-  </div>
-</td>
-';
-return $return_string;
-}
-?>
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
 
 <section class="top_content">
 
@@ -173,6 +131,9 @@ $table_row_formating = '
   <td>%4$s</td>
   <td><a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a></td>
   <td><a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a></td>
+  <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%7$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+  </td>
 </tr>
 ';
 
@@ -186,7 +147,8 @@ if ($result->num_rows > 0) {
           $row["leica_cam_sn"],
           $row["leica_lens"],
           $row["topo_sensor_sn"],
-          $row["shallow_sensor_sn"]);
+          $row["shallow_sensor_sn"],
+          $row["comment"]);
     }
 } else {
     echo "No rows";
@@ -219,6 +181,7 @@ if ($result->num_rows > 0) {
             <th>CC32</th>
             <th>PDU</th>
             <th>SCU</th>
+            <th>Comment</th>
           </tr>
         </thead>
         <tbody>
@@ -249,6 +212,9 @@ $table_row_formating = '
   <td>%3$s</td>
   <td>%4$s</td>
   <td><a href="view_scu.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a></td>
+  <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%6$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+  </td>
 </tr>
 ';
 
@@ -261,7 +227,8 @@ if ($result->num_rows > 0) {
           $row["battery"],
           $row["cc32"],
           $row["pdu"],
-          $row["scu_sn"]);
+          $row["scu_sn"],
+          $row["comment"]);
     }
 } else {
     echo "No rows";
@@ -293,6 +260,7 @@ if ($result->num_rows > 0) {
             <th>IMU</th>
             <th>Pro pack</th>
             <th>Deep sensor</th>
+            <th>Comment</th>
           </tr>
         </thead>
         <tbody>
@@ -323,6 +291,9 @@ $table_row_formating = '
   <td>%3$s</td>
   <td>%4$s</td>
   <td><a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a></td>
+  <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%6$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+  </td>
 </tr>
 ';
 
@@ -335,7 +306,8 @@ if ($result->num_rows > 0) {
           $row["cooling_system"],
           $row["imu"],
           $row["pro_pack"],
-          $row["deep_sensor_sn"]);
+          $row["deep_sensor_sn"],
+          $row["comment"]);
     }
 } else {
     echo "No rows";
@@ -468,7 +440,7 @@ if ($result->num_rows > 0) {
             <th>Digitaizer 2</th>
             <th>SAT</th>
             <th>CPU</th>
-            <th>Version</th>
+            <th>Comment</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -501,7 +473,9 @@ $table_row_formating = '
   <td>%4$s</td>
   <td>%5$s</td>
   <td>%6$s</td>
-  <td>%7$s</td>
+  <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%7$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+  </td>
   <td>%8$s</td>
 </tr>
 ';
@@ -517,7 +491,7 @@ if ($result->num_rows > 0) {
           $row["digitaizer2"],
           $row["sat"],
           $row["cpu"],
-          $row["version"],
+          $row["comment"],
           $row["status"]);
     }
 } else {
