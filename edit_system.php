@@ -13,16 +13,34 @@ if (!empty($_GET['system'])) {
     	die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql = "SELECT *
+	$sql = "SELECT *, system.serial_nr AS serial_nr, pav.firmware AS pav_firmware
 			FROM system
 			LEFT JOIN system_status ON system_status.serial_nr = system.serial_nr
-            WHERE system.serial_nr = $_GET[system]";
+			LEFT JOIN pav ON pav_sn = pav.serial_nr
+            WHERE system.serial_nr = $_GET[system];";
 	$result = $conn->query($sql);
 	if (!$result) {
-		die("Query failed!");
+		die("Query 1 failed! " . $sql . "<br>" . $conn->error);
 	}
-
     $row = $result->fetch_array(MYSQLI_ASSOC);
+
+    $sql = "SELECT *
+			FROM oc60
+            WHERE serial_nr = '$row[oc60_1_sn]'";
+	$result = $conn->query($sql);
+	if (!$result) {
+		die("Query 2 failed! " . $sql . "<br>" . $conn->error);
+	}
+    $oc60_1 = $result->fetch_array(MYSQLI_ASSOC);
+    $sql = "SELECT *
+			FROM oc60
+            WHERE serial_nr = '$row[oc60_2_sn]'";
+	$result = $conn->query($sql);
+	if (!$result) {
+		die("Query 3 failed! " . $sql . "<br>" . $conn->error);
+	}
+    $oc60_2 = $result->fetch_array(MYSQLI_ASSOC);
+
     $conn->close();
 }
 $path = 'post.php?type=' . $type;
@@ -143,42 +161,42 @@ listUnusedSerialNr('deep_system', '	serial_nr NOT IN (
 	  <div class="form-group">
 		<label for="oc60_1" class="col-xs-4 control-label">OC60 1</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="oc60_1" <?= !empty($row['oc60_1']) ?  'value="' . $row['oc60_1'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="oc60_1" <?= !empty($oc60_1['serial_nr']) ?  'value="' . $oc60_1['serial_nr'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
 		<label for="firmware_oc60_1" class="col-xs-4 control-label">OC60 1 firmware</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="firmware_oc60_1" <?= !empty($row['firmware_oc60_1']) ?  'value="' . $row['firmware_oc60_1'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="firmware_oc60_1" <?= !empty($oc60_1['firmware']) ?  'value="' . $oc60_1['firmware'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
 		<label for="oc60_2" class="col-xs-4 control-label">OC60 2</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="oc60_2" <?= !empty($row['oc60_2']) ?  'value="' . $row['oc60_2'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="oc60_2" <?= !empty($oc60_2['serial_nr']) ?  'value="' . $oc60_2['serial_nr'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
 		<label for="firmware_oc60_2" class="col-xs-4 control-label">OC60 2 firmware</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="firmware_oc60_2" <?= !empty($row['firmware_oc60_2']) ?  'value="' . $row['firmware_oc60_2'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="firmware_oc60_2" <?= !empty($oc60_2['firmware']) ?  'value="' . $oc60_2['firmware'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
 		<label for="pav" class="col-xs-4 control-label">PAV</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="pav" <?= !empty($row['pav']) ?  'value="' . $row['pav'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="pav" <?= !empty($row['pav_sn']) ?  'value="' . $row['pav_sn'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
 		<label for="firmware_pav" class="col-xs-4 control-label">PAV firmware</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="firmware_pav" <?= !empty($row['firmware_pav']) ?  'value="' . $row['firmware_pav'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="firmware_pav" <?= !empty($row['pav_firmware']) ?  'value="' . $row['pav_firmware'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 

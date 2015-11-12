@@ -239,7 +239,7 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_sensor_unit.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
   <td>%3$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
@@ -315,8 +315,9 @@ if ($result->num_rows > 0) {
         <tbody>
 
 <?php
-$sql = "  SELECT *
+$sql = "  SELECT *, control_system.serial_nr AS serial_nr
           FROM control_system
+          LEFT JOIN cc32 ON cc32_sn = cc32.serial_nr
           ORDER BY datetime DESC";
 $result = $conn->query($sql);
 if (!$result) {
@@ -329,9 +330,11 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_control_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
   <td>%3$s</td>
-  <td>%4$s</td>
+  <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %8$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
+  </td>
   <td>%5$s</td>
   <td>%6$s</td>
   <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%7$s">
@@ -361,10 +364,11 @@ if ($result->num_rows > 0) {
           $row["serial_nr"],
           $parent["serial_nr"],
           $row["battery"],
-          $row["cc32"],
+          $row["cc32_sn"],
           $row["pdu"],
           $row["scu_sn"],
-          $row["comment"]);
+          $row["comment"],
+          $row["firmware"]);
     }
 } else {
     echo "No rows";
@@ -416,7 +420,7 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_deep_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
   <td>%3$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
@@ -841,7 +845,7 @@ if ($result->num_rows > 0) {
   </div>
   <div id="collapseLeicaCam" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLeicaCam">
 
-      <table class="table table-striped table-responsive table_500">
+      <table class="table table-striped table-responsive table_600">
         <thead>
           <tr>
             <th>Serial nr.</th>
@@ -849,6 +853,7 @@ if ($result->num_rows > 0) {
             <th>Config</th>
             <th>Breakdown</th>
             <th>Operating V</th>
+            <th>Firmware</th>
           </tr>
         </thead>
         <tbody>
@@ -872,6 +877,7 @@ $table_row_formating = '
   <td>%3$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
+  <td>%6$s</td>
 </tr>
 ';
 
@@ -898,7 +904,8 @@ if ($result->num_rows > 0) {
           $parent["serial_nr"],
           $row["configuration"],
           $row["breakdown"],
-          $row["operating_voltage"]);
+          $row["operating_voltage"],
+          $row["firmware"]);
     }
 } else {
     echo "No rows";

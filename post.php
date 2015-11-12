@@ -34,7 +34,7 @@ function postToLog($sql_string) {
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
-	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, status, comment)
+	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, oc60_1_sn, oc60_2_sn, pav_sn, status, comment)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[art_nr]',
 					'$_POST[client]', 
@@ -43,6 +43,9 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[sensor_unit]', 
 					'$_POST[control_system]', 
 					'$_POST[deep_system]', 
+					'$_POST[oc60_1]', 
+					'$_POST[oc60_2]',
+					'$_POST[pav]',
 					'$_POST[status]',
 					'$_POST[comment]');";
 	$sql_insert .= "INSERT INTO system_status (serial_nr, status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable)
@@ -67,7 +70,7 @@ if($_GET['type'] == 'add_system') {
 					serial_nr ='$_POST[oc60_2]',
 					firmware = '$_POST[firmware_oc60_2]'
 					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[oc60_1]',
+					serial_nr ='$_POST[oc60_2]',
 					firmware = '$_POST[firmware_oc60_2]';";
 	$sql_insert .= "INSERT INTO pav
 					SET 
@@ -91,12 +94,16 @@ if ($_GET['type'] == 'update_system') {
 
 	$sql_update = " UPDATE system
 					SET
+						art_nr = '$_POST[art_nr]',
 						client = '$_POST[client]',
 						place = '$_POST[place]',
 						configuration = '$_POST[configuration]',
 						sensor_unit_sn = '$_POST[sensor_unit]', 
 						control_system_sn = '$_POST[control_system]', 
 						deep_system_sn = '$_POST[deep_system]', 
+						oc60_1_sn = '$_POST[oc60_1]', 
+						oc60_2_sn = '$_POST[oc60_2]',
+						pav_sn = '$_POST[pav]',
 						status = '$_POST[status]',
 						comment = '$_POST[comment]'
 					WHERE serial_nr = $_POST[serial_nr];";
@@ -123,7 +130,7 @@ if ($_GET['type'] == 'update_system') {
 					serial_nr ='$_POST[oc60_2]',
 					firmware = '$_POST[firmware_oc60_2]'
 					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[oc60_1]',
+					serial_nr ='$_POST[oc60_2]',
 					firmware = '$_POST[firmware_oc60_2]';";
 	$sql_update .= "INSERT INTO pav
 					SET 
@@ -253,13 +260,13 @@ if($_GET['type'] == 'add_control_system') {
 					'$_POST[pdu]', 
 					'$_POST[scu]',
 					'$_POST[comment]');";
-	$sql_insert = "INSERT INTO cc32
+	$sql_insert .= "INSERT INTO cc32
 					SET 
 					serial_nr ='$_POST[cc32]',
 					firmware = '$_POST[firmware]'
 					ON DUPLICATE KEY UPDATE
 					serial_nr ='$_POST[cc32]',
-					firmware = '$_POST[firmware]';";
+					firmware = '$_POST[firmware_cc32]';";
 	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
@@ -287,7 +294,7 @@ if ($_GET['type'] == 'update_control_system') {
 					firmware = '$_POST[firmware]'
 					ON DUPLICATE KEY UPDATE
 					serial_nr ='$_POST[cc32]',
-					firmware = '$_POST[firmware]';";
+					firmware = '$_POST[firmware_cc32]';";
 	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));

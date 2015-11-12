@@ -52,7 +52,7 @@ if (!empty($_GET['serial_nr'])) {
 	echo '<input type="hidden" name="serial_nr" value="' . $_GET['serial_nr'] . '" />'
 	. '<input type="text" class="form-control" placeholder="' . $_GET['serial_nr'] . '" disabled />';
 }else {
-	echo '<input type="text" class="form-control" name="serial_nr" />';
+	echo '<input type="text" class="form-control" name="serial_nr" required/>';
 }
 ?>
 	  	</div>
@@ -68,14 +68,14 @@ if (!empty($_GET['serial_nr'])) {
   	  <div class="form-group">
 		<label for="cc32" class="col-xs-4 control-label">CC32</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="cc32" <?= !empty($row['cc32']) ?  'value="' . $row['cc32'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="cc32" <?= !empty($row['cc32_sn']) ?  'value="' . $row['cc32_sn'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
-		<label for="cc32_firmware" class="col-xs-4 control-label">CC32 firmware</label>
+		<label for="firmware_cc32" class="col-xs-4 control-label">CC32 firmware</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="cc32_firmware" <?= !empty($row['cc32_firmware']) ?  'value="' . $row['cc32_firmware'] . '"' : '' ; ?>>
+	  	<input type="text" class="form-control" name="firmware_cc32" <?= !empty($row['cc32_firmware']) ?  'value="' . $row['cc32_firmware'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
