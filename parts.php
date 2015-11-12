@@ -8,7 +8,7 @@ $(function () {
 })
 </script>
 
-<section class="top_content">
+<section class="content">
 
 <?php
 if(isset($_GET['alert'])) {
@@ -68,17 +68,105 @@ if(isset($_GET['alert'])) {
   </li>
 </ul>
 
-<!--   <a href="edit_sensor.php" class="btn btn-default" role="button">New sensor</a>
-  <a href="edit_sensor_unit.php" class="btn btn-default" role="button">New sensor unit</a>
-  <a href="edit_control_system.php" class="btn btn-default" role="button">New control system</a>
-  <a href="edit_deep_system.php" class="btn btn-default" role="button">New deep system</a>
-  <a href="edit_scu.php" class="btn btn-default" role="button">New SCU</a>
-  <a href="edit_laser.php" class="btn btn-default" role="button">New laser</a>
-  <a href="edit_hv_card.php" class="btn btn-default" role="button">New HV card</a>
-  <a href="edit_receiver_chip.php" class="btn btn-default" role="button">New receiver chip</a>
-  <a href="edit_leica_cam.php" class="btn btn-default" role="button">New Leica cam (Här?)</a> -->
 </section>
-<section class="content">
+<section>
+
+<!--###### Sensors Table ######-->
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingSensor">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" href="#collapseSensor" aria-expanded="true" aria-controls="collapseSensor">
+        Sensors (Topo, Shallow, Deep)
+      </a>
+    </h4>
+  </div>
+  <div id="collapseSensor" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSensor">
+    <div class="panel-body panel_table">
+      <table class="table table-striped table-responsive my_table">
+        <thead>
+          <tr>
+            <th>Serial nr.</th>
+            <th>Config</th>
+            <th>CAT</th>
+            <th>FPGA id</th>
+            <th>Laser</th>
+            <th>HV card</th>
+            <th>Receiver unit</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+
+<?php
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "  SELECT *
+          FROM sensor
+          ORDER BY datetime DESC";
+$result = $conn->query($sql);
+if (!$result) {
+    echo $sql . "<br><br>" . $conn->error;
+    die("Query failed!");
+}
+$conn->close(); // close connection
+
+// %s will be replaced with variables later
+
+$table_row_formating = '
+<tr>
+
+  <td>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        %1$s <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="view_sensor.php?serial_nr=%1$s">View</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="edit_sensor.php?serial_nr=%1$s">Edit</a></li>
+        <li><a href="delete.php?type=sensor&serial_nr=%1$s" onclick="return confirm(\'Are you sure that you want to delete this sensor: %1$s\'); ">Delete</a></li>
+      </ul>
+    </div>
+  </td>
+
+  <td>%2$s</td>
+  <td>%3$s</td>
+  <td>%4$s</td>
+  <td>%5$s</td>
+  <td>%6$s</td>
+  <td>%7$s</td>
+  <td>%8$s</td>
+</tr>
+';
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+
+        echo sprintf($table_row_formating,
+          $row["serial_nr"],
+          $row["sensor_type"],
+          $row["cat"],
+          $row["fpga_id"],
+          $row["laser_sn"],
+          $row["hv_card_sn"],
+          $row["receiver_unit_sn"],
+          $row["status"]);
+    }
+} else {
+    echo "No rows";
+}
+?>
+
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
 
 <!--###### Sensor Unit Table ######-->
 <div class="panel panel-default">
@@ -308,106 +396,6 @@ if ($result->num_rows > 0) {
           $row["pro_pack"],
           $row["deep_sensor_sn"],
           $row["comment"]);
-    }
-} else {
-    echo "No rows";
-}
-?>
-
-      </tbody>
-    </table>
-    </div>
-  </div>
-</div>
-
-<!--###### Sensors Table ######-->
-<div class="panel panel-default">
-  <div class="panel-heading" role="tab" id="headingSensor">
-    <h4 class="panel-title">
-      <a role="button" data-toggle="collapse" href="#collapseSensor" aria-expanded="true" aria-controls="collapseSensor">
-        Sensors (Topo, Shallow, Deep)
-      </a>
-    </h4>
-  </div>
-  <div id="collapseSensor" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSensor">
-    <div class="panel-body panel_table">
-          <table class="table table-striped table-responsive my_table">
-        <thead>
-          <tr>
-            <th>Serial nr.</th>
-            <th>Config</th>
-            <th>CAT</th>
-            <th>FPGA id</th>
-            <th>Laser</th>
-            <th>HV card</th>
-            <th>Receiver unit</th>
-            <th>Receiver chip</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-
-<?php
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-$sql = "  SELECT *
-          FROM sensor
-          ORDER BY datetime DESC";
-$result = $conn->query($sql);
-if (!$result) {
-    echo $sql . "<br><br>" . $conn->error;
-    die("Query failed!");
-}
-$conn->close(); // close connection
-
-// %s will be replaced with variables later
-
-$table_row_formating = '
-<tr>
-
-  <td>
-    <div class="btn-group">
-      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        %1$s <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="view_sensor.php?serial_nr=%1$s">View</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="edit_sensor.php?serial_nr=%1$s">Edit</a></li>
-        <li><a href="delete.php?type=sensor&serial_nr=%1$s" onclick="return confirm(\'Are you sure that you want to delete this sensor: %1$s\'); ">Delete</a></li>
-      </ul>
-    </div>
-  </td>
-
-  <td>%2$s</td>
-  <td>%3$s</td>
-  <td>%4$s</td>
-  <td><a href="view_laser.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a></td>
-  <td><a href="view_hv.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a></td>
-  <td>%7$s</td>
-  <td><a href="view_receiver_chip.php?serial_nr=%8$s" class="btn btn-default btn-sm">%8$s</a></td>
-  <td>%9$s</td>
-</tr>
-';
-
-if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-
-        echo sprintf($table_row_formating,
-          $row["serial_nr"],
-          $row["sensor_type"],
-          $row["cat"],
-          $row["fpga_id"],
-          $row["laser_sn"],
-          $row["hv_card_sn"],
-          $row["receiver_unit"],
-          $row["receiver_chip_sn"],
-          $row["status"]);
     }
 } else {
     echo "No rows";

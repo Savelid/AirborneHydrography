@@ -13,8 +13,8 @@ $(function () {
   <a href="edit_system.php" class="btn btn-default" role="button">New system</a>
 </section>
 
-<section class="all__systems">
-  <table class="large__table table table-striped table-responsive">
+<section>
+  <table class="table table-striped table-responsive">
     <thead>
       <tr>
         <th>Serial nr.</th>
@@ -41,7 +41,7 @@ if ($conn->connect_error) {
 
 $sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_system_sn, deep_system_sn,
           sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
-          control_system.scu_sn, status, comment
+          control_system.scu_sn, status, system.comment
           FROM system
           LEFT JOIN sensor_unit ON sensor_unit_sn = sensor_unit.serial_nr
           LEFT JOIN control_system ON control_system_sn = control_system.serial_nr
