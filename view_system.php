@@ -32,21 +32,31 @@ if (!empty($_GET['system'])) {
   }
   $sensor_unit = $result->fetch_array(MYSQLI_ASSOC);
 
-  $sql = " SELECT *
+  $sql = " SELECT *, control_system.serial_nr AS serial_nr, cc32.firmware AS cc32_firmware
            FROM control_system
-           WHERE serial_nr = $system[control_system_sn];";
+           LEFT JOIN cc32 ON cc32_sn = cc32.serial_nr
+           WHERE control_system.serial_nr = $system[control_system_sn];";
   $result = $conn->query($sql);
   if (!$result) {
-    die("Query 2 failed! <br>Error:" . $sql . "<br>" . $conn->error);
+    die("Query 3 failed! <br>Error:" . $sql . "<br>" . $conn->error);
   }
   $control_system = $result->fetch_array(MYSQLI_ASSOC);
+
+  $sql = " SELECT *
+           FROM scu
+           WHERE serial_nr = $control_system[scu_sn];";
+  $result = $conn->query($sql);
+  if (!$result) {
+    die("Query 4 failed! <br>Error:" . $sql . "<br>" . $conn->error);
+  }
+  $scu = $result->fetch_array(MYSQLI_ASSOC);
 
     $sql = " SELECT *
            FROM deep_system
            WHERE serial_nr = $system[deep_system_sn];";
   $result = $conn->query($sql);
   if (!$result) {
-    die("Query 2 failed! <br>Error:" . $sql . "<br>" . $conn->error);
+    die("Query 5 failed! <br>Error:" . $sql . "<br>" . $conn->error);
   }
   $deep_system = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -64,7 +74,7 @@ else {
 
 <section class="content">
 <div class="row">
-<div class="col-sm-7 col-xs-12">
+<div class="col-sm-6 col-xs-12">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Info</h3>
@@ -115,7 +125,7 @@ else {
 
 </div><!-- end col -->
 
-<div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
   <ul class="list-group">
     <li class="list-group-item <?=$system['status_potta_heat'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
       Potta Heat Upgrade
@@ -144,6 +154,52 @@ else {
   </ul>
 
 </div><!-- end col -->
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Bitfile</h3>
+    </div>
+    <div class="panel-body">
+
+    <div class="row">
+      <div class="col-xs-6"><strong>OC</strong></div>
+      <div class="col-xs-6"><?php echo $system['oc'];?></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6"><strong>Topo</strong></div>
+      <div class="col-xs-6"><?php echo $system['bitfile_topo'];?></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6"><strong>Shallow</strong></div>
+      <div class="col-xs-6"><?php echo $system['bitfile_shallow'];?></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6"><strong>Deep</strong></div>
+      <div class="col-xs-6"><?php echo $system['bitfile_deep'];?></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6"><strong>Digitaizer 1</strong></div>
+      <div class="col-xs-6"><?php echo $system['bitfile_digitaizer1'];?></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6"><strong>Digitaizer 2</strong></div>
+      <div class="col-xs-6"><?php echo $system['bitfile_digitaizer2'];?></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6"><strong>SAT</strong></div>
+      <div class="col-xs-6"><?php echo $system['bitfile_sat'];?></div>
+    </div>
+
+    </div>
+  </div><!-- end panel -->
+
+</div><!-- end col -->
 
 </div><!-- end row -->
 
@@ -153,7 +209,7 @@ else {
 
 <div class="row">
 
-    <div class="col-sm-12 col-md-11 col-lg-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
 
       <!--###### Sensor Unit List ######-->
       <div class="panel panel-default">
@@ -170,6 +226,7 @@ else {
               <li class="list-group-item sub_item">Config: <?php echo $sensor_unit['leica_cam_configuration'];?></li>
               <li class="list-group-item sub_item">Breakdown: <?php echo $sensor_unit['leica_cam_breakdown'];?></li>
               <li class="list-group-item sub_item">Operating Voltage: <?php echo $sensor_unit['leica_cam_operating_voltage'];?></li>
+              <li class="list-group-item sub_item">Firmware: <?php echo $sensor_unit['firmware'];?></li>
             <div class="panel-footer sub_item"><a href="#"><span class="glyphicon glyphicon-pencil"></span>Edit leica camera</a></div>
             </div>
             <li class="list-group-item">Leica lens: <?php echo $sensor_unit['leica_lens'];?></li>
@@ -194,7 +251,7 @@ else {
       </div>
 
     </div><!-- end col -->
-    <div class="col-sm-12 col-md-11 col-lg-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
 
       <!--###### Control System List ######-->
       <div class="panel panel-default">
@@ -206,14 +263,18 @@ else {
         <div id="control_system" class="panel-collapse collapse in">
           <ul class="list-group">
             <li class="list-group-item">Battery: <?php echo $control_system['battery'];?></li>
-            <li class="list-group-item">CC32: <?php echo $control_system['cc32'];?></li>
+            <li class="list-group-item">CC32: <?php echo $control_system['cc32_sn'] . " Firmware: " . $control_system['cc32_firmware'];?></li>
             <li class="list-group-item">PDU: <?php echo $control_system['pdu'];?></li>
             <li class="list-group-item"><a href="#scu" data-toggle="collapse" data-target="#scu">SCU: <?php echo $control_system['scu_sn'];?></a></li>
             <div id="scu" class="panel-collapse collapse">
-              <div class="panel-footer sub_item">
-                <a href="edit_scu.php?serial_nr=<?php echo $control_system['scu_sn'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit SCU </a> 
-                <a href="view_scu.php?serial_nr=<?php echo $control_system['scu_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View SCU </a> 
-              </div>
+              <li class="list-group-item sub_item">Config: <?php echo $scu['configuration'];?></li>
+              <li class="list-group-item sub_item">Digitaizer1: <?php echo $scu['digitaizer1'];?></li>
+              <li class="list-group-item sub_item">Digitaizer2: <?php echo $scu['digitaizer2'];?></li>
+              <li class="list-group-item sub_item">SAT: <?php echo $scu['sat'];?></li>
+              <li class="list-group-item sub_item">CPU: <?php echo $scu['cpu'];?></li>
+              <li class="list-group-item sub_item">Status: <?php echo $scu['status'];?></li>
+              <li class="list-group-item sub_item">Comment: <?php echo $scu['comment'];?></li>
+            <div class="panel-footer sub_item"><a href="edit_scu.php?serial_nr=<?php echo $control_system['scu_sn'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit SCU </a></div>
             </div>
             <li class="list-group-item">Comment: <?php echo $control_system['comment'];?></li>
           </ul>
@@ -222,7 +283,7 @@ else {
       </div>
 
     </div><!-- end col -->
-    <div class="col-sm-12 col-md-11 col-lg-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
 
       <!--###### Deep System List ######-->
       <div class="panel panel-default">

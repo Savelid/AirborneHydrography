@@ -65,27 +65,29 @@ if (!empty($_GET['serial_nr'])) {
   }
   $hv_card2 = $result->fetch_array(MYSQLI_ASSOC);
 
-  if(empty($sensor['receiver_chip_sn']) || $sensor['receiver_chip_sn'] == ''){$sensor['receiver_chip_sn'] = '0000';}
-  $sql = " SELECT *
-           FROM receiver_chip
-           WHERE serial_nr = $sensor[receiver_chip_sn]
+  if(empty($sensor['receiver_unit_sn']) || $sensor['receiver_unit_sn'] == ''){$sensor['receiver_unit_sn'] = '0000';}
+  $sql = " SELECT *, receiver_unit.serial_nr AS serial_nr
+           FROM receiver_unit
+           LEFT JOIN receiver_chip ON receiver_chip_sn = receiver_chip.serial_nr
+           WHERE receiver_unit.serial_nr = $sensor[receiver_unit_sn]
            LIMIT 1";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query failed!" . $sql . "<br><br>" . $conn->error);
   }
-  $receiver_chip1 = $result->fetch_array(MYSQLI_ASSOC);
+  $receiver_unit1 = $result->fetch_array(MYSQLI_ASSOC);
 
-  if(empty($sensor['receiver_chip_2_sn']) || $sensor['receiver_chip_2_sn'] == ''){$sensor['receiver_chip_2_sn'] = '0000';}
-  $sql = " SELECT *
-           FROM receiver_chip
-           WHERE serial_nr = $sensor[receiver_chip_2_sn]
+  if(empty($sensor['receiver_unit_2_sn']) || $sensor['receiver_unit_2_sn'] == ''){$sensor['receiver_unit_2_sn'] = '0000';}
+  $sql = " SELECT *, receiver_unit.serial_nr AS serial_nr
+           FROM receiver_unit
+           LEFT JOIN receiver_chip ON receiver_chip_sn = receiver_chip.serial_nr
+           WHERE receiver_unit.serial_nr = $sensor[receiver_unit_2_sn]
            LIMIT 1";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query failed!" . $sql . "<br><br>" . $conn->error);
   }
-  $receiver_chip2 = $result->fetch_array(MYSQLI_ASSOC);
+  $receiver_unit2 = $result->fetch_array(MYSQLI_ASSOC);
 
   $conn->close();
 } 
@@ -205,45 +207,45 @@ else if($sensor['sensor_type'] == 'deep') {
           </h4>
         </div>
         <div class="panel-body panel_table">
-          <table class="table table-striped table-responsive my_table">
+          <table class="table table-striped table-responsive table_700">
             <thead>
               <tr>
                 <th>Type</th>
                 <th>Serial nr.</th>
-                <th></th>
+                <th colspan=4></th>
               </tr>
             </thead>
             <tbody>
                 <tr>
                   <td>CAT:</td>
                   <td><?php echo $sensor['cat'];?></td>
-                  <td></td>
+                  <td colspan=4></td>
                 </tr>
 
                 <tr>
                   <td>FPGA ID:</td>
                   <td><?php echo $sensor['fpga_id'];?></td>
-                  <td></td>
+                  <td colspan=4></td>
                 </tr>
 
                 <tr>
                   <td>Laser:</td>
 
 <?php
-$infoText = "0: " . $laser['v_0'] . "<br>";
-$infoText .= "5: " . $laser['v_5'] . "<br>";
-$infoText .= "10: " . $laser['v_10'] . "<br>";
-$infoText .= "15: " . $laser['v_15'] . "<br>";
-$infoText .= "20: " . $laser['v_20'] . "<br>";
-$infoText .= "25: " . $laser['v_25'] . "<br>";
-$infoText .= "30: " . $laser['v_30'] . "<br>";
-$infoText .= "40: " . $laser['v_40'] . "<br>";
-$infoText .= "50: " . $laser['v_50'] . "<br>";
-$infoText .= "60: " . $laser['v_60'] . "<br>";
-$infoText .= "70: " . $laser['v_70'] . "<br>";
-$infoText .= "80: " . $laser['v_80'] . "<br>";
-$infoText .= "90: " . $laser['v_90'] . "<br>";
-$infoText .= "100: " . $laser['v_100'] . "<br>";
+$infoText  = "000: " . "<strong>" . $laser['v_0'] . "</strong><br/>";
+$infoText .= "005: " . "<strong>" . $laser['v_5'] . "</strong><br/>";
+$infoText .= "010: " . "<strong>" . $laser['v_10'] . "</strong><br/>";
+$infoText .= "015: " . "<strong>" . $laser['v_15'] . "</strong><br/>";
+$infoText .= "020: " . "<strong>" . $laser['v_20'] . "</strong><br/>";
+$infoText .= "025: " . "<strong>" . $laser['v_25'] . "</strong><br/>";
+$infoText .= "030: " . "<strong>" . $laser['v_30'] . "</strong><br/>";
+$infoText .= "040: " . "<strong>" . $laser['v_40'] . "</strong><br/>";
+$infoText .= "050: " . "<strong>" . $laser['v_50'] . "</strong><br/>";
+$infoText .= "060: " . "<strong>" . $laser['v_60'] . "</strong><br/>";
+$infoText .= "070: " . "<strong>" . $laser['v_70'] . "</strong><br/>";
+$infoText .= "080: " . "<strong>" . $laser['v_80'] . "</strong><br/>";
+$infoText .= "090: " . "<strong>" . $laser['v_90'] . "</strong><br/>";
+$infoText .= "100: " . "<strong>" . $laser['v_100'] . "</strong><br/>";
 $linkAdr = "edit_laser.php?serial_nr=" . $sensor['laser_sn'];
 ?>
                   <td>
@@ -252,120 +254,87 @@ $linkAdr = "edit_laser.php?serial_nr=" . $sensor['laser_sn'];
                       <?php echo $sensor['laser_sn'];?>
                     </a>
 
+                    
+                  </td>
+                  <td colspan=4>
                     <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="right" data-html="true" data-content="<?php echo $infoText ?>">
                       Info
                     </button>
                   </td>
-                  <td></td>
                 </tr>
 
-                <tr>
-                  <td>HV Cards:</td>
-
 <?php
-$infoText = '';
-if($sensor['sensor_type'] == 'topo' || $sensor['sensor_type'] == 'shallow') {
-  $infoText = "k-value: " . $hv_card1['k_value'] . "<br>";
-  $infoText .= "m-value: " . $hv_card1['m_value'] . "<br>";
-}
-else if($sensor['sensor_type'] == 'deep') {
-  $infoText = "0: " . $hv_card1['hv_0'] . "<br>";
-  $infoText .= "500: " . $hv_card1['v_500'] . "<br>";
-  $infoText .= "1000: " . $hv_card1['v_1000'] . "<br>";
-  $infoText .= "1500: " . $hv_card1['v_1500'] . "<br>";
-  $infoText .= "2000: " . $hv_card1['v_2000'] . "<br>";
-  $infoText .= "2500: " . $hv_card1['v_2500'] . "<br>";
-  $infoText .= "3000: " . $hv_card1['v_3000'] . "<br>";
-  $infoText .= "3250: " . $hv_card1['v_3250'] . "<br>";
-}
-
 $linkAdr = "edit_hv_card.php?serial_nr=" . $sensor['hv_card_sn'];
 ?>
+                <tr>
+                  <td>HV Card:</td>
                   <td>
                     <a href="<?php echo $linkAdr;?>" class="btn btn-default btn-sm">
                       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                       <?php echo $sensor['hv_card_sn'];?>
                     </a>
-
-                    <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="right" data-html="true" data-content="<?php echo $infoText ?>">
-                      Info
-                    </button>
                   </td>
-                    <td>
+                  <td>Article nr: <?php echo $hv_card1['art_nr'];?></td>
+                  <td>K-value: <?php echo $hv_card1['k_value'];?></td>
+                  <td colspan=2>M-value: <?php echo $hv_card1['m_value'];?></td>
+                </tr>
+
 <?php
-if($sensor['sensor_type'] == 'deep') {
+if($sensor['sensor_type'] == 'deep'){
+$linkAdr = "edit_hv_card.php?serial_nr=" . $sensor['hv_card_2_sn'];
 
-  $infoText = "0: " . $hv_card2['hv_0'] . "<br>";
-  $infoText .= "500: " . $hv_card2['v_500'] . "<br>";
-  $infoText .= "1000: " . $hv_card2['v_1000'] . "<br>";
-  $infoText .= "1500: " . $hv_card2['v_1500'] . "<br>";
-  $infoText .= "2000: " . $hv_card2['v_2000'] . "<br>";
-  $infoText .= "2500: " . $hv_card2['v_2500'] . "<br>";
-  $infoText .= "3000: " . $hv_card2['v_3000'] . "<br>";
-  $infoText .= "3250: " . $hv_card2['v_3250'] . "<br>";
-
-  $linkAdr = "edit_hv_card.php?serial_nr=" . $sensor['hv_card_2_sn'];
-  $receiver_chip_2_string = '
-                    <a href="%s" class="btn btn-default btn-sm">
+echo '          <td>HV Card 2:</td>
+                  <td>
+                    <a href="' . $linkAdr . '" class="btn btn-default btn-sm">
                       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                      %s
+                      ' . $sensor["hv_card_2_sn"] . '
                     </a>
-                    <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="right" data-html="true" data-content="%s">
-                      Info
-                    </button>
-                    ';
-  echo sprintf($receiver_chip_2_string, $linkAdr, $sensor['hv_card_2_sn'], $infoText);
+                  </td>
+                  <td>Article nr: ' . $hv_card2["art_nr"] . '</td>
+                  <td>K-value: ' . $hv_card2["k_value"] . '</td>
+                  <td colspan=2>M-value: ' . $hv_card2["m_value"] . '</td>
+                </tr>
+                ';
 }
 ?>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>Receiver Units:</td>
-                  <td><?php echo $sensor['receiver_unit'];?></td>
-                  <td><?php echo $sensor['receiver_unit_2'];?></td>
-                </tr>
-
-                <tr>
-                  <td>Receiver Chips:</td>
-
 <?php
-$infoText = "Unit: " . $receiver_chip1['unit'] . "<br/>";
-$infoText .= "Firmware: " . $receiver_chip1['firmware'] . "<br/>";
-$linkAdr = "edit_receiver_chip.php?serial_nr=" . $sensor['receiver_chip_sn'];
+$linkAdr = "edit_receiver.php?serial_nr=" . $sensor['receiver_unit_sn'];
 ?>
+                <tr>
+                  <td>Receiver:</td>
                   <td>
                     <a href="<?php echo $linkAdr;?>" class="btn btn-default btn-sm">
                       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                      <?php echo $sensor['receiver_chip_sn'];?>
+                      <?php echo $sensor['receiver_unit_sn'];?>
                     </a>
-
-                    <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="right" data-html="true" data-content="<?php echo $infoText ?>">
-                      Info
-                    </button>
                   </td>
+                  <td>Article nr: <?php echo $receiver_unit1['art_nr'];?></td>
+                  <td>Chip: <?php echo $receiver_unit1['receiver_chip_sn'];?></td>
+                  <td>Breakdown V: <?php echo $receiver_unit1['breakdown_voltage'];?></td>
+                  <td>Operation V: <?php echo $receiver_unit1['operating_voltage'];?></td>
+                </tr>
 
-                  <td>
 <?php
-if($sensor['sensor_type'] == 'deep') {
-  $infoText = "Unit: " . $receiver_chip2['unit'] . "<br/>";
-  $infoText .= "Firmware: " . $receiver_chip2['firmware'] . "<br/>";
-  $linkAdr = "edit_receiver_chip.php?serial_nr=" . $sensor['receiver_chip_2_sn'];
-  $receiver_chip_2_string = '
-                    <a href="%s" class="btn btn-default btn-sm">
+$linkAdr = "edit_receiver.php?serial_nr=" . $sensor['receiver_unit_2_sn'];
+if($sensor['sensor_type'] == 'deep'){
+  echo '<tr>
+                  <td>Receiver 2:</td>
+                  <td>
+                    <a href="' . $linkAdr . '" class="btn btn-default btn-sm">
                       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                      %s
+                      ' . $sensor['receiver_unit_2_sn'] . '
                     </a>
-                    <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="right" data-html="true" data-content="%s">
-                      Info
-                    </button>
-                    ';
-  echo sprintf($receiver_chip_2_string, $linkAdr, $sensor['receiver_chip_2_sn'], $infoText);
+                  </td>
+                  <td>Article nr: ' . $receiver_unit2['art_nr'] . '</td>
+                  <td>Chip: ' . $receiver_unit2['receiver_chip_sn'] . '</td>
+                  <td>Breakdown V: ' . $receiver_unit2['breakdown_voltage'] . '</td>
+                  <td>Operation V: ' . $receiver_unit2['operating_voltage'] . '</td>
+                </tr>
+  ';
 }
 ?>
-                    
-                  </td>
-                </tr>
+                
+
             </tbody>
           </table>
 

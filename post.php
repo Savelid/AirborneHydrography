@@ -34,7 +34,7 @@ function postToLog($sql_string) {
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
-	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, oc60_1_sn, oc60_2_sn, pav_sn, status, comment)
+	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, oc60_1_sn, oc60_2_sn, pav_sn, status, comment, oc, bitfile_topo, bitfile_shallow, bitfile_deep, bitfile_digitaizer1, bitfile_digitaizer2, bitfile_sat)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[art_nr]',
 					'$_POST[client]', 
@@ -47,7 +47,14 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[oc60_2]',
 					'$_POST[pav]',
 					'$_POST[status]',
-					'$_POST[comment]');";
+					'$_POST[comment]',
+					'$_POST[oc]',
+					'$_POST[bitfile_topo]',
+					'$_POST[bitfile_shallow]',
+					'$_POST[bitfile_deep]',
+					'$_POST[bitfile_digitaizer1]',
+					'$_POST[bitfile_digitaizer2]',
+					'$_POST[bitfile_sat]');";
 	$sql_insert .= "INSERT INTO system_status (serial_nr, status_potta_heat, status_shallow_heat, status_scu_pdu, status_hv_topo, status_hv_shallow, status_hv_deep, status_cat, status_pwr_cable)
 	VALUES (		'$_POST[serial_nr]', 
 					'$_POST[status_potta_heat]', 
@@ -105,7 +112,14 @@ if ($_GET['type'] == 'update_system') {
 						oc60_2_sn = '$_POST[oc60_2]',
 						pav_sn = '$_POST[pav]',
 						status = '$_POST[status]',
-						comment = '$_POST[comment]'
+						comment = '$_POST[comment]',
+						oc = '$_POST[oc]',
+						bitfile_topo = '$_POST[bitfile_topo]',
+						bitfile_shallow = '$_POST[bitfile_shallow]',
+						bitfile_deep = '$_POST[bitfile_deep]',
+						bitfile_digitaizer1 = '$_POST[bitfile_digitaizer1]',
+						bitfile_digitaizer2 = '$_POST[bitfile_digitaizer2]',
+						bitfile_sat = '$_POST[bitfile_sat]'
 					WHERE serial_nr = $_POST[serial_nr];";
 	$sql_update .= "UPDATE system_status
 					SET 

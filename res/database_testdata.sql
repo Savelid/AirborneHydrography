@@ -6,9 +6,9 @@ INSERT INTO overview
 
 DELETE FROM system;
 INSERT INTO system
-	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB', 'Home', 'HawkEyeIII','Service','En kommentar','1310','1410','1510','4410','4420','5410');
+	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB', 'Home', 'HawkEyeIII','Service','En kommentar','1310','1410','1510','4410','4420','5410','2.16','57','43','27','56','23','17');
 INSERT INTO system
-	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska', 'Piteå', 'DualDragon','Done','Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.','1311','1411','1511','4411','4421','5411');
+	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska', 'Piteå', 'DualDragon','Done','Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.','1311','1411','1511','4411','4421','5411','2.16','57','43','27','56','23','17');
 
 DELETE FROM system_status;
 INSERT INTO system_status

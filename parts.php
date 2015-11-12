@@ -28,7 +28,7 @@ if(isset($_GET['alert'])) {
 
   <div class="dropdown">
     <button class="btn btn-default" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      New Component
+      New 
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -49,7 +49,7 @@ if(isset($_GET['alert'])) {
 
   <div class="dropdown">
     <button class="btn btn-default" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Go To
+      Go To 
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -66,7 +66,22 @@ if(isset($_GET['alert'])) {
   </div>
 
   </li>
+  <li role="presentation">
+    <button class="btn btn-default" role="button" id="hideAll"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
+  </li>
+  <li role="presentation">
+    <button class="btn btn-default" role="button" id="showAll"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
+  </li>
+  
 </ul>
+<script>
+$("#hideAll").click(function(){
+  $('.collapse').collapse('hide')
+});
+$("#showAll").click(function(){
+  $('.collapse').collapse('show')
+});
+</script>
 
 </section>
 <section class="parts">

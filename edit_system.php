@@ -53,7 +53,7 @@ $path = 'post.php?type=' . $type;
 </script>
 <section class="content">
 	
-<form action= <?php echo $path ?> method="post" class="form-horizontal">
+<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
 
@@ -216,15 +216,59 @@ foreach($system_status_values as $i){
 	  	</div>
 	  </div>
 
-  	  <div class="form-group">
-		<label for="comment" class="col-xs-4 control-label">Comment</label>
-	  <div class="col-xs-8">
-  		<textarea class="form-control" name="comment" rows="3"><?= !empty($row['comment']) ? $row['comment'] : ''; ?></textarea>
-	  	</div>
-	  </div>
-
 	</div>
 	<div class="col-sm-3 col-sm-offset-1">
+
+		<h4>Bitfile</h4>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="text" class="form-control" name="oc" <?= !empty($row['oc']) ?  'value="' . $row['oc'] . '"' : '' ; ?>/>
+			</div>
+			<label for="oc" class="col-xs-7">OC</label>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="number" class="form-control" name="bitfile_topo" <?= !empty($row['bitfile_topo']) ?  'value="' . $row['bitfile_topo'] . '"' : '' ; ?>/>
+			</div>
+			<label for="bitfile_topo" class="col-xs-7">Topo</label>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="number" class="form-control" name="bitfile_shallow" <?= !empty($row['bitfile_shallow']) ?  'value="' . $row['bitfile_shallow'] . '"' : '' ; ?>/>
+			</div>
+			<label for="bitfile_shallow" class="col-xs-7">Shallow</label>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="number" class="form-control" name="bitfile_deep" <?= !empty($row['bitfile_deep']) ?  'value="' . $row['bitfile_deep'] . '"' : '' ; ?>/>
+			</div>
+			<label for="bitfile_deep" class="col-xs-7">Deep</label>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="number" class="form-control" name="bitfile_digitaizer1" <?= !empty($row['bitfile_digitaizer1']) ?  'value="' . $row['bitfile_digitaizer1'] . '"' : '' ; ?>/>
+			</div>
+			<label for="bitfile_digitaizer1" class="col-xs-7">Digitaizer 1</label>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="number" class="form-control" name="bitfile_digitaizer2" <?= !empty($row['bitfile_digitaizer2']) ?  'value="' . $row['bitfile_digitaizer2'] . '"' : '' ; ?>/>
+			</div>
+			<label for="bitfile_digitaizer2" class="col-xs-7">Digitaizer 2</label>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-5">
+				<input type="number" class="form-control" name="bitfile_sat" <?= !empty($row['bitfile_sat']) ?  'value="' . $row['bitfile_sat'] . '"' : '' ; ?>/>
+			</div>
+			<label for="bitfile_sat" class="col-xs-7">SAT</label>
+		</div>
 
 		<h4>System status</h4>
 

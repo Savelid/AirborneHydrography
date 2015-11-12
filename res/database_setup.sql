@@ -42,6 +42,14 @@ CREATE TABLE system (
 	oc60_2_sn VARCHAR(30),
 	pav_sn VARCHAR(30),
 
+	oc FLOAT,
+	bitfile_topo INTEGER,
+	bitfile_shallow INTEGER,
+	bitfile_deep INTEGER,
+	bitfile_digitaizer1 INTEGER,
+	bitfile_digitaizer2 INTEGER,
+	bitfile_sat INTEGER,
+
 	PRIMARY KEY (id)
 );
 
