@@ -38,6 +38,9 @@ CREATE TABLE system (
 	sensor_unit_sn VARCHAR(30),
 	control_system_sn VARCHAR(30),
 	deep_system_sn VARCHAR(30),
+	oc60_1_sn VARCHAR(30),
+	oc60_2_sn VARCHAR(30),
+	pav_sn VARCHAR(30),
 
 	PRIMARY KEY (id)
 );
@@ -82,7 +85,7 @@ CREATE TABLE control_system (
 	datetime TIMESTAMP,
 
 	battery VARCHAR(30),
-	cc32 VARCHAR(30),
+	cc32_sn VARCHAR(30),
 	pdu VARCHAR(30),
 	scu_sn VARCHAR(30),
 	comment TEXT,
@@ -189,6 +192,7 @@ CREATE TABLE leica_cam (
 	datetime TIMESTAMP,
 
 	configuration VARCHAR(30),
+	firmware VARCHAR(30),
 	breakdown INTEGER,
 	operating_voltage INTEGER,
 
@@ -218,3 +222,34 @@ CREATE TABLE receiver_chip (
 
 	PRIMARY KEY (id)
 );
+
+CREATE TABLE cc32 (
+
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
+
+	firmware VARCHAR(30),
+
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE oc60 (
+
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
+
+	firmware VARCHAR(30),
+
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE pav (
+
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
+
+	firmware VARCHAR(30),
+
+	PRIMARY KEY (id)
+);
+

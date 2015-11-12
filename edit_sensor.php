@@ -116,25 +116,18 @@ listUnusedSerialNr('hv_card', 'serial_nr NOT IN
 	  	</div>
 	  </div>
 
-  	  <div class="form-group">
+	  <div class="form-group">
 		<label for="receiver_unit" class="col-xs-4 control-label">Receiver Unit</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="receiver_unit" <?= !empty($row['receiver_unit']) ?  'value="' . $row['receiver_unit'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="receiver_chip" class="col-xs-4 control-label">Receiver Chip</label>
-	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="receiver_chip">
+	  	<select class="combobox form-control" name="receiver_unit">
 	  	  
 <?php
 $sn = '';
-if(!empty($row['receiver_chip_sn'])){ $sn = $row['receiver_chip_sn'];}
-listUnusedSerialNr('hv_card', 'serial_nr NOT IN
-	(SELECT sensor.receiver_chip_sn FROM sensor)
+if(!empty($row['receiver_unit_sn'])){ $sn = $row['receiver_unit_sn'];}
+listUnusedSerialNr('receiver_unit', 'serial_nr NOT IN
+	(SELECT sensor.receiver_unit_sn FROM sensor)
 	AND serial_nr NOT IN
-	(SELECT sensor.receiver_chip_2_sn FROM sensor)', $sn);
+	(SELECT sensor.receiver_unit_2_sn FROM sensor)', $sn);
 ?>
 
 		</select>
@@ -175,25 +168,18 @@ listUnusedSerialNr('hv_card', 'serial_nr NOT IN
 	  	</div>
 	  </div>
 
-  	  <div class="form-group deepSensor">
+	  <div class="form-group deepSensor">
 		<label for="receiver_unit_2" class="col-xs-4 control-label">Receiver Unit 2</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="receiver_unit_2" <?= !empty($row['receiver_unit_2']) ?  'value="' . $row['receiver_unit_2'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group deepSensor">
-		<label for="receiver_chip_2" class="col-xs-4 control-label">Receiver Chip 2</label>
-	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="receiver_chip_2">
+	  	<select class="combobox form-control" name="receiver_unit_2">
 	  	  
 <?php
 $sn = '';
-if(!empty($row['receiver_chip_2_sn'])){ $sn = $row['receiver_chip_2_sn'];}
-listUnusedSerialNr('hv_card', 'serial_nr NOT IN 
-	(SELECT sensor.receiver_chip_sn FROM sensor)
+if(!empty($row['receiver_unit_2_sn'])){ $sn = $row['receiver_unit_2_sn'];}
+listUnusedSerialNr('receiver_unit', 'serial_nr NOT IN 
+	(SELECT sensor.receiver_unit_sn FROM sensor)
 	AND serial_nr NOT IN
-	(SELECT sensor.receiver_chip_2_sn FROM sensor)', $sn);
+	(SELECT sensor.receiver_unit_2_sn FROM sensor)', $sn);
 ?>
 
 		</select>

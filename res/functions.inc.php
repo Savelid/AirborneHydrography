@@ -23,7 +23,7 @@ function listUnusedSerialNr($from, $where, $serial_nr){
 	          WHERE %s";
 	$result_unused = $conn->query(sprintf($sql_unused, $from, $where));
 		if (!$result_unused) {
-			die("Query failed!");
+			die("</select> Query failed!" . $sql . "<br>" . $conn->error);
 		}
 	while($row_unused = $result_unused->fetch_assoc()) {
 		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){

@@ -141,6 +141,48 @@ listUnusedSerialNr('deep_system', '	serial_nr NOT IN (
 	  </div>
 
 	  <div class="form-group">
+		<label for="oc60_1" class="col-xs-4 control-label">OC60 1</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="oc60_1" <?= !empty($row['oc60_1']) ?  'value="' . $row['oc60_1'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="firmware_oc60_1" class="col-xs-4 control-label">OC60 1 firmware</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="firmware_oc60_1" <?= !empty($row['firmware_oc60_1']) ?  'value="' . $row['firmware_oc60_1'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="oc60_2" class="col-xs-4 control-label">OC60 2</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="oc60_2" <?= !empty($row['oc60_2']) ?  'value="' . $row['oc60_2'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="firmware_oc60_2" class="col-xs-4 control-label">OC60 2 firmware</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="firmware_oc60_2" <?= !empty($row['firmware_oc60_2']) ?  'value="' . $row['firmware_oc60_2'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="pav" class="col-xs-4 control-label">PAV</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="pav" <?= !empty($row['pav']) ?  'value="' . $row['pav'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="firmware_pav" class="col-xs-4 control-label">PAV firmware</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="firmware_pav" <?= !empty($row['firmware_pav']) ?  'value="' . $row['firmware_pav'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
 		<label for="config" class="col-xs-4 control-label">Status</label>
 	  <div class="col-xs-8">
 		<select class="form-control" name="status">

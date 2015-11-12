@@ -1,3 +1,8 @@
+.parts h4 a { 
+  padding: 0 1em;
+  color: #000000;
+}
+
 
 .sub_item { padding-left: 3em;}
 
@@ -300,13 +305,32 @@ main {
 }
 
 .my_table {
-  table-layout:fixed;
+
+  min-width: 500px;
+  background-color: white;
 }
 
-.large__table {
-  table-layout:fixed;
-  min-width: 950px;
+.table {
   background-color: white;
+}
+
+.table_500 {
+  min-width: 500px;
+}
+.table_550 {
+  min-width: 550px;
+}
+.table_600 {
+  min-width: 600px;
+}
+.table_650 {
+  min-width: 650px;
+}
+.table_700 {
+  min-width: 700px;
+}
+.table_750 {
+  min-width: 750px;
 }
 
 .panel_table {

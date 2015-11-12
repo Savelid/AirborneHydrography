@@ -6,9 +6,9 @@ INSERT INTO overview
 
 DELETE FROM system;
 INSERT INTO system
-	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB', 'Home', 'HawkEyeIII','Service','En kommentar','1310','1410','1510');
+	VALUES('0','1210','2015-09-15 03:14:07','1056 065-100 A','AHAB', 'Home', 'HawkEyeIII','Service','En kommentar','1310','1410','1510','4410','4420','5410');
 INSERT INTO system
-	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska', 'Piteå', 'DualDragon','Done','Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.','1311','1411','1511');
+	VALUES('1','1211','2015-09-16 07:12:17','1056 065-101 A','Nisses Mekaniska', 'Piteå', 'DualDragon','Done','Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.','1311','1411','1511','4411','4421','5411');
 
 DELETE FROM system_status;
 INSERT INTO system_status
@@ -86,11 +86,11 @@ INSERT INTO laser
 
 DELETE FROM leica_cam;
 INSERT INTO leica_cam
-	VALUES ('0','123-4567','2013-07-11 01:15:45','HawkEyeIII','32','24');
+	VALUES ('0','123-4567','2013-07-11 01:15:45','HawkEyeIII','2.1.1','32','24');
 INSERT INTO leica_cam
-	VALUES ('1','123-4568','2013-07-11 01:15:11','DualDragon','32','24');
+	VALUES ('1','123-4568','2013-07-11 01:15:11','DualDragon','2.1.1','32','24');
 INSERT INTO leica_cam
-	VALUES ('2','123-4573','2013-07-11 01:24:07','HawkEyeIII','32','24');
+	VALUES ('2','123-4573','2013-07-11 01:24:07','HawkEyeIII','2.1.1','32','24');
 
 DELETE FROM receiver_unit;
 INSERT INTO receiver_unit
@@ -107,3 +107,25 @@ INSERT INTO receiver_chip
 	VALUES ('1','123-5511','2013-07-11 01:43:15','28','24');
 INSERT INTO receiver_chip
 	VALUES ('2','123-5517','2013-07-11 01:42:15','32','28');
+
+DELETE FROM cc32;
+INSERT INTO cc32
+	VALUES ('0','3410','1.7.4');
+INSERT INTO cc32
+	VALUES ('1','3411','1.7.3');
+
+DELETE FROM oc60;
+INSERT INTO oc60
+	VALUES ('0','4410','1.7.4');
+INSERT INTO oc60
+	VALUES ('1','4411','1.7.3');
+INSERT INTO oc60
+	VALUES ('2','4420','1.7.3');
+INSERT INTO oc60
+	VALUES ('3','4421','1.7.3');
+
+DELETE FROM pav;
+INSERT INTO pav
+	VALUES ('0','5410','1.7.4');
+INSERT INTO pav
+	VALUES ('1','5411','1.7.3');

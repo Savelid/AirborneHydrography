@@ -25,7 +25,7 @@ $(function () {
         <th>Deep</th>
         <th>SCU</th>
         <th>Status</th>
-        <th>Comments</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>

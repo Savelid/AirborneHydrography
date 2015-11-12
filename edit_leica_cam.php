@@ -71,6 +71,13 @@ foreach($configuration_values as $i){
 	  	</div>
 	  </div>
 
+	  <div class="form-group">
+		<label for="firmware" class="col-xs-4 control-label">Firmware</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="firmware" <?= !empty($row['firmware']) ?  'value="' . $row['firmware'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
   	  <div class="form-group">
 		<label for="breakdown" class="col-xs-4 control-label">Breakdown</label>
 	  <div class="col-xs-8">

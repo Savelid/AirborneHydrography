@@ -55,6 +55,27 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[status_hv_deep]', 
 					'$_POST[status_cat]', 
 					'$_POST[status_pwr_cable]');";
+	$sql_insert .= "INSERT INTO oc60
+					SET 
+					serial_nr ='$_POST[oc60_1]',
+					firmware = '$_POST[firmware_oc60_1]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[oc60_1]',
+					firmware = '$_POST[firmware_oc60_1]';";
+	$sql_insert .= "INSERT INTO oc60
+					SET 
+					serial_nr ='$_POST[oc60_2]',
+					firmware = '$_POST[firmware_oc60_2]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[oc60_1]',
+					firmware = '$_POST[firmware_oc60_2]';";
+	$sql_insert .= "INSERT INTO pav
+					SET 
+					serial_nr ='$_POST[pav]',
+					firmware = '$_POST[firmware_pav]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[pav]',
+					firmware = '$_POST[firmware_pav]';";
 	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
@@ -90,6 +111,27 @@ if ($_GET['type'] == 'update_system') {
 						status_cat = '$_POST[status_cat]',
 						status_pwr_cable = '$_POST[status_pwr_cable]'
 					WHERE serial_nr = $_POST[serial_nr];";
+	$sql_update .= "INSERT INTO oc60
+					SET 
+					serial_nr ='$_POST[oc60_1]',
+					firmware = '$_POST[firmware_oc60_1]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[oc60_1]',
+					firmware = '$_POST[firmware_oc60_1]';";
+	$sql_update .= "INSERT INTO oc60
+					SET 
+					serial_nr ='$_POST[oc60_2]',
+					firmware = '$_POST[firmware_oc60_2]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[oc60_1]',
+					firmware = '$_POST[firmware_oc60_2]';";
+	$sql_update .= "INSERT INTO pav
+					SET 
+					serial_nr ='$_POST[pav]',
+					firmware = '$_POST[firmware_pav]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[pav]',
+					firmware = '$_POST[firmware_pav]';";
 	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
@@ -103,18 +145,16 @@ if ($_GET['type'] == 'update_system') {
 // INSERT sensor
 if($_GET['type'] == 'add_sensor') {
 
-	$sql_insert = "INSERT INTO sensor (serial_nr, sensor_type, cat, fpga_id, laser_sn, hv_card_sn, receiver_unit, receiver_chip_sn, hv_card_2_sn, receiver_unit_2, receiver_chip_2_sn, dps_value_input_offset_t0, dps_value_input_offset_rec, dps_value_pulse_width_t0, dps_value_pulse_width_rec, status)
+	$sql_insert = "INSERT INTO sensor (serial_nr, sensor_type, cat, fpga_id, laser_sn, hv_card_sn, receiver_unit_sn, hv_card_2_sn, receiver_unit_2_sn, dps_value_input_offset_t0, dps_value_input_offset_rec, dps_value_pulse_width_t0, dps_value_pulse_width_rec, status)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[sensor_type]',
 					'$_POST[cat]', 
 					'$_POST[fpga_id]', 
 					'$_POST[laser]', 
 					'$_POST[hv_card]', 
-					'$_POST[receiver_unit]', 
-					'$_POST[receiver_chip]', 
+					'$_POST[receiver_unit]',
 					'$_POST[hv_card_2]',
 					'$_POST[receiver_unit_2]', 
-					'$_POST[receiver_chip_2]', 
 					'$_POST[dps_value_input_offset_t0]', 
 					'$_POST[dps_value_input_offset_rec]', 
 					'$_POST[dps_value_pulse_width_t0]', 
@@ -140,12 +180,10 @@ if ($_GET['type'] == 'update_sensor') {
 						fpga_id = '$_POST[fpga_id]',
 						laser_sn = '$_POST[laser]', 
 						hv_card_sn = '$_POST[hv_card]', 
-						receiver_unit = '$_POST[receiver_unit]', 
-						receiver_chip_sn = '$_POST[receiver_chip]',
+						receiver_unit_sn = '$_POST[receiver_unit]', 
 						hv_card_2_sn = '$_POST[hv_card_2]',
+						receiver_unit_2_sn = '$_POST[receiver_unit_2]',
 
-						receiver_unit_2 = '$_POST[receiver_unit_2]',
-						receiver_chip_2_sn = '$_POST[receiver_chip_2]',
 						dps_value_input_offset_t0 = '$_POST[dps_value_input_offset_t0]',
 						dps_value_input_offset_rec = '$_POST[dps_value_input_offset_rec]',
 						dps_value_pulse_width_t0 = '$_POST[dps_value_pulse_width_t0]',
@@ -208,14 +246,21 @@ if ($_GET['type'] == 'update_sensor_unit') {
 // INSERT control_system
 if($_GET['type'] == 'add_control_system') {
 
-	$sql_insert = "INSERT INTO control_system (serial_nr, battery, cc32, pdu, scu_sn, comment)
+	$sql_insert = "INSERT INTO control_system (serial_nr, battery, cc32_sn, pdu, scu_sn, comment)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[battery]',
 					'$_POST[cc32]', 
 					'$_POST[pdu]', 
 					'$_POST[scu]',
-					'$_POST[comment]')";
-	if ($conn->query($sql_insert) === TRUE) {
+					'$_POST[comment]');";
+	$sql_insert = "INSERT INTO cc32
+					SET 
+					serial_nr ='$_POST[cc32]',
+					firmware = '$_POST[firmware]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[cc32]',
+					firmware = '$_POST[firmware]';";
+	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
 		header("Location: parts.php?alert=ControlSystemAdded");
@@ -231,12 +276,19 @@ if ($_GET['type'] == 'update_control_system') {
 	$sql_update = " UPDATE control_system
 					SET
 					battery = '$_POST[battery]',
-					cc32 = '$_POST[cc32]', 
+					cc32_sn = '$_POST[cc32]', 
 					pdu = '$_POST[pdu]', 
 					scu_sn = '$_POST[scu]',
 					comment = '$_POST[comment]'
-					WHERE serial_nr = $_POST[serial_nr]";
-	if ($conn->query($sql_update) === TRUE) {
+					WHERE serial_nr = $_POST[serial_nr];";
+	$sql_update .= "INSERT INTO cc32
+					SET 
+					serial_nr ='$_POST[cc32]',
+					firmware = '$_POST[firmware]'
+					ON DUPLICATE KEY UPDATE
+					serial_nr ='$_POST[cc32]',
+					firmware = '$_POST[firmware]';";
+	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
 		header("Location: parts.php?alert=ControlSystemUpdated");
@@ -431,9 +483,10 @@ if ($_GET['type'] == 'update_laser') {
 // INSERT leica_cam
 if($_GET['type'] == 'add_leica_cam') {
 
-	$sql_insert = "INSERT INTO leica_cam (serial_nr, configuration, breakdown, operating_voltage)
+	$sql_insert = "INSERT INTO leica_cam (serial_nr, configuration, firmware, breakdown, operating_voltage)
 	VALUES (		'$_POST[serial_nr]',
-					'$_POST[configuration]', 
+					'$_POST[configuration]',
+					'$_POST[firmware]',
 					'$_POST[breakdown]',
 					'$_POST[operating_voltage]')";
 	if ($conn->query($sql_insert) === TRUE) {
@@ -451,7 +504,8 @@ if ($_GET['type'] == 'update_leica_cam') {
 
 	$sql_update = " UPDATE leica_cam
 					SET
-					configuration = '$_POST[configuration]', 
+					configuration = '$_POST[configuration]',
+					firmware = '$_POST[firmware]',
 					breakdown = '$_POST[breakdown]',
 					operating_voltage = '$_POST[operating_voltage]'
 					WHERE serial_nr = $_POST[serial_nr]";

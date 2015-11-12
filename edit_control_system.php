@@ -15,9 +15,10 @@ if (!empty($_GET['serial_nr'])) {
 
 	//
 	$sn = $_GET['serial_nr'];
-	$sql = "SELECT *
+	$sql = "SELECT *, cc32.firmware AS cc32_firmware
 			FROM control_system
-			WHERE serial_nr = $sn";
+			LEFT JOIN cc32 ON cc32_sn = cc32.serial_nr
+			WHERE control_system.serial_nr = $sn";
 	$result = $conn->query($sql);
 	if (!$result) {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -68,6 +69,13 @@ if (!empty($_GET['serial_nr'])) {
 		<label for="cc32" class="col-xs-4 control-label">CC32</label>
 	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="cc32" <?= !empty($row['cc32']) ?  'value="' . $row['cc32'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="cc32_firmware" class="col-xs-4 control-label">CC32 firmware</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="cc32_firmware" <?= !empty($row['cc32_firmware']) ?  'value="' . $row['cc32_firmware'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
