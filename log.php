@@ -4,7 +4,7 @@ include 'res/header.inc.php';
 ?>
 
 <section class="all__systems">
-  <table class="large__table table table-striped table-responsive">
+  <table class="table table-striped table-responsive table_500">
     <thead>
       <tr>
         <th>Datetime</th>

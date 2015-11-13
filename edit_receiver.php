@@ -41,7 +41,7 @@ $path = 'post.php?type=' . $type; // path for form
 ?>
 <section class="content">
 	
-<form action= <?php echo $path ?> method="post" class="form-horizontal">
+<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
 
