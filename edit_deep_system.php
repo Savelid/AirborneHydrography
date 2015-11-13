@@ -86,7 +86,7 @@ if (!empty($_GET['serial_nr'])) {
 <?php
 $sn = '';
 if(!empty($row['deep_sensor_sn'])){ $sn = $row['deep_sensor_sn'];}
-listUnusedSerialNr('sensor', '	serial_nr NOT IN (
+listUnusedSerialNr('sensor', '	sensor_type = "deep" AND serial_nr NOT IN (
 	            			SELECT deep_system.deep_sensor_sn
 	            			FROM deep_system)'	, $sn);
 ?>

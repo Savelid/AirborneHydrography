@@ -146,11 +146,11 @@ $table_row_formating = '
         <li><a href="view_sensor.php?serial_nr=%1$s">View</a></li>
         <li role="separator" class="divider"></li>
         <li><a href="edit_sensor.php?serial_nr=%1$s">Edit</a></li>
-        <li><a href="view_system.php?system=%12$s">Parent system</a></li>
+        %13$s
       </ul>
     </div>
   </td>
-  <td>%11$s</td>
+  <td>%11$s%12$s</td>
   <td>%2$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
@@ -167,26 +167,68 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      // // Pick out parent
+      // $parent_sql = "  SELECT system.serial_nr AS system_serial_nr, deep_system_sn, sensor_unit_sn
+      //           FROM system
+      //           RIGHT JOIN deep_system ON system.deep_system_sn = deep_system.serial_nr
+      //           LEFT JOIN sensor_unit ON system.sensor_unit_sn = sensor_unit.serial_nr
+      //           WHERE (sensor_unit.topo_sensor_sn = '$row[serial_nr]' OR sensor_unit.shallow_sensor_sn = '$row[serial_nr]' OR deep_system.deep_sensor_sn = '$row[serial_nr]')
+      //           LIMIT 1;";
+
+      // $parent_result = $conn->query($parent_sql);
+      // if (!$parent_result) {
+      //   echo "Error: " . $sql . "<br>" . $conn->error;
+      //   die();
+      // }
+      // $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
+      // $parent_1 = '';
+      // if($row["sensor_type"] == 'deep'){
+      //     $parent_1 = $parent["deep_system_sn"];
+      // }else{
+      //     $parent_1 = $parent["sensor_unit_sn"];
+      // }
+
       // Pick out parent
-      $parent_sql = "  SELECT system.serial_nr AS system_serial_nr, deep_system_sn, sensor_unit_sn
+      $deep_system_sql = "  SELECT serial_nr
+                FROM deep_system
+                WHERE deep_sensor_sn = '$row[serial_nr]'
+                LIMIT 1;";
+
+      $deep_system_result = $conn->query($deep_system_sql);
+      if (!$deep_system_result) {
+        echo "Error: " . $deep_system_sql . "<br>" . $conn->error;
+        die();
+      }
+      $deep_system = $deep_system_result->fetch_array(MYSQLI_ASSOC);
+
+      // Pick out parent
+      $sensor_unit_sql = "  SELECT serial_nr
+                FROM sensor_unit
+                WHERE (topo_sensor_sn = '$row[serial_nr]' OR shallow_sensor_sn = '$row[serial_nr]')
+                LIMIT 1;";
+
+      $sensor_unit_result = $conn->query($sensor_unit_sql);
+      if (!$sensor_unit_result) {
+        echo "Error: " . $sensor_unit_sql . "<br>" . $conn->error;
+        die();
+      }
+      $sensor_unit = $sensor_unit_result->fetch_array(MYSQLI_ASSOC);
+
+      // Pick out parent
+      $parent_sql = "  SELECT serial_nr
                 FROM system
-                LEFT JOIN deep_system ON system.deep_system_sn = deep_system.serial_nr
-                LEFT JOIN sensor_unit ON system.sensor_unit_sn = sensor_unit.serial_nr
-                WHERE (sensor_unit.topo_sensor_sn = '$row[serial_nr]' OR sensor_unit.shallow_sensor_sn = '$row[serial_nr]' OR deep_system.deep_sensor_sn = '$row[serial_nr]')
+                WHERE (deep_system_sn = '$deep_system[serial_nr]' OR sensor_unit_sn = '$sensor_unit[serial_nr]')
                 LIMIT 1;";
 
       $parent_result = $conn->query($parent_sql);
       if (!$parent_result) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $parent_sql . "<br>" . $conn->error;
         die();
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
-      $parent_1 = '';
-      if($row["sensor_type"] == 'deep'){
-          $parent_1 = $parent["deep_system_sn"];
-      }else{
-          $parent_1 = $parent["sensor_unit_sn"];
-      }
+
+      $formated_parent = '';
+      if(isset($parent["serial_nr"]) && $parent["serial_nr"] != '') {$formated_parent = '<li><a href="view_system.php?system=' . $parent["serial_nr"] . '">Parent system</a></li>';}
 
         echo sprintf($table_row_formating,
           $row["serial_nr"],
@@ -199,8 +241,9 @@ if ($result->num_rows > 0) {
           $row["hv_card_2_sn"],
           $row["receiver_unit_2_sn"],
           $row["status"],
-          $parent_1,
-          $parent["system_serial_nr"]);
+          $deep_system["serial_nr"],
+          $sensor_unit["serial_nr"],
+          $formated_parent);
     }
 } else {
     echo "No rows";
