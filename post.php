@@ -224,12 +224,13 @@ if ($_GET['type'] == 'update_sensor') {
 // INSERT sensor_unit
 if($_GET['type'] == 'add_sensor_unit') {
 
-	$sql_insert = "INSERT INTO sensor_unit (serial_nr, imu, leica_cam_sn, leica_lens, topo_sensor_sn, shallow_sensor_sn, comment)
+	$sql_insert = "INSERT INTO sensor_unit (serial_nr, imu, leica_cam_sn, leica_lens, topo_sensor_sn, topo_sensor_2_sn, shallow_sensor_sn, comment)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[imu]',
 					'$_POST[leica_cam]', 
 					'$_POST[leica_lens]', 
-					'$_POST[topo_sensor]', 
+					'$_POST[topo_sensor]',
+					'$_POST[topo_sensor_2]', 
 					'$_POST[shallow_sensor]',
 					'$_POST[comment]')";
 	if ($conn->query($sql_insert) === TRUE) {
@@ -251,6 +252,7 @@ if ($_GET['type'] == 'update_sensor_unit') {
 					leica_cam_sn = '$_POST[leica_cam]', 
 					leica_lens = '$_POST[leica_lens]', 
 					topo_sensor_sn = '$_POST[topo_sensor]', 
+					topo_sensor_2_sn = '$_POST[topo_sensor_2]', 
 					shallow_sensor_sn = '$_POST[shallow_sensor]',
 					comment = '$_POST[comment]'
 					WHERE serial_nr = $_POST[serial_nr]";

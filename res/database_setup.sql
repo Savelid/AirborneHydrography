@@ -43,12 +43,12 @@ CREATE TABLE system (
 	pav_sn VARCHAR(30),
 
 	oc FLOAT,
-	bitfile_topo INTEGER,
-	bitfile_shallow INTEGER,
-	bitfile_deep INTEGER,
-	bitfile_digitaizer1 INTEGER,
-	bitfile_digitaizer2 INTEGER,
-	bitfile_sat INTEGER,
+	bitfile_topo VARCHAR(30),
+	bitfile_shallow VARCHAR(30),
+	bitfile_deep VARCHAR(30),
+	bitfile_digitaizer1 VARCHAR(30),
+	bitfile_digitaizer2 VARCHAR(30),
+	bitfile_sat VARCHAR(30),
 
 	PRIMARY KEY (id)
 );
@@ -80,6 +80,7 @@ CREATE TABLE sensor_unit (
 	leica_cam_sn VARCHAR(30),
 	leica_lens VARCHAR(30),
 	topo_sensor_sn VARCHAR(30),
+	topo_sensor_2_sn VARCHAR(30),
 	shallow_sensor_sn VARCHAR(30),
 	comment TEXT,
 
@@ -193,20 +194,6 @@ CREATE TABLE laser (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE leica_cam (
-
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
-	datetime TIMESTAMP,
-
-	configuration VARCHAR(30),
-	firmware VARCHAR(30),
-	breakdown INTEGER,
-	operating_voltage INTEGER,
-
-	PRIMARY KEY (id)
-);
-
 CREATE TABLE receiver_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -231,31 +218,13 @@ CREATE TABLE receiver_chip (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE cc32 (
+CREATE TABLE leica (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	serial_nr VARCHAR(30) NOT NULL UNIQUE,
+	datetime TIMESTAMP,
 
-	firmware VARCHAR(30),
-
-	PRIMARY KEY (id)
-);
-
-CREATE TABLE oc60 (
-
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL UNIQUE,
-
-	firmware VARCHAR(30),
-
-	PRIMARY KEY (id)
-);
-
-CREATE TABLE pav (
-
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL UNIQUE,
-
+	type ENUM('Camera', 'OC60', 'CC32', 'PAV'),
 	firmware VARCHAR(30),
 
 	PRIMARY KEY (id)

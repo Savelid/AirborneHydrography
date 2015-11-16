@@ -40,7 +40,7 @@ if ($conn->connect_error) {
 }
 
 $sql = "  SELECT system.serial_nr, client, configuration, sensor_unit_sn, control_system_sn, deep_system_sn,
-          sensor_unit.topo_sensor_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
+          sensor_unit.topo_sensor_sn, sensor_unit.topo_sensor_2_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
           control_system.scu_sn, status, system.comment
           FROM system
           LEFT JOIN sensor_unit ON sensor_unit_sn = sensor_unit.serial_nr
@@ -83,19 +83,17 @@ $config_formating = '
 ';
 
 $topo_shallow_deep_formating = '
- <td>
+ <td %11$s>
       <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">
         %4$s
       </a>
-  </td>
-
-  <td>
+%10$s
       <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">
         %5$s
       </a>
-  </td>
+    </td>
 
-  <td>
+    <td>
       <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">
         %6$s
       </a>
@@ -144,16 +142,27 @@ if ($result->num_rows > 0) {
         $comment = substr($comment, 0, 30) . "..";
       }
 
+      $topo2_shallow = $row["shallow_sensor_sn"];
+      $formating1 = '</td><td>';
+      $formating2 = '';
+      if(isset($row["topo_sensor_2_sn"]) && $row["topo_sensor_2_sn"] != '') {
+        $topo2_shallow = $row["topo_sensor_2_sn"];
+        $formating1 = '';
+        $formating2 = 'colspan=2';
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $client,
           $row["configuration"],
           $row["topo_sensor_sn"],
-          $row["shallow_sensor_sn"],
+          $topo2_shallow,
           $row["deep_sensor_sn"],
           $row["scu_sn"],
           $row["status"],
-          $row["comment"]);
+          $row["comment"],
+          $formating1,
+          $formating2);
     }
 } else {
     echo "No messages";

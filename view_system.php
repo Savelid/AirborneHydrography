@@ -237,6 +237,13 @@ else {
                 <a href="view_sensor.php?serial_nr=<?php echo $sensor_unit['topo_sensor_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View topo sensor </a> 
               </div>
             </div>
+            <li class="list-group-item"><a href="#topo2" data-toggle="collapse" class="active" data-target="#topo">Topo sensor 2: <?php echo $sensor_unit['topo_sensor_2_sn'];?></a></li>
+            <div id="topo2" class="panel-collapse collapse">
+              <div class="panel-footer sub_item">
+                <a href="edit_sensor.php?serial_nr=<?php echo $sensor_unit['topo_sensor_2_sn'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit topo sensor </a> 
+                <a href="view_sensor.php?serial_nr=<?php echo $sensor_unit['topo_sensor_2_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View topo sensor </a> 
+              </div>
+            </div>
             <li class="list-group-item"><a href="#shallow" data-toggle="collapse" class="active" data-target="#shallow">Shallow sensor: <?php echo $sensor_unit['shallow_sensor_sn'];?></a></li>
             <div id="shallow" class="panel-collapse collapse">
               <div class="panel-footer sub_item">

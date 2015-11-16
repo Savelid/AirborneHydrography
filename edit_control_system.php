@@ -15,10 +15,9 @@ if (!empty($_GET['serial_nr'])) {
 
 	//
 	$sn = $_GET['serial_nr'];
-	$sql = "SELECT *, cc32.firmware AS cc32_firmware
+	$sql = "SELECT *
 			FROM control_system
-			LEFT JOIN cc32 ON cc32_sn = cc32.serial_nr
-			WHERE control_system.serial_nr = $sn";
+			WHERE serial_nr = $sn";
 	$result = $conn->query($sql);
 	if (!$result) {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -65,17 +64,21 @@ if (!empty($_GET['serial_nr'])) {
 	  	</div>
 	  </div>
 
-  	  <div class="form-group">
+	  <div class="form-group">
 		<label for="cc32" class="col-xs-4 control-label">CC32</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="cc32" <?= !empty($row['cc32_sn']) ?  'value="' . $row['cc32_sn'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
+	  	<select class="combobox form-control" name="cc32">
+	  	  
+<?php
+$sn = '';
+if(!empty($row['cc32_sn'])){ $sn = $row['cc32_sn'];}
+listUnusedSerialNr('leica', '	type = "CC32" AND
+							serial_nr NOT IN (
+	            			SELECT control_system.cc32_sn
+	            			FROM control_system)'	, $sn);
+?>
 
-	  <div class="form-group">
-		<label for="firmware_cc32" class="col-xs-4 control-label">CC32 firmware</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="firmware_cc32" <?= !empty($row['cc32_firmware']) ?  'value="' . $row['cc32_firmware'] . '"' : '' ; ?>>
+		</select>
 	  	</div>
 	  </div>
 

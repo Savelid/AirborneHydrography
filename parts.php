@@ -150,7 +150,7 @@ $table_row_formating = '
       </ul>
     </div>
   </td>
-  <td>%11$s%12$s</td>
+  <td>%11$s%12$s %14$s</td>
   <td>%2$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
@@ -188,6 +188,15 @@ if ($result->num_rows > 0) {
       //     $parent_1 = $parent["sensor_unit_sn"];
       // }
 
+      $eject = '';
+      $table = 'sensor_unit';
+      $column = 'topo_sensor_sn';
+      $column2 = 'shallow_sensor_sn';
+      if($row['sensor_type'] == 'deep'){
+        $table = 'deep_system';
+        $column = 'deep_sensor_sn';
+        $column2 = '';
+      }
       // Pick out parent
       $deep_system_sql = "  SELECT serial_nr
                 FROM deep_system
@@ -227,6 +236,11 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+
+      if($deep_system["serial_nr"] != '' || $sensor_unit["serial_nr"] != '') {
+        $eject = '<a href="eject.php?serial_nr='. $row['serial_nr'] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
       $formated_parent = '';
       if(isset($parent["serial_nr"]) && $parent["serial_nr"] != '') {$formated_parent = '<li><a href="view_system.php?system=' . $parent["serial_nr"] . '">Parent system</a></li>';}
 
@@ -243,7 +257,8 @@ if ($result->num_rows > 0) {
           $row["status"],
           $deep_system["serial_nr"],
           $sensor_unit["serial_nr"],
-          $formated_parent);
+          $formated_parent,
+          $eject);
     }
 } else {
     echo "No rows";
@@ -283,9 +298,10 @@ if ($result->num_rows > 0) {
         <tbody>
 
 <?php
-$sql = "  SELECT *
+$sql = "  SELECT *, sensor_unit.serial_nr AS serial_nr
           FROM sensor_unit
-          ORDER BY datetime DESC";
+          LEFT JOIN leica ON leica_cam_sn = leica.serial_nr
+          ORDER BY sensor_unit.datetime DESC";
 $result = $conn->query($sql);
 if (!$result) {
     echo $sql . "<br><br>" . $conn->error;
@@ -297,12 +313,15 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_sensor_unit.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a> %12$s</td>
   <td>%3$s</td>
-  <td>%4$s</td>
+    <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %11$s">
+      <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
+  </td>
   <td>%5$s</td>
-  <td><a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a></td>
-  <td><a href="view_sensor.php?serial_nr=%7$s" class="btn btn-default btn-sm">%7$s</a></td>
+  <td %10$s><a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a>
+  %9$s
+      <a href="view_sensor.php?serial_nr=%7$s" class="btn btn-default btn-sm">%7$s</a></td>
   <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%8$s">
       <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
   </td>
@@ -313,6 +332,10 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      $eject = '';
+      $table = 'system';
+      $column = 'sensor_unit_sn';
+      $column2 = '';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM system
@@ -326,6 +349,20 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
+      $topo2_shallow = $row["shallow_sensor_sn"];
+      $formating1 = '</td><td>';
+      $formating2 = '';
+      if(isset($row["topo_sensor_2_sn"]) && $row["topo_sensor_2_sn"] != '') {
+        $topo2_shallow = $row["topo_sensor_2_sn"];
+        $formating1 = '';
+        $formating2 = 'colspan=2';
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $parent["serial_nr"],
@@ -333,8 +370,12 @@ if ($result->num_rows > 0) {
           $row["leica_cam_sn"],
           $row["leica_lens"],
           $row["topo_sensor_sn"],
-          $row["shallow_sensor_sn"],
-          $row["comment"]);
+          $topo2_shallow,
+          $row["comment"],
+          $formating1,
+          $formating2,
+          $row["firmware"],
+          $eject);
     }
 } else {
     echo "No rows";
@@ -375,8 +416,8 @@ if ($result->num_rows > 0) {
 <?php
 $sql = "  SELECT *, control_system.serial_nr AS serial_nr
           FROM control_system
-          LEFT JOIN cc32 ON cc32_sn = cc32.serial_nr
-          ORDER BY datetime DESC";
+          LEFT JOIN leica ON cc32_sn = leica.serial_nr
+          ORDER BY control_system.datetime DESC";
 $result = $conn->query($sql);
 if (!$result) {
     echo $sql . "<br><br>" . $conn->error;
@@ -388,7 +429,7 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_control_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a> %9$s</td>
   <td>%3$s</td>
   <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %8$s">
       <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
@@ -405,6 +446,10 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      $eject = '';
+      $table = 'system';
+      $column = 'control_system_sn';
+      $column2 = '';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM system
@@ -418,6 +463,11 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $parent["serial_nr"],
@@ -426,7 +476,8 @@ if ($result->num_rows > 0) {
           $row["pdu"],
           $row["scu_sn"],
           $row["comment"],
-          $row["firmware"]);
+          $row["firmware"],
+          $eject);
     }
 } else {
     echo "No rows";
@@ -478,7 +529,7 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_deep_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a> %8$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
@@ -493,6 +544,10 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      $eject = '';
+      $table = 'system';
+      $column = 'deep_system_sn';
+      $column2 = '';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM system
@@ -506,6 +561,11 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $parent["serial_nr"],
@@ -513,7 +573,8 @@ if ($result->num_rows > 0) {
           $row["imu"],
           $row["pro_pack"],
           $row["deep_sensor_sn"],
-          $row["comment"]);
+          $row["comment"],
+          $eject);
     }
 } else {
     echo "No rows";
@@ -567,7 +628,7 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_scu.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td>%2$s</td>
+  <td>%2$s %10$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
@@ -584,6 +645,10 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      $eject = '';
+      $table = 'control_system';
+      $column = 'scu_sn';
+      $column2 = '';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM control_system
@@ -597,6 +662,11 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $parent["serial_nr"],
@@ -606,7 +676,8 @@ if ($result->num_rows > 0) {
           $row["sat"],
           $row["cpu"],
           $row["status"],
-          $row["comment"]);
+          $row["comment"],
+          $eject);
     }
 } else {
     echo "No rows";
@@ -657,7 +728,7 @@ $table_row_formating = '
 <tr>
   <td><a href="edit_hv_card.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
   <td>%2$s</td>
-  <td><a href="view_sensor.php?serial_nr=%3$s" class="btn btn-default btn-sm">%3$s</a></td>
+  <td><a href="view_sensor.php?serial_nr=%3$s" class="btn btn-default btn-sm">%3$s</a> %6$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
 </tr>
@@ -667,6 +738,10 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      $eject = '';
+      $table = 'sensor';
+      $column = 'hv_card_sn';
+      $column2 = 'hv_card_2_sn';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM sensor
@@ -680,12 +755,18 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $row["art_nr"],
           $parent["serial_nr"],
           $row["k_value"],
-          $row["m_value"]);
+          $row["m_value"],
+          $eject);
     }
 } else {
     echo "No rows";
@@ -746,7 +827,7 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td colspan=2><a href="edit_laser.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td colspan=2><a href="view_sensor.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a></td>
+  <td colspan=2><a href="view_sensor.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a> %17$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
@@ -768,6 +849,10 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+      $eject = '';
+      $table = 'sensor';
+      $column = 'laser_sn';
+      $column2 = '';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM sensor
@@ -780,6 +865,11 @@ if ($result->num_rows > 0) {
         die();
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
+
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
 
         echo sprintf($table_row_formating,
           $row["serial_nr"],
@@ -797,7 +887,8 @@ if ($result->num_rows > 0) {
           $row["v_70"],
           $row["v_80"],
           $row["v_90"],
-          $row["v_100"]);
+          $row["v_100"],
+          $eject);
     }
 } else {
     echo "No rows";
@@ -850,7 +941,7 @@ $table_row_formating = '
 <tr>
   <td><a href="edit_receiver.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
   <td>%2$s</td>
-  <td><a href="view_sensor.php?serial_nr=%3$s" class="btn btn-default btn-sm">%3$s</td>
+  <td><a href="view_sensor.php?serial_nr=%3$s" class="btn btn-default btn-sm">%3$s</a> %7$s</td>
   <td>%4$s</td>
   <td>%5$s</td>
   <td>%6$s</td>
@@ -861,10 +952,15 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
+
+      $eject = '';
+      $table = 'sensor';
+      $column = 'receiver_unit_sn';
+      $column2 = 'receiver_unit_2_sn';
       // Pick out parent
       $parent_sql = "  SELECT serial_nr
                 FROM sensor
-                WHERE receiver_unit_sn = '$row[receiver_unit_serial_nr]'
+                WHERE (receiver_unit_sn = '$row[receiver_unit_serial_nr]' OR receiver_unit_2_sn = '$row[receiver_unit_serial_nr]')
                 LIMIT 1;";
 
       $parent_result = $conn->query($parent_sql);
@@ -874,25 +970,30 @@ if ($result->num_rows > 0) {
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["receiver_unit_serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
+
         echo sprintf($table_row_formating,
           $row["receiver_unit_serial_nr"],
           $row["art_nr"],
           $parent["serial_nr"],
           $row["receiver_chip_sn"],
           $row["breakdown_voltage"],
-          $row["operating_voltage"]);
+          $row["operating_voltage"],
+          $eject);
     }
 } else {
     echo "No rows";
 }
 ?>
-
       </tbody>
     </table>
     </div>
 
 
-<!--###### Leica Camera Table ######-->
+<!--###### Leica Table ######-->
 
   <div  role="tab" id="headingLeicaCam">
     <h4>
@@ -908,9 +1009,7 @@ if ($result->num_rows > 0) {
           <tr>
             <th>Serial nr.</th>
             <th>Parent</th>
-            <th>Config</th>
-            <th>Breakdown</th>
-            <th>Operating V</th>
+            <th>Type</th>
             <th>Firmware</th>
           </tr>
         </thead>
@@ -918,7 +1017,7 @@ if ($result->num_rows > 0) {
 
 <?php
 $sql = "  SELECT *
-          FROM leica_cam
+          FROM leica
           ORDER BY datetime DESC";
 $result = $conn->query($sql);
 if (!$result) {
@@ -931,11 +1030,9 @@ if (!$result) {
 $table_row_formating = '
 <tr>
   <td><a href="edit_leica_cam.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-  <td>%2$s</td>
+  <td>%2$s %5$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
-  <td>%5$s</td>
-  <td>%6$s</td>
 </tr>
 ';
 
@@ -943,27 +1040,66 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
-      // Pick out parent
-      $parent_sql = "  SELECT serial_nr
-                FROM sensor_unit
-                WHERE leica_cam_sn = '$row[serial_nr]'
-                LIMIT 1;";
-
+      $eject = '';
+      $table = '';
+      $column = '';
+      $column2 = '';
+      if($row["type"] == 'OC60'){
+        $table = 'system';
+        $column = 'oc60_1_sn';
+        $column2 = 'oc60_2_sn';
+        // Pick out parent
+        $parent_sql = "  SELECT serial_nr
+                  FROM system
+                  WHERE (oc60_1_sn = '$row[serial_nr]' OR oc60_2_sn = '$row[serial_nr]')
+                  LIMIT 1;";
+      }
+      if($row["type"] == 'PAV'){
+        $table = 'system';
+        $column = 'pav_sn';
+        // Pick out parent
+        $parent_sql = "  SELECT serial_nr
+                  FROM system
+                  WHERE pav_sn = '$row[serial_nr]'
+                  LIMIT 1;";
+      }
+      else if($row["type"] == 'CC32'){
+        $table = 'control_system';
+        $column = 'cc32_sn';
+        // Pick out parent
+        $parent_sql = "  SELECT serial_nr
+                  FROM control_system
+                  WHERE cc32_sn = '$row[serial_nr]'
+                  LIMIT 1;";
+      }
+      else if($row["type"] == 'Camera'){
+        $table = 'sensor_unit';
+         $column = 'leica_cam_sn';
+        // Pick out parent
+        $parent_sql = "  SELECT serial_nr
+                  FROM sensor_unit
+                  WHERE leica_cam_sn = '$row[serial_nr]'
+                  LIMIT 1;";
+      }
       $parent_result = $conn->query($parent_sql);
       if (!$parent_result) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $parent_sql . "<br>" . $conn->error;
         die();
       }
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
+
+      if($parent["serial_nr"] != '') {
+
+        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+      }
 
         //print out rows
         echo sprintf($table_row_formating,
           $row["serial_nr"],
           $parent["serial_nr"],
-          $row["configuration"],
-          $row["breakdown"],
-          $row["operating_voltage"],
-          $row["firmware"]);
+          $row["type"],
+          $row["firmware"],
+          $eject);
     }
 } else {
     echo "No rows";
