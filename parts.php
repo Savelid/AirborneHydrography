@@ -24,7 +24,6 @@ $(function(){
   })
 })
 </script>
-<section class="content">
 
 <div class="modal fade" id="confirmModal">
   <div class="modal-dialog">
@@ -61,6 +60,7 @@ $(function(){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<section class="content">
 
 <?php
 if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['showalert'] == 'true') {
