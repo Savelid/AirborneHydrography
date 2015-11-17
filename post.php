@@ -551,10 +551,11 @@ if($_GET['type'] == 'add_receiver' || $_GET['type'] == 'update_receiver') {
 //INSERT POST values
 if($_GET["type"] == 'add_message') { 
 	$sql_insert = "INSERT INTO overview (message, author)
-	VALUES ('$_POST[input_message]', '$_POST[input_name]')";
+	VALUES ('$_POST[message]', '$_POST[user]')";
 
 	if ($conn->query($sql_insert) === TRUE) {
     	echo "New record created successfully";
+    	$_SESSION['alert'] = 'New message';
     	header("Location: index.php");
 		die();
 	} else {
