@@ -1,6 +1,6 @@
 <?php
 
-$titel = 'Edit Leica Camera';
+$titel = 'Edit Leica';
 include 'res/header.inc.php';
 $type = 'add_leica_cam';
 if (!empty($_GET['serial_nr'])) {
@@ -56,17 +56,13 @@ if (!empty($_GET['serial_nr'])) {
 	  </div>
 
   	  <div class="form-group">
-		<label for="config" class="col-xs-4 control-label">Configuration</label>
+		<label for="config" class="col-xs-4 control-label">Type</label>
 	  <div class="col-xs-8">
-		<select class="form-control" name="configuration">
-<?php
-foreach($configuration_values as $i){
-	$selected = '';
-	if(!empty($row['configuration']) && $row['configuration'] == $i){$selected = 'selected';}
-	$s = '<option value="%s" %s>%s</option>';
-	echo sprintf($s, $i, $selected, $i);
-}
-?>
+		<select class="form-control" name="type">
+			<option value="OC60">OC60</option>
+			<option value="CC32">CC32</option>
+			<option value="PAV">PAV</option>
+			<option value="Camera">Camera</option>
 		</select>
 	  	</div>
 	  </div>
@@ -75,20 +71,6 @@ foreach($configuration_values as $i){
 		<label for="firmware" class="col-xs-4 control-label">Firmware</label>
 	  <div class="col-xs-8">
 	  	<input type="text" class="form-control" name="firmware" <?= !empty($row['firmware']) ?  'value="' . $row['firmware'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-  	  <div class="form-group">
-		<label for="breakdown" class="col-xs-4 control-label">Breakdown</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="breakdown" <?= !empty($row['breakdown']) ?  'value="' . $row['breakdown'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="operating_voltage" class="col-xs-4 control-label">Operating Voltage</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="operating_voltage" <?= !empty($row['operating_voltage']) ?  'value="' . $row['operating_voltage'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 

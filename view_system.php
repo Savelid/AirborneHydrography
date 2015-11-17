@@ -12,30 +12,33 @@ if (!empty($_GET['system'])) {
     	die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql = " SELECT *
+	$sql = " SELECT *, system.serial_nr AS serial_nr, leica_oc60_1.firmware AS oc60_1_firmware, leica_oc60_2.firmware AS oc60_2_firmware, leica_pav.firmware AS pav_firmware
 			     FROM system
            LEFT JOIN system_status ON system_status.serial_nr = system.serial_nr
-           WHERE system.serial_nr = $_GET[system];";
+           LEFT JOIN leica AS leica_oc60_1 ON leica_oc60_1.serial_nr = oc60_1_sn
+           LEFT JOIN leica AS leica_oc60_2 ON leica_oc60_2.serial_nr = oc60_2_sn
+           LEFT JOIN leica AS leica_pav ON leica_pav.serial_nr = pav_sn
+           WHERE system.serial_nr = '$_GET[system]';";
 	$result = $conn->query($sql);
 	if (!$result) {
 		die("Query 1 failed! <br>Error:" . $sql . "<br>" . $conn->error);
 	}
   $system = $result->fetch_array(MYSQLI_ASSOC);
 
-  $sql = " SELECT *, leica_cam.configuration AS leica_cam_configuration, leica_cam.breakdown AS leica_cam_breakdown, leica_cam.operating_voltage AS leica_cam_operating_voltage
+  $sql = " SELECT *,  sensor_unit.serial_nr AS serial_nr, leica.firmware AS leica_cam_firmware
            FROM sensor_unit
-           LEFT JOIN leica_cam ON sensor_unit.leica_cam_sn = leica_cam.serial_nr
-           WHERE sensor_unit.serial_nr = $system[sensor_unit_sn];";
+           LEFT JOIN leica ON sensor_unit.leica_cam_sn = leica.serial_nr
+           WHERE sensor_unit.serial_nr = '$system[sensor_unit_sn]';";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query 2 failed! <br>Error:" . $sql . "<br>" . $conn->error);
   }
   $sensor_unit = $result->fetch_array(MYSQLI_ASSOC);
 
-  $sql = " SELECT *, control_system.serial_nr AS serial_nr, cc32.firmware AS cc32_firmware
+  $sql = " SELECT *, control_system.serial_nr AS serial_nr, leica.firmware AS cc32_firmware
            FROM control_system
-           LEFT JOIN cc32 ON cc32_sn = cc32.serial_nr
-           WHERE control_system.serial_nr = $system[control_system_sn];";
+           LEFT JOIN leica ON cc32_sn = leica.serial_nr
+           WHERE control_system.serial_nr = '$system[control_system_sn]';";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query 3 failed! <br>Error:" . $sql . "<br>" . $conn->error);
@@ -44,7 +47,7 @@ if (!empty($_GET['system'])) {
 
   $sql = " SELECT *
            FROM scu
-           WHERE serial_nr = $control_system[scu_sn];";
+           WHERE serial_nr = '$control_system[scu_sn]';";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query 4 failed! <br>Error:" . $sql . "<br>" . $conn->error);
@@ -53,7 +56,7 @@ if (!empty($_GET['system'])) {
 
     $sql = " SELECT *
            FROM deep_system
-           WHERE serial_nr = $system[deep_system_sn];";
+           WHERE serial_nr = '$system[deep_system_sn]';";
   $result = $conn->query($sql);
   if (!$result) {
     die("Query 5 failed! <br>Error:" . $sql . "<br>" . $conn->error);
@@ -221,13 +224,9 @@ else {
         <div id="sensor_unit" class="panel-collapse collapse in">
           <ul class="list-group">
             <li class="list-group-item">IMU: <?php echo $sensor_unit['imu'];?></li>
-            <li class="list-group-item"><a href="#leica_cam" data-toggle="collapse" data-target="#leica_cam">Leica camera: <?php echo $sensor_unit['leica_cam_sn'];?></a></li>
+            <li class="list-group-item"><a href="#leica_cam" data-toggle="collapse" data-target="#leica_cam">Leica camera: <?php echo $sensor_unit['leica_cam_sn'];?></a> Firmware: <?php echo $sensor_unit['firmware'];?></li>
             <div id="leica_cam" class="panel-collapse collapse">
-              <li class="list-group-item sub_item">Config: <?php echo $sensor_unit['leica_cam_configuration'];?></li>
-              <li class="list-group-item sub_item">Breakdown: <?php echo $sensor_unit['leica_cam_breakdown'];?></li>
-              <li class="list-group-item sub_item">Operating Voltage: <?php echo $sensor_unit['leica_cam_operating_voltage'];?></li>
-              <li class="list-group-item sub_item">Firmware: <?php echo $sensor_unit['firmware'];?></li>
-            <div class="panel-footer sub_item"><a href="#"><span class="glyphicon glyphicon-pencil"></span>Edit leica camera</a></div>
+              <div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $sensor_unit['leica_cam_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit leica camera</a></div>
             </div>
             <li class="list-group-item">Leica lens: <?php echo $sensor_unit['leica_lens'];?></li>
             <li class="list-group-item"><a href="#topo" data-toggle="collapse" class="active" data-target="#topo">Topo sensor: <?php echo $sensor_unit['topo_sensor_sn'];?></a></li>
@@ -237,7 +236,7 @@ else {
                 <a href="view_sensor.php?serial_nr=<?php echo $sensor_unit['topo_sensor_sn'];?>"><span class="glyphicon glyphicon-hand-up"></span> View topo sensor </a> 
               </div>
             </div>
-            <li class="list-group-item"><a href="#topo2" data-toggle="collapse" class="active" data-target="#topo">Topo sensor 2: <?php echo $sensor_unit['topo_sensor_2_sn'];?></a></li>
+            <li class="list-group-item"><a href="#topo2" data-toggle="collapse" class="active" data-target="#topo2">Topo sensor 2: <?php echo $sensor_unit['topo_sensor_2_sn'];?></a></li>
             <div id="topo2" class="panel-collapse collapse">
               <div class="panel-footer sub_item">
                 <a href="edit_sensor.php?serial_nr=<?php echo $sensor_unit['topo_sensor_2_sn'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit topo sensor </a> 
@@ -270,7 +269,10 @@ else {
         <div id="control_system" class="panel-collapse collapse in">
           <ul class="list-group">
             <li class="list-group-item">Battery: <?php echo $control_system['battery'];?></li>
-            <li class="list-group-item">CC32: <?php echo $control_system['cc32_sn'] . " Firmware: " . $control_system['cc32_firmware'];?></li>
+            <li class="list-group-item"><a href="#cc32" data-toggle="collapse" data-target="#cc32">CC32: <?php echo $control_system['cc32_sn'];?></a> Firmware: <?php echo $control_system['cc32_firmware'];?></li>
+            <div id="cc32" class="panel-collapse collapse">
+              <div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $control_system['cc32_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit CC32</a></div>
+            </div>
             <li class="list-group-item">PDU: <?php echo $control_system['pdu'];?></li>
             <li class="list-group-item"><a href="#scu" data-toggle="collapse" data-target="#scu">SCU: <?php echo $control_system['scu_sn'];?></a></li>
             <div id="scu" class="panel-collapse collapse">
@@ -290,6 +292,8 @@ else {
       </div>
 
     </div><!-- end col -->
+    <!-- Add the extra clearfix for only the required viewport -->
+    <div class="clearfix visible-lg-block"></div>
     <div class="col-sm-12 col-md-12 col-lg-6">
 
       <!--###### Deep System List ######-->
@@ -314,6 +318,34 @@ else {
             <li class="list-group-item">Comment: <?php echo $deep_system['comment'];?></li>
           </ul>
           <div class="panel-footer"><a href="edit_deep_system.php?serial_nr=<?php echo $deep_system['serial_nr'];?>"><span class="glyphicon glyphicon-pencil"></span> Edit deep system </a> </div>
+        </div>
+      </div>
+
+    </div><!-- end col -->
+    <div class="col-sm-12 col-md-12 col-lg-6">
+
+      <!--###### System Component List ######-->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#sys_comp">System Components:</a>
+          </h4>
+        </div>
+        <div id="sys_comp" class="panel-collapse collapse in">
+          <ul class="list-group">
+            <li class="list-group-item"><a href="#oc60_1" data-toggle="collapse" data-target="#oc60_1">OC60 1: <?php echo $system['oc60_1_sn'];?></a> Firmware: <?php echo $system['oc60_1_firmware'];?></li>
+            <div id="oc60_1" class="panel-collapse collapse">
+              <div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $system['oc60_1_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit OC60 1</a></div>
+            </div>
+            <li class="list-group-item"><a href="#oc60_2" data-toggle="collapse" data-target="#oc60_2">OC60 2: <?php echo $system['oc60_2_sn'];?></a> Firmware: <?php echo $system['oc60_2_firmware'];?></li>
+            <div id="oc60_2" class="panel-collapse collapse">
+              <div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $system['oc60_2_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit OC60 2</a></div>
+            </div>
+            <li class="list-group-item"><a href="#pav" data-toggle="collapse" data-target="#pav">PAV: <?php echo $system['pav_sn'];?></a> Firmware: <?php echo $system['pav_firmware'];?></li>
+            <div id="pav" class="panel-collapse collapse">
+              <div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $system['pav_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit PAV</a></div>
+            </div>
+          </ul>
         </div>
       </div>
 

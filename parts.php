@@ -40,7 +40,7 @@ if(isset($_GET['alert'])) {
       <li><a href="edit_laser.php">Laser</a></li>
       <li><a href="edit_hv_card.php">HV card</a></li>
       <li><a href="edit_receiver.php">Receiver</a></li>
-      <li><a href="edit_leica_cam.php">Leica camera</a></li>
+      <li><a href="edit_leica.php">Leica *</a></li>
     </ul>
   </div>
 
@@ -61,7 +61,7 @@ if(isset($_GET['alert'])) {
       <li><a href="#headingLaser">Laser</a></li>
       <li><a href="#headingHVCard">HV card</a></li>
       <li><a href="#headingReceiver">Receiver</a></li>
-      <li><a href="#headingLeicaCam">Leica camera</a></li>
+      <li><a href="#headingLeica">Leica</a></li>
     </ul>
   </div>
 
@@ -995,14 +995,14 @@ if ($result->num_rows > 0) {
 
 <!--###### Leica Table ######-->
 
-  <div  role="tab" id="headingLeicaCam">
+  <div  role="tab" id="headingLeica">
     <h4>
-      <a role="button" data-toggle="collapse" href="#collapseLeicaCam" aria-expanded="true" aria-controls="collapseLeicaCam">
-        Leica Cam
+      <a role="button" data-toggle="collapse" href="#collapseLeica" aria-expanded="true" aria-controls="collapseLeica">
+        Leica
       </a>
     </h4>
   </div>
-  <div id="collapseLeicaCam" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLeicaCam">
+  <div id="collapseLeica" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLeica">
 
       <table class="table table-striped table-responsive table_600">
         <thead>
