@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $titel = 'Edit Laser';
 include 'res/header.inc.php';
 $type = 'add_laser';
@@ -162,14 +162,14 @@ if (!empty($_GET['serial_nr'])) {
 		<div class="form-group col-xs-12">
 			<label for="user">User</label>
 			<div>
-				<input type="text" class="form-control" name="user" required />
+				<input type="text" class="form-control" name="user" <?= !empty($_SESSION['user']) ? 'value="' . $_SESSION['user'] . '"' : ''; ?> required />
 			</div>
 		</div>
 
 		<div class="form-group col-xs-12">
 			<label for="log_comment">Log Comment</label>
 			<div>
-				<textarea class="form-control" name="log_comment" rows="3"><?= !empty($row['log_comment']) ? $row['log_comment'] : ''; ?></textarea>
+				<textarea class="form-control" name="log_comment" rows="3"></textarea>
 			</div>
 		</div>
 	</div>

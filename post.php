@@ -1,4 +1,7 @@
 <?php
+session_start();
+$_SESSION['user'] = $_POST['user'];
+$_SESSION['showalert'] = 'true';
 include 'res/config.inc.php';
 // Check that type is deffined
 if(isset($_GET['type'])){
@@ -65,31 +68,11 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[status_hv_deep]', 
 					'$_POST[status_cat]', 
 					'$_POST[status_pwr_cable]');";
-	$sql_insert .= "INSERT INTO oc60
-					SET 
-					serial_nr ='$_POST[oc60_1]',
-					firmware = '$_POST[firmware_oc60_1]'
-					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[oc60_1]',
-					firmware = '$_POST[firmware_oc60_1]';";
-	$sql_insert .= "INSERT INTO oc60
-					SET 
-					serial_nr ='$_POST[oc60_2]',
-					firmware = '$_POST[firmware_oc60_2]'
-					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[oc60_2]',
-					firmware = '$_POST[firmware_oc60_2]';";
-	$sql_insert .= "INSERT INTO pav
-					SET 
-					serial_nr ='$_POST[pav]',
-					firmware = '$_POST[firmware_pav]'
-					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[pav]',
-					firmware = '$_POST[firmware_pav]';";
 	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: systems.php?alert=SystemAdded");
+		$_SESSION['alert'] = 'New system added';
+		header("Location: systems.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -132,31 +115,11 @@ if ($_GET['type'] == 'update_system') {
 						status_cat = '$_POST[status_cat]',
 						status_pwr_cable = '$_POST[status_pwr_cable]'
 					WHERE serial_nr = $_POST[serial_nr];";
-	$sql_update .= "INSERT INTO oc60
-					SET 
-					serial_nr ='$_POST[oc60_1]',
-					firmware = '$_POST[firmware_oc60_1]'
-					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[oc60_1]',
-					firmware = '$_POST[firmware_oc60_1]';";
-	$sql_update .= "INSERT INTO oc60
-					SET 
-					serial_nr ='$_POST[oc60_2]',
-					firmware = '$_POST[firmware_oc60_2]'
-					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[oc60_2]',
-					firmware = '$_POST[firmware_oc60_2]';";
-	$sql_update .= "INSERT INTO pav
-					SET 
-					serial_nr ='$_POST[pav]',
-					firmware = '$_POST[firmware_pav]'
-					ON DUPLICATE KEY UPDATE
-					serial_nr ='$_POST[pav]',
-					firmware = '$_POST[firmware_pav]';";
 	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: systems.php?alert=SystemUpdated");
+		$_SESSION['alert'] = 'System updated';
+		header("Location: systems.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -184,7 +147,8 @@ if($_GET['type'] == 'add_sensor') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=SensorAdded");
+		$_SESSION['alert'] = 'New sensor added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -214,7 +178,8 @@ if ($_GET['type'] == 'update_sensor') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=SensorUpdated");
+		$_SESSION['alert'] = 'Sensor updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -236,7 +201,8 @@ if($_GET['type'] == 'add_sensor_unit') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=SensorUnitAdded");
+		$_SESSION['alert'] = 'New sensor unit added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -259,7 +225,8 @@ if ($_GET['type'] == 'update_sensor_unit') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=SensorUnitUpdated");
+		$_SESSION['alert'] = 'Sensor unit updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -286,7 +253,8 @@ if($_GET['type'] == 'add_control_system') {
 	if ($conn->multi_query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=ControlSystemAdded");
+		$_SESSION['alert'] = 'New control system added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -314,7 +282,8 @@ if ($_GET['type'] == 'update_control_system') {
 	if ($conn->multi_query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=ControlSystemUpdated");
+		$_SESSION['alert'] = 'Control system updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -334,7 +303,8 @@ if($_GET['type'] == 'add_deep_system') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=DeepSystemAdded");
+		$_SESSION['alert'] = 'New deep system added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -355,7 +325,8 @@ if ($_GET['type'] == 'update_deep_system') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=DeepSystemUpdated");
+		$_SESSION['alert'] = 'Deep system updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -377,7 +348,8 @@ if($_GET['type'] == 'add_scu') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=SCUAdded");
+		$_SESSION['alert'] = 'New SCU added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -400,7 +372,8 @@ if ($_GET['type'] == 'update_scu') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?SCUUpdated");
+		$_SESSION['alert'] = 'SCU updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -418,7 +391,8 @@ if($_GET['type'] == 'add_hv_card') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=HVCardAdded");
+		$_SESSION['alert'] = 'New HV card added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -437,7 +411,8 @@ if ($_GET['type'] == 'update_hv_card') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=HVCardUpdated");
+		$_SESSION['alert'] = 'HV card updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -466,7 +441,8 @@ if($_GET['type'] == 'add_laser') {
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=LaserAdded");
+		$_SESSION['alert'] = 'New laser added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -496,7 +472,8 @@ if ($_GET['type'] == 'update_laser') {
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=LaserUpdated");
+		$_SESSION['alert'] = 'Laser updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -504,18 +481,17 @@ if ($_GET['type'] == 'update_laser') {
 }
 
 // INSERT leica_cam
-if($_GET['type'] == 'add_leica_cam') {
+if($_GET['type'] == 'add_leica') {
 
-	$sql_insert = "INSERT INTO leica_cam (serial_nr, configuration, firmware, breakdown, operating_voltage)
+	$sql_insert = "INSERT INTO leica (serial_nr, type, firmware)
 	VALUES (		'$_POST[serial_nr]',
-					'$_POST[configuration]',
-					'$_POST[firmware]',
-					'$_POST[breakdown]',
-					'$_POST[operating_voltage]')";
+					'$_POST[type]',
+					'$_POST[firmware]')";
 	if ($conn->query($sql_insert) === TRUE) {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
-		header("Location: parts.php?alert=LeicaCameraAdded");
+		$_SESSION['alert'] = 'New leica unit of type ' . $_POST['type'] . ' added';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -523,19 +499,18 @@ if($_GET['type'] == 'add_leica_cam') {
 } 
 
 // UPDATE leica_cam
-if ($_GET['type'] == 'update_leica_cam') {
+if ($_GET['type'] == 'update_leica') {
 
-	$sql_update = " UPDATE leica_cam
+	$sql_update = " UPDATE leica
 					SET
-					configuration = '$_POST[configuration]',
-					firmware = '$_POST[firmware]',
-					breakdown = '$_POST[breakdown]',
-					operating_voltage = '$_POST[operating_voltage]'
+					type = '$_POST[type]',
+					firmware = '$_POST[firmware]'
 					WHERE serial_nr = $_POST[serial_nr]";
 	if ($conn->query($sql_update) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_update));
-		header("Location: parts.php?alert=LeicaCameraUpdated");
+		$_SESSION['alert'] = 'Leica unit of type ' . $_POST['type'] . ' updated';
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -565,7 +540,8 @@ if($_GET['type'] == 'add_receiver' || $_GET['type'] == 'update_receiver') {
 	if ($conn->multi_query($sql) === TRUE) {
 		echo "Record updated successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql));
-		header("Location: parts.php?alert=ReceiverChanged");
+		$_SESSION['alert'] = $_GET['type'];
+		header("Location: parts.php");
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
@@ -579,7 +555,7 @@ if($_GET["type"] == 'add_message') {
 
 	if ($conn->query($sql_insert) === TRUE) {
     	echo "New record created successfully";
-    	header("Location: index.php?alert=MessageAdded");
+    	header("Location: index.php");
 		die();
 	} else {
     	echo "Error: " . $sql_insert . "<br>" . $conn->error;

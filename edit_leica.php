@@ -1,10 +1,10 @@
 <?php
-
+session_start();
 $titel = 'Edit Leica';
 include 'res/header.inc.php';
-$type = 'add_leica_cam';
+$type = 'add_leica';
 if (!empty($_GET['serial_nr'])) {
-	$type = 'update_leica_cam';
+	$type = 'update_leica';
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -26,6 +26,7 @@ if (!empty($_GET['serial_nr'])) {
     $conn->close();
 }
 $path = 'post.php?type=' . $type; // path for form
+
 ?>
 <?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
@@ -81,14 +82,14 @@ if (!empty($_GET['serial_nr'])) {
 		<div class="form-group col-xs-12">
 			<label for="user">User</label>
 			<div>
-				<input type="text" class="form-control" name="user" required />
+				<input type="text" class="form-control" name="user" <?= !empty($_SESSION['user']) ? 'value="' . $_SESSION['user'] . '"' : ''; ?> required />
 			</div>
 		</div>
 
 		<div class="form-group col-xs-12">
 			<label for="log_comment">Log Comment</label>
 			<div>
-				<textarea class="form-control" name="log_comment" rows="3"><?= !empty($row['log_comment']) ? $row['log_comment'] : ''; ?></textarea>
+				<textarea class="form-control" name="log_comment" rows="3"></textarea>
 			</div>
 		</div>
 	</div>

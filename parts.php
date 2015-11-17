@@ -1,4 +1,5 @@
 <?php
+session_start();
 $titel = 'Parts';
 include 'res/header.inc.php'; 
 ?>
@@ -6,17 +7,70 @@ include 'res/header.inc.php';
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
+$(function(){
+  $('#confirmModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var serial_nr = button.data('form_serial_nr') // Extract info from data-* attributes
+    var table = button.data('form_table')
+    var column = button.data('form_column')
+    var column2 = button.data('form_column2')
+    var modal = $(this)
+    modal.find('.modal-title').text('Eject ' + serial_nr)
+    modal.find('.modal-body p').text('This will remove ' + column + ' , ' + column2 + ' from ' + table + ' where serial number is ' + serial_nr)
+    modal.find('.modal-body #serial_nr').val(serial_nr)
+    modal.find('.modal-body #table').val(table)
+    modal.find('.modal-body #column').val(column)
+    modal.find('.modal-body #column2').val(column2)
+  })
+})
 </script>
+
+<div class="modal fade" id="confirmModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Confirm Eject</h4>
+      </div>
+      <div class="modal-body">
+        <p></p>
+        <form action="eject.php" method="post" id="ejectForm">
+          <input type="hidden" name="serial_nr" id="serial_nr" />
+          <input type="hidden" name="table" id="table" />
+          <input type="hidden" name="column" id="column" />
+          <input type="hidden" name="column2" id="column2" />
+
+          <h4>Log</h4>
+          <label for="user">User</label>
+          <div>
+            <input type="text" class="form-control" name="user" <?= !empty($_SESSION['user']) ? 'value="' . $_SESSION['user'] . '"' : ''; ?> required />
+          </div>
+
+          <label for="log_comment">Log Comment</label>
+          <div>
+            <textarea class="form-control" name="log_comment" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" form="ejectForm" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <section class="content">
 
 <?php
-if(isset($_GET['alert'])) {
+if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['showalert'] == 'true') {
+  $_SESSION['showalert'] = 'false';
   echo '
     <div class="alert alert-warning alert-dismissible fade in" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   ';
-  echo $_GET['alert'];
+  echo $_SESSION['alert'];
   echo '
     </div>
   ';
@@ -238,7 +292,7 @@ if ($result->num_rows > 0) {
 
 
       if($deep_system["serial_nr"] != '' || $sensor_unit["serial_nr"] != '') {
-        $eject = '<a href="eject.php?serial_nr='. $row['serial_nr'] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
       $formated_parent = '';
@@ -351,7 +405,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
       $topo2_shallow = $row["shallow_sensor_sn"];
@@ -465,7 +519,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         echo sprintf($table_row_formating,
@@ -563,7 +617,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         echo sprintf($table_row_formating,
@@ -664,7 +718,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         echo sprintf($table_row_formating,
@@ -757,7 +811,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         echo sprintf($table_row_formating,
@@ -868,7 +922,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         echo sprintf($table_row_formating,
@@ -972,7 +1026,7 @@ if ($result->num_rows > 0) {
 
       if($parent["serial_nr"] != '') {
 
-        $eject = '<a href="eject.php?serial_nr='. $row["receiver_unit_serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["receiver_unit_serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         echo sprintf($table_row_formating,
@@ -1089,8 +1143,7 @@ if ($result->num_rows > 0) {
       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
       if($parent["serial_nr"] != '') {
-
-        $eject = '<a href="eject.php?serial_nr='. $row["serial_nr"] .'&table=' . $table .'&column=' . $column .'&column2=' . $column2 . '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></a>';
+        $eject = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
       }
 
         //print out rows

@@ -1,4 +1,5 @@
 <?php
+session_start();
 $titel = 'Systems';
 include 'res/header.inc.php'; 
 ?>
@@ -10,6 +11,21 @@ $(function () {
 
 
 <section class="content">
+
+<?php
+if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['showalert'] == 'true') {
+  $_SESSION['showalert'] = 'false';
+  echo '
+    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  ';
+  echo $_SESSION['alert'];
+  echo '
+    </div>
+  ';
+}
+?>
+
   <a href="edit_system.php" class="btn btn-default" role="button">New system</a>
 </section>
 
@@ -66,7 +82,6 @@ $serial_nr_formating = '
         <li><a href="view_system.php?system=%1$s">View</a></li>
         <li role="separator" class="divider"></li>
         <li><a href="edit_system.php?system=%1$s">Edit</a></li>
-        <li><a href="delete.php?type=system&serial_nr=%1$s" onclick="return confirm(\'Are you sure that you want to delete this system: %1$s\'); ">Delete</a></li>
       </ul>
     </div>
   </td>
