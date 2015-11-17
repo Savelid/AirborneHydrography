@@ -189,7 +189,7 @@ listUnusedSerialNr('leica', ' 	type = "OC60" AND
 	  	  
 <?php
 $sn = '';
-if(!empty($row['pav'])){ $sn = $row['pav'];}
+if(!empty($row['pav_sn'])){ $sn = $row['pav_sn'];}
 listUnusedSerialNr('leica', ' 	type = "PAV" AND
 							serial_nr NOT IN (
 	            			SELECT system.pav_sn
@@ -212,6 +212,13 @@ foreach($system_status_values as $i){
 }
 ?>
 		</select>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="place" class="col-xs-4 control-label">Comment</label>
+	  	<div class="col-xs-8">
+	  		<textarea class="form-control" name="comment" rows="5"><?= !empty($row['comment']) ?  $row['comment'] : '' ; ?></textarea>
 	  	</div>
 	  </div>
 
