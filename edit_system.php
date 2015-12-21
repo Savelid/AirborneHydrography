@@ -16,7 +16,7 @@ if (!empty($_GET['system'])) {
 	$sql = "SELECT *, system.serial_nr AS serial_nr
 			FROM system
 			LEFT JOIN system_status ON system_status.serial_nr = system.serial_nr
-            WHERE system.serial_nr = $_GET[system];";
+            WHERE system.serial_nr = '$_GET[system]';";
 	$result = $conn->query($sql);
 	if (!$result) {
 		die("Query 1 failed! " . $sql . "<br>" . $conn->error);
@@ -25,7 +25,7 @@ if (!empty($_GET['system'])) {
 
     $conn->close();
 }
-$path = 'post.php?type=' . $type;
+$path = 'post_add_update.php?type=' . $type;
 ?>
 <?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
@@ -34,7 +34,7 @@ $path = 'post.php?type=' . $type;
   });
 </script>
 <section class="content">
-	
+
 <form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
@@ -96,7 +96,7 @@ foreach($configuration_values as $i){
 		<label for="sensor_unit" class="col-xs-4 control-label">Sensor Unit</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="sensor_unit">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['sensor_unit_sn'])){ $sn = $row['sensor_unit_sn'];}
@@ -112,7 +112,7 @@ listUnusedSerialNr('sensor_unit', '	serial_nr NOT IN (
 		<label for="control_system" class="col-xs-4 control-label">Control System</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="control_system">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['control_system_sn'])){ $sn = $row['control_system_sn'];}
@@ -128,7 +128,7 @@ listUnusedSerialNr('control_system', '	serial_nr NOT IN (
 		<label for="deep_system" class="col-xs-4 control-label">Deep System</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="deep_system">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['deep_system_sn'])){ $sn = $row['deep_system_sn'];}
@@ -144,7 +144,7 @@ listUnusedSerialNr('deep_system', '	serial_nr NOT IN (
 		<label for="oc60_1" class="col-xs-4 control-label">OC60 1</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="oc60_1">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['oc60_1_sn'])){ $sn = $row['oc60_1_sn'];}
@@ -165,7 +165,7 @@ listUnusedSerialNr('leica', ' 	type = "OC60" AND
 		<label for="oc60_2" class="col-xs-4 control-label">OC60 2</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="oc60_2">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['oc60_2_sn'])){ $sn = $row['oc60_2_sn'];}
@@ -186,7 +186,7 @@ listUnusedSerialNr('leica', ' 	type = "OC60" AND
 		<label for="pav" class="col-xs-4 control-label">PAV</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="pav">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['pav_sn'])){ $sn = $row['pav_sn'];}
@@ -338,7 +338,7 @@ foreach($system_status_values as $i){
   <div class="row">
 	  <div class="col-sm-12">
 	    <button type="submit" class="btn btn-default">Apply</button>
-	    <a href="systems.php" class="btn btn-default">Cancel</a>
+	    <a href="main_systems.php" class="btn btn-default">Cancel</a>
 	    <a href="view_system.php?system=<?php echo $_GET['system']; ?>" class="btn btn-default">Go to System</a>
 	  </div>
   </div>

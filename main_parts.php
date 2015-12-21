@@ -1,9 +1,10 @@
 <?php
 session_start();
 $titel = 'Parts';
-include 'res/header.inc.php'; 
+include 'res/header.inc.php';
 ?>
 <script>
+// Helper function for eject-modal
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
@@ -24,7 +25,7 @@ $(function(){
   })
 })
 </script>
-
+<!-- Modal for UI confermation and initiating of Eject -->
 <div class="modal fade" id="confirmModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -34,7 +35,7 @@ $(function(){
       </div>
       <div class="modal-body">
         <p></p>
-        <form action="eject.php" method="post" id="ejectForm">
+        <form action="post_eject.php" method="post" id="ejectForm">
           <input type="hidden" name="serial_nr" id="serial_nr" />
           <input type="hidden" name="table" id="table" />
           <input type="hidden" name="column" id="column" />
@@ -63,6 +64,7 @@ $(function(){
 <section class="content">
 
 <?php
+// Shows status messages if $_SESSION['alert'] has a value and this has not been shown allready
 if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['showalert'] == 'true') {
   $_SESSION['showalert'] = 'false';
   echo '
@@ -76,12 +78,13 @@ if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['show
 }
 ?>
 
+<!-- The buttons for "New" and "Go To" -->
 <ul class="nav nav-pills">
   <li role="presentation">
 
   <div class="dropdown">
     <button class="btn btn-default" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      New 
+      New
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -102,7 +105,7 @@ if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['show
 
   <div class="dropdown">
     <button class="btn btn-default" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Go To 
+      Go To
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -125,9 +128,10 @@ if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['show
   <li role="presentation">
     <button class="btn btn-default" role="button" id="showAll"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
   </li>
-  
+
 </ul>
 <script>
+// helper script for opening or closing all tables
 $("#hideAll").click(function(){
   $('.collapse').collapse('hide')
 });
@@ -266,7 +270,7 @@ if ($result->num_rows > 0) {
       // Pick out parent
       $sensor_unit_sql = "  SELECT serial_nr
                 FROM sensor_unit
-                WHERE (topo_sensor_sn = '$row[serial_nr]' OR shallow_sensor_sn = '$row[serial_nr]')
+                WHERE (topo_sensor_sn = '$row[serial_nr]' OR topo_sensor_2_sn = '$row[serial_nr]' OR shallow_sensor_sn = '$row[serial_nr]')
                 LIMIT 1;";
 
       $sensor_unit_result = $conn->query($sensor_unit_sql);
@@ -334,7 +338,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseSensorUnit" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSensorUnit">
-    
+
       <table class="table table-striped table-responsive table_650">
         <thead>
           <tr>
@@ -451,7 +455,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseControlSystem" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingControlSystem">
-    
+
       <table class="table table-striped table-responsive table_550">
         <thead>
           <tr>
@@ -552,7 +556,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseDeepSystem" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingDeepSystem">
-    
+
       <table class="table table-striped table-responsive table_600">
         <thead>
           <tr>
@@ -649,7 +653,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseSCU" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSCU">
-    
+
           <table class="table table-striped table-responsive table_700">
         <thead>
           <tr>
@@ -752,7 +756,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseHVCard" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingHVCard">
-    
+
       <table class="table table-striped table-responsive table_500">
         <thead>
           <tr>
@@ -841,7 +845,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseLaser" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLaser">
-    
+
       <table class="table table-striped table-responsive table_750">
         <thead>
           <tr>
@@ -963,7 +967,7 @@ if ($result->num_rows > 0) {
     </h4>
   </div>
   <div id="collapseReceiver" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingReceiver">
-    
+
       <table class="table table-striped table-responsive table_600">
         <thead>
           <tr>
@@ -1082,7 +1086,7 @@ if (!$result) {
 
 $table_row_formating = '
 <tr>
-  <td><a href="edit_leica_cam.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
+  <td><a href="edit_leica.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
   <td>%2$s %5$s</td>
   <td>%3$s</td>
   <td>%4$s</td>
@@ -1168,7 +1172,7 @@ if ($result->num_rows > 0) {
 
 </footer>
 
-<?php 
+<?php
 $conn->close(); // close connection
 include 'res/footer.inc.php';
 ?>

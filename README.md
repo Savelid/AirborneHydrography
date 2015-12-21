@@ -1,67 +1,82 @@
-Plates
-======
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                           #
+#  System overview database site for Airborne Hydrography   #
+#                                                           #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-[![Author](http://img.shields.io/badge/author-@reinink-blue.svg?style=flat-square)](https://twitter.com/reinink)
-[![Source Code](http://img.shields.io/badge/source-league/plates-blue.svg?style=flat-square)](https://github.com/thephpleague/plates)
-[![Latest Version](https://img.shields.io/github/release/thephpleague/plates.svg?style=flat-square)](https://github.com/thephpleague/plates/releases)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/thephpleague/plates/master.svg?style=flat-square)](https://travis-ci.org/thephpleague/plates)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/thephpleague/plates.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/plates/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/thephpleague/plates.svg?style=flat-square)](https://scrutinizer-ci.com/g/thephpleague/plates)
-[![Total Downloads](https://img.shields.io/packagist/dt/league/plates.svg?style=flat-square)](https://packagist.org/packages/league/plates)
+#  Variables                                                #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-Plates is a native PHP template system that's fast, easy to use and easy to extend. It's inspired by the excellent [Twig](http://twig.sensiolabs.org/) template engine and strives to bring modern template language functionality to native PHP templates. Plates is designed for developers who prefer to use native PHP templates over compiled template languages, such as Twig or Smarty.
+$title - will be shown in the header (the big text).
+$type - will be used by the 'post' pages to see what to do. Also passed on to log.
 
-### Highlights
+#  Structure                                                #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-- Native PHP templates, no new [syntax](http://platesphp.com/templates/syntax/) to learn
-- Plates is a template system, not a template language
-- Plates encourages the use of existing PHP functions
-- Increase code reuse with template [layouts](http://platesphp.com/templates/layouts/) and [inheritance](http://platesphp.com/templates/inheritance/)
-- Template [folders](http://platesphp.com/engine/folders/) for grouping templates into namespaces
-- [Data](http://platesphp.com/templates/data/#preassigned-and-shared-data) sharing across templates
-- Preassign [data](http://platesphp.com/templates/data/#preassigned-and-shared-data) to specific templates
-- Built-in [escaping](http://platesphp.com/templates/escaping/) helpers
-- Easy to extend using [functions](http://platesphp.com/engine/functions/) and [extensions](http://platesphp.com/engine/extensions/)
-- Framework-agnostic, will work with any project
-- Decoupled design makes templates easy to test
-- Composer ready and PSR-2 compliant
+# Root:
+Contains all pages of the site.
+'edit' pages are form pages for changing in the database.
+'view' pages are subpages with more information about something.
+'post' pages handles the database queries that changes the database.
+'admin' pages are tools that can not be found on the page but might be useful.
+'main' pages have there own link in the menu.
 
-## Installation
+# css:
+Contains stylesheets.
+Bootstrap is a standard library
+main.css is specific styles for this page
 
-Plates is available via Composer:
+# js:
+Contains javascripts needed for the page.
 
-```json
-{
-    "require": {
-        "league/plates": "3.*"
-    }
-}
-```
+# fonts:
+Contains fonts and symbols
 
-## Documentation
+# img:
+Contains all images (not symbols)
 
-Full documentation can be found at [platesphp.com](http://platesphp.com/).
+# res:
+Contains other resources.
 
-## Testing
+header and footer contains boilerplate code and are included in all pages.
+In header you find header, menu, links to css, links to javascripts and more.
+In footer you find Javascripts.
 
-```bash
-$ phpunit
-```
+functions contain common functions.
 
-## Contributing
+config contains login info for database and arrays that might change often.
 
-Please see [CONTRIBUTING](https://github.com/thephpleague/plates/blob/master/CONTRIBUTING.md) for details.
+'database' help setup the database, fill it with test data or delete it.
+Look in database_setup to see the structure of the database.
 
-## Security
+#  Components                                               #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-If you discover any security related issues, please email jonathan@reinink.ca instead of using the issue tracker.
+# Combobox
+requires following script somewhere on the page:
 
-## Credits
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.combobox').combobox();
+});
+</script>
 
-- [Jonathan Reinink](https://github.com/reinink)
-- [All Contributors](https://github.com/thephpleague/plates/contributors)
+#  Functions                                                #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-## License
+# listUnusedSerialNr
+requires following code before the place it is used:
+<?php require_once('res/functions.inc.php'); ?>
 
-The MIT License (MIT). Please see [License File](https://github.com/thephpleague/plates/blob/master/LICENSE) for more information.
+Used to fill comboboxes with (unused) items.
+takes 3 variables:
+$serial_nr - the current item - to be shown first in the list.
+$from - the database table to look in.
+$where - the condition in the mysql query. To determine what items to show.
+
+returns something like this (simplified):
+<option value="serial_nr">serial_nr</option>
+<option>-----</option>
+<option value="item1">item1</option>
+<option value="item1">item2</option>
+<option value="item1">item3</option>

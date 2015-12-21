@@ -27,7 +27,7 @@ if (!empty($_GET['serial_nr'])) {
     $row = $result->fetch_array(MYSQLI_ASSOC);
     $conn->close();
 }
-$path = 'post.php?type=' . $type; // path for form
+$path = 'post_add_update.php?type=' . $type; // path for form
 ?>
 <?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
@@ -36,7 +36,7 @@ $path = 'post.php?type=' . $type; // path for form
   });
 </script>
 <section class="content">
-	
+
 <form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
@@ -86,7 +86,7 @@ if (!empty($_GET['serial_nr'])) {
 		<label for="laser" class="col-xs-4 control-label">Laser</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="laser">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['laser_sn'])){ $sn = $row['laser_sn'];}
@@ -102,7 +102,7 @@ listUnusedSerialNr('laser', 'serial_nr NOT IN
 		<label for="hv_card" class="col-xs-4 control-label">HV Card</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="hv_card">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['hv_card_sn'])){ $sn = $row['hv_card_sn'];}
@@ -120,7 +120,7 @@ listUnusedSerialNr('hv_card', 'serial_nr NOT IN
 		<label for="receiver_unit" class="col-xs-4 control-label">Receiver Unit</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="receiver_unit">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['receiver_unit_sn'])){ $sn = $row['receiver_unit_sn'];}
@@ -135,17 +135,17 @@ listUnusedSerialNr('receiver_unit', 'serial_nr NOT IN
 	  </div>
 
 <!-- Hide extra deep data if the sensor is not a deep sensor -->
-<script> 
+<script>
 $(function() {
     if($('#sensor_type').val() != 'deep') {
     	$('.deepSensor').hide();
     }
     $('#sensor_type').change(function(){
         if($('#sensor_type').val() == 'deep') {
-            $('.deepSensor').show(); 
+            $('.deepSensor').show();
         } else {
-            $('.deepSensor').hide(); 
-        } 
+            $('.deepSensor').hide();
+        }
     });
 });
 </script>
@@ -154,7 +154,7 @@ $(function() {
 		<label for="hv_card_2" class="col-xs-4 control-label">HV Card 2</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="hv_card_2">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['hv_card_2_sn'])){ $sn = $row['hv_card_2_sn'];}
@@ -172,11 +172,11 @@ listUnusedSerialNr('hv_card', 'serial_nr NOT IN
 		<label for="receiver_unit_2" class="col-xs-4 control-label">Receiver Unit 2</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="receiver_unit_2">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['receiver_unit_2_sn'])){ $sn = $row['receiver_unit_2_sn'];}
-listUnusedSerialNr('receiver_unit', 'serial_nr NOT IN 
+listUnusedSerialNr('receiver_unit', 'serial_nr NOT IN
 	(SELECT sensor.receiver_unit_sn FROM sensor)
 	AND serial_nr NOT IN
 	(SELECT sensor.receiver_unit_2_sn FROM sensor)', $sn);
@@ -201,7 +201,7 @@ foreach($sensor_status_values as $i){
 		</select>
 	  	</div>
 	  </div>
-	  
+
 	</div> <!-- end col -->
 
 	<div class="col-sm-3 col-sm-offset-1">
@@ -255,7 +255,7 @@ foreach($sensor_status_values as $i){
   <div class="row">
 	  <div class="col-sm-12">
 	    <button type="submit" class="btn btn-default">Apply</button>
-	    <a href="parts.php" class="btn btn-default">Cancel</a>
+	    <a href="main_parts.php" class="btn btn-default">Cancel</a>
 	    <a href="view_sensor.php?serial_nr=<?php echo $_GET['serial_nr']; ?>" class="btn btn-default">Go to Sensor</a>
 	  </div>
   </div>

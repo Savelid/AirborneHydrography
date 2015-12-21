@@ -27,7 +27,7 @@ if (!empty($_GET['serial_nr'])) {
     $row = $result->fetch_array(MYSQLI_ASSOC);
     $conn->close();
 }
-$path = 'post.php?type=' . $type; // path for form
+$path = 'post_add_update.php?type=' . $type; // path for form
 ?>
 <?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
@@ -36,7 +36,7 @@ $path = 'post.php?type=' . $type; // path for form
   });
 </script>
 <section class="content">
-	
+
 <form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
@@ -82,7 +82,7 @@ if (!empty($_GET['serial_nr'])) {
 		<label for="deep_sensor" class="col-xs-4 control-label">Deep Sensor</label>
 	  <div class="col-xs-8">
 	  	<select class="combobox form-control" name="deep_sensor">
-	  	  
+
 <?php
 $sn = '';
 if(!empty($row['deep_sensor_sn'])){ $sn = $row['deep_sensor_sn'];}
@@ -125,7 +125,7 @@ listUnusedSerialNr('sensor', '	sensor_type = "deep" AND serial_nr NOT IN (
   <div class="row">
 	  <div class="col-sm-12">
 	    <button type="submit" class="btn btn-default">Apply</button>
-	    <a href="parts.php" class="btn btn-default">Cancel</a>
+	    <a href="main_parts.php" class="btn btn-default">Cancel</a>
 	  </div>
   </div>
 </form>

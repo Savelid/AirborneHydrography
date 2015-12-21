@@ -27,6 +27,7 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- Combobox -->
     <script src="js/bootstrap-combobox.js"></script>
+
   </head>
   <body>
   	<div class="container">
@@ -46,10 +47,10 @@
     </header>
     <nav id="drawer" class="my_nav">
       <ul class="my_nav_list">
-        <li class="my_nav_item"><a href="index.php">Overview</a></li>
-        <li class="my_nav_item"><a href="systems.php">Systems</a></li>
-        <li class="my_nav_item"><a href="parts.php">Parts</a></li>
-        <li class="my_nav_item"><a href="log.php">Log</a></li>
+        <li class="my_nav_item"><a href="main_overview.php">Overview</a></li>
+        <li class="my_nav_item"><a href="main_systems.php">Systems</a></li>
+        <li class="my_nav_item"><a href="main_parts.php">Parts</a></li>
+        <li class="my_nav_item"><a href="main_log.php">Log</a></li>
       </ul>
     </nav>
     <main>

@@ -30,7 +30,7 @@ if(isset($_POST['serial_nr']) && isset($_POST['table'])){
 		if ($conn->query($sql_update) === TRUE) {
 			$success = 'true';
 			echo "Success: " . $sql_update . "<br><br>" . $conn->error;
-		} 
+		}
 		else {
 			echo "Error: " . $sql_update . "<br><br>" . $conn->error;
 		}
@@ -38,20 +38,20 @@ if(isset($_POST['serial_nr']) && isset($_POST['table'])){
 	if($success){
 		$sql_string = mysqli_real_escape_string($conn, $sql_update);
 		$type = 'EjectFrom_' . $_POST['table'];
-		$sql_log = "INSERT INTO log (type, user, sql_string, serial_nr, comment) 
+		$sql_log = "INSERT INTO log (type, user, sql_string, serial_nr, comment)
 					VALUES ('$type', '$_POST[user]', '$sql_string', '$_POST[serial_nr]', '$_POST[log_comment]')";
 		if ($conn->query($sql_log) === TRUE) {
 			echo "Log created successfully";
-			
+
 		} else {
 			echo "Error: " . $sql_log . "<br>" . $conn->error;
 		}
 		$_SESSION['alert'] = 'Item removed';
-		header("Location: parts.php");
+		header("Location: main_parts.php");
 		die();
 	}
 	$conn->close(); // close connection
 }
 ?>
 	<br>
-  	<a href="parts.php">Back</a>
+  	<a href="main_parts.php">Back</a>
