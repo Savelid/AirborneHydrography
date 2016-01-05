@@ -268,3 +268,19 @@ CREATE TABLE flight (
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE isp (
+
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	isp_nr VARCHAR(50) NOT NULL UNIQUE,
+	datetime TIMESTAMP,
+
+	product VARCHAR(100),
+	amount INTEGER,
+	value VARCHAR(100),
+	receiver VARCHAR(100),
+	country VARCHAR(30),
+	code VARCHAR(30),
+	comment TEXT,
+
+	PRIMARY KEY (id)
+);

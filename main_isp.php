@@ -1,8 +1,13 @@
 <?php
 session_start();
-$titel = 'Flights';
+$titel = 'ISP log';
 include 'res/header.inc.php';
 ?>
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
 
 <section class="content hidden-print">
 
@@ -20,13 +25,8 @@ include 'res/header.inc.php';
   }
   ?>
 
-  <a href="edit_flight.php" class="btn btn-default navbar-btn" role="button">New flight</a>
-  <form class="navbar-form navbar-right" action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="GET">
-    <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" name="search">
-        </div>
-        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-  </form>
+  <a href="edit_isp.php" class="btn btn-default navbar-btn" role="button">New ISP entry</a>
+
 </section>
 
 <section>
@@ -40,22 +40,8 @@ include 'res/header.inc.php';
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql = "  SELECT * FROM flight ";
-  if(isset($_GET['search'])){
-    $sql .= "WHERE datetime LIKE '%" . $_GET['search'] . "%'
-    OR dataset_id LIKE '%" . $_GET['search'] . "%'
-    OR location LIKE '%" . $_GET['search'] . "%'
-    OR system_id LIKE '%" . $_GET['search'] . "%'
-    OR system_model LIKE '%" . $_GET['search'] . "%'
-    OR topo_sensor_1_sn LIKE '%" . $_GET['search'] . "%'
-    OR topo_sensor_2_sn LIKE '%" . $_GET['search'] . "%'
-    OR shallow_sensor_sn LIKE '%" . $_GET['search'] . "%'
-    OR deep_sensor_sn LIKE '%" . $_GET['search'] . "%'
-    OR scu_sn LIKE '%" . $_GET['search'] . "%'
-    OR imu_1_sn LIKE '%" . $_GET['search'] . "%'
-    OR imu_2_sn LIKE '%" . $_GET['search'] . "%'";
-  }
-  $sql .= "ORDER BY datetime DESC";
+  $sql = "  SELECT * FROM isp ";
+  $sql .= "ORDER BY isp_nr DESC";
   $result = $conn->query($sql);
   if (!$result) {
     echo $sql . "<br><br>" . $conn->error;
@@ -69,18 +55,14 @@ include 'res/header.inc.php';
     <table class="table table-striped table-responsive table_750">
     <thead>
     <tr>
+    <th>ISP</th>
     <th>Date</th>
-    <th>Dataset</th>
-    <th>Location</th>
-    <th>System</th>
-    <th>Sys.Model</th>
-    <th>Topo1</th>
-    <th>Topo2</th>
-    <th>Shallow</th>
-    <th>Deep</th>
-    <th>SCU</th>
-    <th>IMU1</th>
-    <th>IMU2</th>
+    <th>Product</th>
+    <th>Code</th>
+    <th>Receiver</th>
+    <th>Country</th>
+    <th>Value</th>
+    <th class="hidden-print"></th>
     </tr>
     </thead>
     <tbody>';
@@ -90,48 +72,38 @@ include 'res/header.inc.php';
     '
     <tr>
 
-    <td> %1$s </td>
-    <td><a href="view_flight.php?id=%13$s"> %2$s </a></td>
+    <td>
+      <a href="edit_isp.php?id=%10$s" class="btn btn-default btn-sm">
+      <span class="glyphicon glyphicon-pencil hidden-print" aria-hidden="true"></span>
+      %1$s
+      </a>
+    </td>
+
+    <td> %2$s </td>
     <td> %3$s </td>
-    <td><a href="view_system.php?system=%4$s"> %4$s </a></td>
+    <td> %4$s </td>
     <td> %5$s </td>
-    <td><a href="view_sensor.php?serial_nr=%6$s"> %6$s </a></td>
-    <td><a href="view_sensor.php?serial_nr=%7$s"> %7$s </a></td>
-    <td><a href="view_sensor.php?serial_nr=%8$s"> %8$s </a></td>
-    <td><a href="view_sensor.php?serial_nr=%9$s"> %9$s </a></td>
-    <td> %10$s </td>
-    <td> %11$s </td>
-    <td> %12$s </td>
+    <td> %6$s </td>
+    <td> %7$s pcs %8$s </td>
+
+    <td class="hidden-print"><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%9$s">
+    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+    </td>
 
     </tr>';
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
-      // // shorten too long client names
-      // $client = $row["client"];
-      // if (strlen ($client) >= 14) {
-      //   $client = substr($client, 0, 12) . "..";
-      // }
-      // // shorten too long comments
-      // $comment = $row["comment"];
-      // if (strlen ($comment) >= 32) {
-      //   $comment = substr($comment, 0, 30) . "..";
-      // }
-
       echo sprintf($table_row_formating,
+      $row["isp_nr"],
       substr($row["datetime"], 0 , 10),
-      $row["dataset_id"],
-      $row["location"],
-      $row["system_id"],
-      $row["system_model"],
-      $row["topo_sensor_1_sn"],
-      $row["topo_sensor_2_sn"],
-      $row["shallow_sensor_sn"],
-      $row["deep_sensor_sn"],
-      $row["scu_sn"],
-      $row["imu_1_sn"],
-      $row["imu_2_sn"],
-
+      $row["product"],
+      $row["code"],
+      $row["receiver"],
+      $row["country"],
+      $row["amount"],
+      $row["value"],
+      $row["comment"],
       $row["id"]);
     }
     echo '

@@ -629,6 +629,45 @@ if($_GET['type'] == 'add_flight' || $_GET['type'] == 'update_flight') {
 	}
 }
 
+// INSERT ISP log
+if($_GET['type'] == 'add_isp' || $_GET['type'] == 'update_isp') {
+
+	$sql_insert = "INSERT INTO isp
+					SET
+          id = '$_POST[id]',
+          datetime = '$_POST[datetime]',
+        	isp_nr = '$_POST[isp_nr]',
+        	product = '$_POST[product]',
+        	amount = '$_POST[amount]',
+        	value = '$_POST[value]',
+        	receiver = '$_POST[receiver]',
+        	country = '$_POST[country]',
+        	code = '$_POST[code]',
+        	comment = '$_POST[comment]'
+
+					ON DUPLICATE KEY UPDATE
+
+          datetime = '$_POST[datetime]',
+        	isp_nr = '$_POST[isp_nr]',
+        	product = '$_POST[product]',
+        	amount = '$_POST[amount]',
+        	value = '$_POST[value]',
+        	receiver = '$_POST[receiver]',
+        	country = '$_POST[country]',
+        	code = '$_POST[code]',
+        	comment = '$_POST[comment]'";
+
+	if ($conn->multi_query($sql_insert) === TRUE) {
+		echo "New record created successfully";
+		postToLog(mysqli_real_escape_string($conn, $sql_insert));
+		$_SESSION['alert'] = 'ISP log updated';
+		header("Location: main_isp.php");
+		die();
+	} else {
+		echo "Error: " . $sql_insert . "<br>" . $conn->error;
+	}
+}
+
 //INSERT POST values
 if($_GET["type"] == 'add_message') {
 	$sql_insert = "INSERT INTO overview (message, author)

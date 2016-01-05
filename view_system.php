@@ -75,6 +75,7 @@ else {
 
 <section class="top_content hidden-print">
 	<a href="edit_system.php?system=<?php echo $_GET['system']; ?>" class="btn btn-default" role="button">Edit system</a>
+	<a href="edit_isp.php?receiver=<?php echo $system['client']; ?>" class="btn btn-default" role="button">New ISP log</a>
 </section>
 
 <section class="content">
