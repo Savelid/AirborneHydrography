@@ -10,7 +10,7 @@ $(function () {
 </script>
 
 
-<section class="content">
+<section class="content hidden-print">
 
   <?php
   if(isset($_SESSION['alert']) && isset($_SESSION['showalert']) && $_SESSION['showalert'] == 'true') {
@@ -30,7 +30,7 @@ $(function () {
 </section>
 
 <section>
-  <table class="table table-striped table-responsive">
+  <table class="table table-striped table-responsive table_650">
     <thead>
       <tr>
         <th>Serial nr.</th>

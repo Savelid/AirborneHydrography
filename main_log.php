@@ -1,6 +1,6 @@
 <?php
 $titel = 'Log';
-include 'res/header.inc.php'; 
+include 'res/header.inc.php';
 ?>
 
 <section class="all__systems">
@@ -11,8 +11,8 @@ include 'res/header.inc.php';
         <th>Type</th>
         <th>User</th>
         <th>Serial nr.</th>
-        <th>Comment</th>
-        <th>SQL</th>
+        <th class="hidden-print">Comment</th>
+        <th class="hidden-print">SQL</th>
       </tr>
     </thead>
     <tbody>
@@ -41,19 +41,19 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
       $commentButton = '
       <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
-      . $row["comment"] . 
+      . $row["comment"] .
       '">View</button>';
       $sqlButton = '
       <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
-      . $row["sql_string"] . 
+      . $row["sql_string"] .
       '">Query</button>';
       echo '<tr>';
       echo '<td>' . $row["datetime"]  . '</td>';
       echo '<td>' . $row["type"]      . '</td>';
       echo '<td>' . $row["user"]      . '</td>';
       echo '<td>' . $row["serial_nr"] . '</td>';
-      echo '<td>' . $commentButton . '</td>';
-      echo '<td>' . $sqlButton . '</td>';
+      echo '<td class="hidden-print">' . $commentButton . '</td>';
+      echo '<td class="hidden-print">' . $sqlButton . '</td>';
       echo '</tr>';
     }
 } else {

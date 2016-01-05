@@ -1,6 +1,6 @@
 
 
-.parts h4 a { 
+.parts h4 a {
   padding: 0 1em;
   color: #000000;
 }
@@ -62,7 +62,7 @@
 .my_nav_item {
   box-sizing: border-box;
   display: inline-block;
-  width: 24%;
+  width: 16%;
   text-align: center;
   line-height: 24px;
   padding: 24px;
@@ -252,7 +252,7 @@ footer a {
     font-weight: 200;
     font-size: 2em;
     margin: 0.5em 0.25em;
-    vertical-align: bottom; 
+    vertical-align: bottom;
   }
   .my_header_logo {
     height: 48px;

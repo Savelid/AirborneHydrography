@@ -37,7 +37,7 @@ function postToLog($sql_string) {
 // INSERT system
 if($_GET['type'] == 'add_system') {
 
-	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, oc60_1_sn, oc60_2_sn, pav_sn, status, comment, oc, bitfile_topo, bitfile_shallow, bitfile_deep, bitfile_digitaizer1, bitfile_digitaizer2, bitfile_sat)
+	$sql_insert = "INSERT INTO system (serial_nr, art_nr, client, place, configuration, sensor_unit_sn, control_system_sn, deep_system_sn, pd60, oc60_1_sn, oc60_2_sn, pav_sn, status, comment, oc, bitfile_topo, bitfile_shallow, bitfile_deep, bitfile_digitaizer1, bitfile_digitaizer2, bitfile_sat)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[art_nr]',
 					'$_POST[client]',
@@ -46,6 +46,7 @@ if($_GET['type'] == 'add_system') {
 					'$_POST[sensor_unit]',
 					'$_POST[control_system]',
 					'$_POST[deep_system]',
+          '$_POST[pd60]',
 					'$_POST[oc60_1]',
 					'$_POST[oc60_2]',
 					'$_POST[pav]',
@@ -91,6 +92,7 @@ if ($_GET['type'] == 'update_system') {
 						sensor_unit_sn = '$_POST[sensor_unit]',
 						control_system_sn = '$_POST[control_system]',
 						deep_system_sn = '$_POST[deep_system]',
+            pd60 = '$_POST[pd60]',
 						oc60_1_sn = '$_POST[oc60_1]',
 						oc60_2_sn = '$_POST[oc60_2]',
 						pav_sn = '$_POST[pav]',
@@ -545,6 +547,85 @@ if($_GET['type'] == 'add_receiver' || $_GET['type'] == 'update_receiver') {
 		die();
 	} else {
 		echo "Error: " . $sql_update . "<br><br>" . $conn->error;
+	}
+}
+
+// INSERT flight log
+if($_GET['type'] == 'add_flight' || $_GET['type'] == 'update_flight') {
+
+	$sql_insert = "INSERT INTO flight
+					SET
+          id = '$_POST[id]',
+          datetime = '$_POST[datetime]',
+        	dataset_id = '$_POST[dataset_id]',
+        	location = '$_POST[location]',
+        	system_id = '$_POST[system_id]',
+        	system_model = '$_POST[system_model]',
+        	topo_sensor_1_sn = '$_POST[topo_sensor_1_sn]',
+        	topo_sensor_2_sn = '$_POST[topo_sensor_2_sn]',
+        	shallow_sensor_sn = '$_POST[shallow_sensor_sn]',
+        	deep_sensor_sn = '$_POST[deep_sensor_sn]',
+        	scu_sn = '$_POST[scu_sn]',
+        	imu_1_sn = '$_POST[imu_1_sn]',
+        	imu_2_sn = '$_POST[imu_2_sn]',
+
+        	ranging = '$_POST[ranging]',
+        	type_of_data = '$_POST[type_of_data]',
+        	purpose_of_flight = '$_POST[purpose_of_flight]',
+        	evaluation_of_flight = '$_POST[evaluation_of_flight]',
+        	flight_logs = '$_POST[flight_logs]',
+        	data_evaluation = '$_POST[data_evaluation]',
+
+        	nav_data_processing_log = '$_POST[nav_data_processing_log]',
+        	calibration_file = '$_POST[calibration_file]',
+        	processing_settings_file = '$_POST[processing_settings_file]',
+        	configuration_file = '$_POST[configuration_file]',
+        	calibration_report = '$_POST[calibration_report]',
+        	acceptance_report = '$_POST[acceptance_report]',
+        	system_fully_functional = '$_POST[system_fully_functional]',
+        	raw_data_in_archive = '$_POST[raw_data_in_archive]',
+        	raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
+
+					ON DUPLICATE KEY UPDATE
+
+          datetime = '$_POST[datetime]',
+        	dataset_id = '$_POST[dataset_id]',
+        	location = '$_POST[location]',
+        	system_id = '$_POST[system_id]',
+        	system_model = '$_POST[system_model]',
+        	topo_sensor_1_sn = '$_POST[topo_sensor_1_sn]',
+        	topo_sensor_2_sn = '$_POST[topo_sensor_2_sn]',
+        	shallow_sensor_sn = '$_POST[shallow_sensor_sn]',
+        	deep_sensor_sn = '$_POST[deep_sensor_sn]',
+        	scu_sn = '$_POST[scu_sn]',
+        	imu_1_sn = '$_POST[imu_1_sn]',
+        	imu_2_sn = '$_POST[imu_2_sn]',
+
+        	ranging = '$_POST[ranging]',
+        	type_of_data = '$_POST[type_of_data]',
+        	purpose_of_flight = '$_POST[purpose_of_flight]',
+        	evaluation_of_flight = '$_POST[evaluation_of_flight]',
+        	flight_logs = '$_POST[flight_logs]',
+        	data_evaluation = '$_POST[data_evaluation]',
+
+        	nav_data_processing_log = '$_POST[nav_data_processing_log]',
+        	calibration_file = '$_POST[calibration_file]',
+        	processing_settings_file = '$_POST[processing_settings_file]',
+        	configuration_file = '$_POST[configuration_file]',
+        	calibration_report = '$_POST[calibration_report]',
+        	acceptance_report = '$_POST[acceptance_report]',
+        	system_fully_functional = '$_POST[system_fully_functional]',
+        	raw_data_in_archive = '$_POST[raw_data_in_archive]',
+        	raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'";
+
+	if ($conn->multi_query($sql_insert) === TRUE) {
+		echo "New record created successfully";
+		postToLog(mysqli_real_escape_string($conn, $sql_insert));
+		$_SESSION['alert'] = 'Flight log updated';
+		header("Location: main_flights.php");
+		die();
+	} else {
+		echo "Error: " . $sql_insert . "<br>" . $conn->error;
 	}
 }
 

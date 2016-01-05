@@ -1,0 +1,20 @@
+
+a[href]:after {
+    content: none;
+}
+
+.caret {
+  display: none !important;
+}
+
+.btn-default{
+  border-color: #fff !important;
+}
+
+.row {
+  page-break-after: always;
+}
+
+footer {
+  display: none;
+}

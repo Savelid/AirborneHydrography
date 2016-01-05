@@ -25,6 +25,7 @@ Contains all pages of the site.
 Contains stylesheets.
 Bootstrap is a standard library
 main.css is specific styles for this page
+print.css tweaks a few things for prints (change line-break from always to auto if you like)
 
 # js:
 Contains javascripts needed for the page.
@@ -59,6 +60,15 @@ requires following script somewhere on the page:
 $(document).ready(function(){
 	$('.combobox').combobox();
 });
+</script>
+
+# Popover
+requires following script somewhere on the page:
+
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
 </script>
 
 #  Functions                                                #

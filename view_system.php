@@ -73,7 +73,7 @@ else {
 }
 ?>
 
-<section class="top_content">
+<section class="top_content hidden-print">
 	<a href="edit_system.php?system=<?php echo $_GET['system']; ?>" class="btn btn-default" role="button">Edit system</a>
 </section>
 
@@ -335,6 +335,7 @@ else {
 				</div>
 				<div id="sys_comp" class="panel-collapse collapse in">
 					<ul class="list-group">
+						<li class="list-group-item">PD60 : <?php echo $system['pd60'];?></li>
 						<li class="list-group-item"><a href="#oc60_1" data-toggle="collapse" data-target="#oc60_1">OC60 1: <?php echo $system['oc60_1_sn'];?></a> Firmware: <?php echo $system['oc60_1_firmware'];?></li>
 						<div id="oc60_1" class="panel-collapse collapse">
 							<div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $system['oc60_1_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit OC60 1</a></div>

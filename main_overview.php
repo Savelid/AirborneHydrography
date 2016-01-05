@@ -118,7 +118,7 @@ else:
 
           ?>
         </dl>
-        <form action="post_add_update.php?type=add_message" method="post">
+        <form action="post_add_update.php?type=add_message" method="post" class="hidden-print">
           <div class="form-group">
             <label for="message">Message</label>
             <textarea class="form-control" name="message" rows="3"></textarea>

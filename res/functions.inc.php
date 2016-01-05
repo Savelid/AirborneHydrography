@@ -35,3 +35,37 @@ function listUnusedSerialNr($from, $where, $serial_nr){
 	$conn->close();
 }
 ?>
+
+<?php
+function listAllX($select, $from, $where, $id){
+
+	if($id != NULL && $id != ''){
+		echo '<option value="' . $id . '">' . $id . '</option>';
+	}
+	else {
+		echo '<option></option>';
+	}
+	echo '<option>-----</option>';
+
+	// open db
+	include 'res/config.inc.php';
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	// Add all unused sensor units to the list
+	$sql_all = "  SELECT %s
+	          FROM %s
+						%s";
+	$result_all = $conn->query(sprintf($sql_all, $select, $from, $where));
+		if (!$result_all) {
+			die("</select> Query failed!" . $sql . "<br>" . $conn->error);
+		}
+	while($row_all = $result_all->fetch_assoc()) {
+		echo '<option value="' . $row_all[$select] . '">' . $row_all[$select] . '</option>';
+	}
+	$conn->close();
+}
+?>

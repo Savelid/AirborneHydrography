@@ -14,8 +14,8 @@ if (!empty($_GET['serial_nr'])) {
 
   $sql = " SELECT system.serial_nr AS system_serial_nr, sensor_unit.serial_nr AS sensor_unit_serial_nr, deep_system.serial_nr AS deep_system_serial_nr
   FROM system, sensor_unit, deep_system
-  WHERE (system.sensor_unit_sn = sensor_unit.serial_nr AND (sensor_unit.topo_sensor_sn = $_GET[serial_nr]) OR (sensor_unit.shallow_sensor_sn = $_GET[serial_nr]))
-  OR (system.deep_system_sn = deep_system.serial_nr AND deep_system.deep_sensor_sn = $_GET[serial_nr])
+  WHERE (system.sensor_unit_sn = sensor_unit.serial_nr AND (sensor_unit.topo_sensor_sn = '$_GET[serial_nr]') OR (sensor_unit.shallow_sensor_sn = '$_GET[serial_nr]'))
+  OR (system.deep_system_sn = deep_system.serial_nr AND deep_system.deep_sensor_sn = '$_GET[serial_nr]')
   LIMIT 1";
   $result = $conn->query($sql);
   if (!$result) {
@@ -112,13 +112,13 @@ $(function () {
 </script>
 
 
-<section class="top_content">
+<section class="top_content hidden-print">
   <a href="edit_sensor.php?serial_nr=<?php echo $_GET['serial_nr'] ?>" class="btn btn-default" role="button">Edit sensor</a>
 </section>
 <section class="content">
 
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-6 col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Info</h3>
@@ -169,7 +169,7 @@ $(function () {
         </div><!-- end panel body -->
       </div><!-- end panel -->
     </div><!-- end col -->
-    <div class="col-sm-6">
+    <div class="col-sm-6 col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">DPS Values</h3>

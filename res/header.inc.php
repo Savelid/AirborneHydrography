@@ -13,6 +13,7 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
+    <link href="css/print.css" rel="stylesheet" media="print">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,11 +46,13 @@
 
       </div>
     </header>
-    <nav id="drawer" class="my_nav">
+    <nav id="drawer" class="my_nav hidden-print">
       <ul class="my_nav_list">
         <li class="my_nav_item"><a href="main_overview.php">Overview</a></li>
         <li class="my_nav_item"><a href="main_systems.php">Systems</a></li>
         <li class="my_nav_item"><a href="main_parts.php">Parts</a></li>
+        <li class="my_nav_item"><a href="main_flights.php">Flights</a></li>
+        <li class="my_nav_item"><a href="main_isp.php">ISP</a></li>
         <li class="my_nav_item"><a href="main_log.php">Log</a></li>
       </ul>
     </nav>

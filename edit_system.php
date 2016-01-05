@@ -140,6 +140,13 @@ listUnusedSerialNr('deep_system', '	serial_nr NOT IN (
 	  	</div>
 	  </div>
 
+		<div class="form-group">
+		<label for="pd60" class="col-xs-4 control-label">PD60</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="pd60" <?= !empty($row['pd60']) ?  'value="' . $row['pd60'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
   	  <div class="form-group">
 		<label for="oc60_1" class="col-xs-4 control-label">OC60 1</label>
 	  <div class="col-xs-8">

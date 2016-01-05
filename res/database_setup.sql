@@ -38,6 +38,7 @@ CREATE TABLE system (
 	sensor_unit_sn VARCHAR(30),
 	control_system_sn VARCHAR(30),
 	deep_system_sn VARCHAR(30),
+	pd60 VARCHAR(30),
 	oc60_1_sn VARCHAR(30),
 	oc60_2_sn VARCHAR(30),
 	pav_sn VARCHAR(30),
@@ -226,6 +227,43 @@ CREATE TABLE leica (
 
 	type ENUM('Camera', 'OC60', 'CC32', 'PAV'),
 	firmware VARCHAR(30),
+
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE flight (
+
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	datetime TIMESTAMP,
+
+	dataset_id VARCHAR(100),
+	location VARCHAR(100),
+	system_id VARCHAR(30),
+	system_model VARCHAR(30),
+	topo_sensor_1_sn VARCHAR(30),
+	topo_sensor_2_sn VARCHAR(30),
+	shallow_sensor_sn VARCHAR(30),
+	deep_sensor_sn VARCHAR(30),
+	scu_sn VARCHAR(30),
+	imu_1_sn VARCHAR(30),
+	imu_2_sn VARCHAR(30),
+
+	ranging TEXT,
+	type_of_data VARCHAR(100),
+	purpose_of_flight TEXT,
+	evaluation_of_flight TEXT,
+	flight_logs TEXT,
+	data_evaluation TEXT,
+
+	nav_data_processing_log BOOLEAN,
+	calibration_file ENUM('None', 'Final', 'Temporary'),
+	processing_settings_file BOOLEAN,
+	configuration_file BOOLEAN,
+	calibration_report BOOLEAN,
+	acceptance_report BOOLEAN,
+	system_fully_functional BOOLEAN,
+	raw_data_in_archive BOOLEAN,
+	raw_data_in_back_up_archive BOOLEAN,
 
 	PRIMARY KEY (id)
 );
