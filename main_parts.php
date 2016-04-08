@@ -342,8 +342,8 @@ $(function(){
         </h4>
       </div>
       <div id="collapseSensorUnit" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSensorUnit">
-
-        <table class="table table-striped table-responsive table_650">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -374,7 +374,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_sensor_unit.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a> %12$s</td>
+            <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a>%12$s</td>
             <td>%3$s</td>
             <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %11$s">
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
@@ -445,6 +445,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
 
