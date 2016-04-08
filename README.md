@@ -4,8 +4,8 @@
 
 #  Variables
 
-> $title - will be shown in the header (the big text).
-> $type - will be used by the 'post' pages to see what to do. Also passed on to log.
++ $title - will be shown in the header (the big text).
++ $type - will be used by the 'post' pages to see what to do. Also passed on to log.
 
 #  Structure
 
@@ -74,11 +74,12 @@ requires following code before the place it is used:
 
 Used to fill comboboxes with (unused) items.
 takes 3 variables:
-> $serial_nr - the current item - to be shown first in the list.
-> $from - the database table to look in.
-> $where - the condition in the mysql query. To determine what items to show.
++ $serial_nr - the current item - to be shown first in the list.
++ $from - the database table to look in.
++ $where - the condition in the mysql query. To determine what items to show.
 
 returns something like this (simplified):
+
         <option value="serial_nr">serial_nr</option>
 				<option>-----</option>
 				<option value="item1">item1</option>
