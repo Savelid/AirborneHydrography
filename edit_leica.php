@@ -25,7 +25,7 @@ if (!empty($_GET['serial_nr'])) {
 	$row = $result->fetch_array(MYSQLI_ASSOC);
 	$conn->close();
 }
-$path = 'post_add_update.php?type=' . $type; // path for form
+$path = 'post.php?type=' . $type; // path for form
 
 ?>
 <?php require_once('res/functions.inc.php'); ?>
@@ -97,7 +97,7 @@ $(document).ready(function(){
 		<div class="row">
 			<div class="col-sm-12">
 				<button type="submit" class="btn btn-default">Apply</button>
-				<a href="main_parts.php" class="btn btn-default">Cancel</a>
+				<a href="parts.php" class="btn btn-default">Cancel</a>
 			</div>
 		</div>
 	</form>

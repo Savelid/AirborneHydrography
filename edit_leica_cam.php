@@ -1,10 +1,10 @@
 <?php
-session_start();
-$titel = 'Edit Control System';
+
+$titel = 'Edit Leica Camera';
 include 'res/header.inc.php';
-$type = 'add_control_system';
+$type = 'add_leica_cam';
 if (!empty($_GET['serial_nr'])) {
-	$type = 'update_control_system';
+	$type = 'update_leica_cam';
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,14 +13,12 @@ if (!empty($_GET['serial_nr'])) {
     	die("Connection failed: " . $conn->connect_error);
 	}
 
-	//
-	$sn = $_GET['serial_nr'];
 	$sql = "SELECT *
-			FROM control_system
-			WHERE serial_nr = $sn";
+			FROM leica_cam
+			WHERE serial_nr = '$_GET[serial_nr]'";
 	$result = $conn->query($sql);
 	if (!$result) {
-		echo "Error: " . $sql_insert . "<br>" . $conn->error;
+		echo "Error: " . $sql . "<br>" . $conn->error;
 		die();
 	}
 
@@ -41,7 +39,7 @@ $path = 'post.php?type=' . $type; // path for form
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
 
-	<div class="col-xs-8 col-xs-offset-4"><h4>Control System</h4></div>
+	<div class="col-xs-8 col-xs-offset-4"><h4>Leica Camera</h4></div>
 
 	  <div class="form-group">
 		<label for="serial_nr" class="col-xs-4 control-label">Serial Number</label>
@@ -51,65 +49,46 @@ if (!empty($_GET['serial_nr'])) {
 	echo '<input type="hidden" name="serial_nr" value="' . $_GET['serial_nr'] . '" />'
 	. '<input type="text" class="form-control" placeholder="' . $_GET['serial_nr'] . '" disabled />';
 }else {
-	echo '<input type="text" class="form-control" name="serial_nr" required/>';
+	echo '<input type="text" class="form-control" name="serial_nr" required />';
 }
 ?>
 	  	</div>
 	  </div>
 
   	  <div class="form-group">
-		<label for="battery" class="col-xs-4 control-label">Battery</label>
+		<label for="config" class="col-xs-4 control-label">Configuration</label>
 	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="battery" <?= !empty($row['battery']) ?  'value="' . $row['battery'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-	  <div class="form-group">
-		<label for="cc32" class="col-xs-4 control-label">CC32</label>
-	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="cc32">
-	  	  
+		<select class="form-control" name="configuration">
 <?php
-$sn = '';
-if(!empty($row['cc32_sn'])){ $sn = $row['cc32_sn'];}
-listUnusedSerialNr('leica', '	type = "CC32" AND
-							serial_nr NOT IN (
-	            			SELECT control_system.cc32_sn
-	            			FROM control_system)'	, $sn);
+foreach($configuration_values as $i){
+	$selected = '';
+	if(!empty($row['configuration']) && $row['configuration'] == $i){$selected = 'selected';}
+	$s = '<option value="%s" %s>%s</option>';
+	echo sprintf($s, $i, $selected, $i);
+}
 ?>
-
-		</select>
-	  	</div>
-	  </div>
-
-  	  <div class="form-group">
-		<label for="pdu" class="col-xs-4 control-label">PDU</label>
-	  <div class="col-xs-8">
-	  	<input type="text" class="form-control" name="pdu" <?= !empty($row['pdu']) ?  'value="' . $row['pdu'] . '"' : '' ; ?>>
-	  	</div>
-	  </div>
-
-  	  <div class="form-group">
-		<label for="scu" class="col-xs-4 control-label">SCU</label>
-	  <div class="col-xs-8">
-	  	<select class="combobox form-control" name="scu">
-	  	  
-<?php
-$sn = '';
-if(!empty($row['scu_sn'])){ $sn = $row['scu_sn'];}
-listUnusedSerialNr('scu', '	serial_nr NOT IN (
-	            			SELECT control_system.scu_sn
-	            			FROM control_system)'	, $sn);
-?>
-
 		</select>
 	  	</div>
 	  </div>
 
 	  <div class="form-group">
-		<label for="comment" class="col-xs-4 control-label">Comment</label>
+		<label for="firmware" class="col-xs-4 control-label">Firmware</label>
 	  <div class="col-xs-8">
-  		<textarea class="form-control" name="comment" rows="3"><?= !empty($row['comment']) ? $row['comment'] : ''; ?></textarea>
+	  	<input type="text" class="form-control" name="firmware" <?= !empty($row['firmware']) ?  'value="' . $row['firmware'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+  	  <div class="form-group">
+		<label for="breakdown" class="col-xs-4 control-label">Breakdown</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="breakdown" <?= !empty($row['breakdown']) ?  'value="' . $row['breakdown'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+	  <div class="form-group">
+		<label for="operating_voltage" class="col-xs-4 control-label">Operating Voltage</label>
+	  <div class="col-xs-8">
+	  	<input type="text" class="form-control" name="operating_voltage" <?= !empty($row['operating_voltage']) ?  'value="' . $row['operating_voltage'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 
@@ -120,14 +99,14 @@ listUnusedSerialNr('scu', '	serial_nr NOT IN (
 		<div class="form-group col-xs-12">
 			<label for="user">User</label>
 			<div>
-				<input type="text" class="form-control" name="user" <?= !empty($_SESSION['user']) ? 'value="' . $_SESSION['user'] . '"' : ''; ?> required />
+				<input type="text" class="form-control" name="user" required />
 			</div>
 		</div>
 
 		<div class="form-group col-xs-12">
 			<label for="log_comment">Log Comment</label>
 			<div>
-				<textarea class="form-control" name="log_comment" rows="3"></textarea>
+				<textarea class="form-control" name="log_comment" rows="3"><?= !empty($row['log_comment']) ? $row['log_comment'] : ''; ?></textarea>
 			</div>
 		</div>
 	</div>

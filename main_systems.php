@@ -30,8 +30,7 @@ $(function () {
 </section>
 
 <section>
-  <div class="table-responsive">
-  <table class="table table-striped">
+  <table class="table table-striped table-responsive table_650">
     <thead>
       <tr>
         <th>Serial nr.</th>
@@ -100,18 +99,26 @@ $(function () {
 
       $topo_shallow_deep_formating = '
       <td %11$s>
-      <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">%4$s</a>
+      <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">
+      %4$s
+      </a>
       %10$s
-      <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a>
+      <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">
+      %5$s
+      </a>
       </td>
 
       <td>
-      <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a>
+      <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">
+      %6$s
+      </a>
       </td>
       ';
       $scu_formating = '
       <td>
-      <a href="#" class="btn btn-default btn-sm">%7$s</a>
+      <a href="#" class="btn btn-default btn-sm">
+      %7$s
+      </a>
       </td>
       ';
       $system_formating = '
@@ -179,7 +186,6 @@ $(function () {
 
     </tbody>
   </table>
-  </div>
 </section>
 <footer>
 

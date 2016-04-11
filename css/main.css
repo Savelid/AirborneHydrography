@@ -4,9 +4,7 @@
   padding: 0 1em;
   color: #000000;
 }
-a.btn:empty {
-  display: none;
-}
+
 
 /*
  *
@@ -132,6 +130,14 @@ main {
 .table {
   background-color: white;
 }
+
+.comments{
+  font-size: .8em;
+  margin-left: auto;
+  text-align: right;
+  font-style: italic;
+}
+
 
 .table_500 {
   min-width: 500px;
