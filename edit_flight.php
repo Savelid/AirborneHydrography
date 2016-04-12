@@ -278,42 +278,60 @@ $(document).ready(function(){
 			<div class="col-xs-12">
 
 				<div class="form-group">
-					<label for="ranging" class="col-sm-3 col-xs-12 control-label">Ranging</label>
+					<label for="ranging" class="col-sm-3 col-xs-12 control-label">
+						Ranging
+						<div class ="comments">What ranging datasets are applicable for those sensors?</div>
+					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="ranging" rows="5"><?= !empty($row['ranging']) ?  $row['ranging'] : '' ; ?></textarea>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="type_of_data" class="col-sm-3 col-xs-12 control-label">Type of data</label>
+					<label for="type_of_data" class="col-sm-3 col-xs-12 control-label">
+						Type of data
+						<div class ="comments">Har inte en aning</div>
+					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="type_of_data" rows="2"><?= !empty($row['type_of_data']) ?  $row['type_of_data'] : '' ; ?></textarea>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="purpose_of_flight" class="col-sm-3 col-xs-12 control-label">Purpose of flight</label>
+					<label for="purpose_of_flight" class="col-sm-3 col-xs-12 control-label">
+						Purpose of flight
+						<div class ="comments">A not too short explanation of why the flight was done. It must be long enough to be useful three years later</div>
+					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="purpose_of_flight" rows="5"><?= !empty($row['purpose_of_flight']) ?  $row['purpose_of_flight'] : '' ; ?></textarea>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="evaluation_of_flight" class="col-sm-3 col-xs-12 control-label">Evaluation of flight</label>
+					<label for="evaluation_of_flight" class="col-sm-3 col-xs-12 control-label">
+						Evaluation of flight
+						<div class ="comments">Describe encountered problems during flight</div>
+					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="evaluation_of_flight" rows="5"><?= !empty($row['evaluation_of_flight']) ?  $row['evaluation_of_flight'] : '' ; ?></textarea>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="flight_logs" class="col-sm-3 col-xs-12 control-label">Flight logs</label>
+					<label for="flight_logs" class="col-sm-3 col-xs-12 control-label">
+						Flight logs
+						<div class ="comments">Describe encountered problems during flight</div>
+					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="flight_logs" rows="2"><?= !empty($row['flight_logs']) ?  $row['flight_logs'] : '' ; ?></textarea>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="data_evaluation" class="col-sm-3 col-xs-12 control-label">Data evaluation</label>
+					<label for="data_evaluation" class="col-sm-3 col-xs-12 control-label">
+						Data evaluation
+						<div class ="comments">Describe the results regarding the purpose of the flight but also if other issues was noted. Must also be long enough to be useful after three years.</div>
+					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="data_evaluation" rows="5"><?= !empty($row['data_evaluation']) ?  $row['data_evaluation'] : '' ; ?></textarea>
 					</div>

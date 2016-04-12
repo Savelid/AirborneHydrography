@@ -1,12 +1,19 @@
 
-
 .parts h4 a {
   padding: 0 1em;
   color: #000000;
 }
+
 a.btn:empty {
   display: none;
 }
+
+.comments {
+  font-size: .8em;
+  margin-left: auto;
+  text-align: right;
+  font-style: italic;
+ }
 
 /*
  *

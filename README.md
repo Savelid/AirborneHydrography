@@ -52,24 +52,25 @@ Look in database_setup to see the structure of the database.
 requires following script somewhere on the page:
 
         <script type="text/javascript">
-					$(document).ready(function(){
-						$('.combobox').combobox();
-					});
+          $(document).ready(function(){
+            $('.combobox').combobox();
+          });
         </script>
 
 ### Popover
 requires following script somewhere on the page:
 
         <script>
-					$(function () {
-  					$('[data-toggle="popover"]').popover()
-					})
-				</script>
+          $(function () {
+            $('[data-toggle="popover"]').popover()
+          })
+        </script>
 
 #  Functions
 
 ### listUnusedSerialNr
 requires following code before the place it is used:
+
         <?php require_once('res/functions.inc.php'); ?>
 
 Used to fill comboboxes with (unused) items.
@@ -81,7 +82,7 @@ takes 3 variables:
 returns something like this (simplified):
 
         <option value="serial_nr">serial_nr</option>
-				<option>-----</option>
-				<option value="item1">item1</option>
-				<option value="item1">item2</option>
-				<option value="item1">item3</option>
+        <option>-----</option>
+        <option value="item1">item1</option>
+        <option value="item1">item2</option>
+        <option value="item1">item3</option>
