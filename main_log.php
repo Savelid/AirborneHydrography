@@ -4,7 +4,8 @@ include 'res/header.inc.php';
 ?>
 
 <section class="all__systems">
-  <table class="table table-striped table-responsive table_500">
+  <div class="table-responsive">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th>Datetime</th>
@@ -63,6 +64,7 @@ if ($result->num_rows > 0) {
 
     </tbody>
   </table>
+  </div>
 </section>
 <footer>
 

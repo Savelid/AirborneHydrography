@@ -155,7 +155,8 @@ $(function(){
       </div>
       <div id="collapseSensor" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSensor">
 
-        <table class="table table-striped table-responsive table_750">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -326,6 +327,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -464,7 +466,8 @@ $(function(){
       </div>
       <div id="collapseControlSystem" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingControlSystem">
 
-        <table class="table table-striped table-responsive table_550">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -551,6 +554,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -568,7 +572,8 @@ $(function(){
       </div>
       <div id="collapseDeepSystem" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingDeepSystem">
 
-        <table class="table table-striped table-responsive table_600">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -651,6 +656,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -668,7 +674,8 @@ $(function(){
       </div>
       <div id="collapseSCU" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSCU">
 
-        <table class="table table-striped table-responsive table_700">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -757,6 +764,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -774,7 +782,8 @@ $(function(){
       </div>
       <div id="collapseHVCard" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingHVCard">
 
-        <table class="table table-striped table-responsive table_500">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -849,6 +858,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -866,7 +876,8 @@ $(function(){
       </div>
       <div id="collapseLaser" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLaser">
 
-        <table class="table table-striped table-responsive table_750">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th colspan=2>Serial nr.</th>
@@ -974,6 +985,7 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -991,7 +1003,8 @@ $(function(){
       </div>
       <div id="collapseReceiver" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingReceiver">
 
-        <table class="table table-striped table-responsive table_600">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -1070,6 +1083,7 @@ $(function(){
             ?>
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>
@@ -1087,7 +1101,8 @@ $(function(){
       </div>
       <div id="collapseLeica" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLeica">
 
-        <table class="table table-striped table-responsive table_600">
+        <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Serial nr.</th>
@@ -1190,7 +1205,10 @@ $(function(){
 
           </tbody>
         </table>
+        </div>
       </div>
+    </div>
+  </div>
 
 
     </section>

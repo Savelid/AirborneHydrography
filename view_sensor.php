@@ -212,7 +212,8 @@ $(function () {
           </h4>
         </div>
         <div class="panel-body panel_table">
-          <table class="table table-striped table-responsive table_700">
+          <div class="table-responsive">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <th>Type</th>
@@ -342,6 +343,7 @@ $(function () {
 
             </tbody>
           </table>
+          </div><!-- end responsive table -->
 
         </div><!-- end panel body -->
       </div><!-- end panel -->

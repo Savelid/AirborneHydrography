@@ -66,7 +66,8 @@ include 'res/header.inc.php';
   if ($result->num_rows > 0) {
 
     echo '
-    <table class="table table-striped table-responsive table_750">
+    <div class="table-responsive">
+    <table class="table table-striped">
     <thead>
     <tr>
     <th>Date</th>
@@ -136,7 +137,8 @@ include 'res/header.inc.php';
     }
     echo '
     </tbody>
-    </table>';
+    </table>
+    </div>';
   } else {
     echo "Empty table or no search results";
   }

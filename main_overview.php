@@ -138,7 +138,8 @@ else:
           </div>
           <div class="panel-body panel_table">
 
-            <table class="table table-striped table-responsive">
+            <div class="table-responsive">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th>Serial nr.</th>
@@ -212,6 +213,7 @@ else:
 
               </tbody>
             </table>
+            </div>
           </div>
         </div>
 
