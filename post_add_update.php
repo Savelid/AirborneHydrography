@@ -131,11 +131,12 @@ if ($_GET['type'] == 'update_system') {
 // INSERT sensor
 if($_GET['type'] == 'add_sensor') {
 
-	$sql_insert = "INSERT INTO sensor (serial_nr, sensor_type, cat, fpga_id, laser_sn, hv_card_sn, receiver_unit_sn, hv_card_2_sn, receiver_unit_2_sn, dps_value_input_offset_t0, dps_value_input_offset_rec, dps_value_input_offset_rec_wide, dps_value_pulse_width_t0, dps_value_pulse_width_rec, status)
+	$sql_insert = "INSERT INTO sensor (serial_nr, sensor_type, cat, fpga_id, mirror, laser_sn, hv_card_sn, receiver_unit_sn, hv_card_2_sn, receiver_unit_2_sn, dps_value_input_offset_t0, dps_value_input_offset_rec, dps_value_input_offset_rec_wide, dps_value_pulse_width_t0, dps_value_pulse_width_rec, status)
 	VALUES (		'$_POST[serial_nr]',
 					'$_POST[sensor_type]',
 					'$_POST[cat]',
 					'$_POST[fpga_id]',
+          '$_POST[mirror]',
 					'$_POST[laser]',
 					'$_POST[hv_card]',
 					'$_POST[receiver_unit]',
@@ -166,6 +167,7 @@ if ($_GET['type'] == 'update_sensor') {
 						sensor_type = '$_POST[sensor_type]',
 						cat = '$_POST[cat]',
 						fpga_id = '$_POST[fpga_id]',
+            mirror = '$_POST[mirror]',
 						laser_sn = '$_POST[laser]',
 						hv_card_sn = '$_POST[hv_card]',
 						receiver_unit_sn = '$_POST[receiver_unit]',

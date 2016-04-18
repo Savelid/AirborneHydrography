@@ -241,6 +241,14 @@ $(function () {
                 <td colspan=4></td>
               </tr>
 
+              <?php if($sensor['sensor_type'] != 'deep'):?>
+              <tr>
+                <td>Mirror:</td>
+                <td><?php echo $sensor['mirror'];?></td>
+                <td colspan=4></td>
+              </tr>
+            <?php endif; ?>
+
               <tr>
                 <td>Laser:</td>
 

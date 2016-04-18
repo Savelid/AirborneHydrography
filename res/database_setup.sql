@@ -144,6 +144,7 @@ CREATE TABLE sensor (
 
 	cat VARCHAR(30),
 	fpga_id VARCHAR(30),
+	mirror VARCHAR(30),
 	laser_sn VARCHAR(30),
 	hv_card_sn VARCHAR(30),
 	receiver_unit_sn VARCHAR(30),

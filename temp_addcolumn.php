@@ -16,10 +16,19 @@
           throw new Exception("Failed to connect to MySQL: " . $mysqli->connect_error);
       }
 
-      $query = 'ALTER TABLE sensor ADD dps_value_input_offset_rec_wide INTEGER';
+      $query = 'ALTER TABLE sensor ADD dps_value_input_offset_rec_wide INTEGER AFTER dps_value_input_offset_rec';
 
       if($mysqli->query($query)) {
-          echo "It worked";
+          echo "ADD dps_value_input_offset_rec_wide worked";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE sensor ADD mirror VARCHAR(30) AFTER fpga_id';
+
+      if($mysqli->query($query)) {
+          echo "<br>ADD mirror worked";
       }
       else {
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
