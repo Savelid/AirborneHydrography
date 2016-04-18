@@ -215,9 +215,16 @@ foreach($sensor_status_values as $i){
 	  </div>
 
 	  <div class="form-group col-xs-12">
-		<label for="dps_value_input_offset_rec">Input Offset Rec</label>
+		<label for="dps_value_input_offset_rec">Input Offset Rec <span class="deepSensor">Central</span></label>
 	  <div>
 	  	<input type="text" class="form-control" name="dps_value_input_offset_rec" <?= !empty($row['dps_value_input_offset_rec']) ?  'value="' . $row['dps_value_input_offset_rec'] . '"' : '' ; ?>>
+	  	</div>
+	  </div>
+
+		<div class="form-group col-xs-12 deepSensor">
+		<label for="dps_value_input_offset_rec_wide">Input Offset Rec Wide</label>
+	  <div>
+	  	<input type="text" class="form-control" name="dps_value_input_offset_rec_wide" <?= !empty($row['dps_value_input_offset_rec_wide']) ?  'value="' . $row['dps_value_input_offset_rec_wide'] . '"' : '' ; ?>>
 	  	</div>
 	  </div>
 

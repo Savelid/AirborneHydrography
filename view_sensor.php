@@ -182,9 +182,16 @@ $(function () {
           </div>
 
           <div class="row">
-            <div class="col-xs-6"><strong>Input offset rec:</strong></div>
+            <div class="col-xs-6"><strong>Input offset rec<?php if($sensor['sensor_type'] == 'deep') echo ' central';?>:</strong></div>
             <div class="col-xs-6"><?php echo $sensor['dps_value_input_offset_rec'];?></div>
           </div>
+
+          <?php if($sensor['sensor_type'] == 'deep'):?>
+          <div class="row">
+            <div class="col-xs-6"><strong>Input offset rec:</strong></div>
+            <div class="col-xs-6"><?php echo $sensor['dps_value_input_offset_rec_wide'];?></div>
+          </div>
+          <?php endif; ?>
 
           <div class="row">
             <div class="col-xs-6"><strong>Pulse width t0:</strong></div>

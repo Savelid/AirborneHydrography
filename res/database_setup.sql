@@ -151,6 +151,7 @@ CREATE TABLE sensor (
 	receiver_unit_2_sn VARCHAR(30),
 	dps_value_input_offset_t0 INTEGER,
 	dps_value_input_offset_rec INTEGER,
+	dps_value_input_offset_rec_wide INTEGER,
 	dps_value_pulse_width_t0 INTEGER,
 	dps_value_pulse_width_rec INTEGER,
 	status VARCHAR(100),
