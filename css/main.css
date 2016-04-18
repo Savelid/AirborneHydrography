@@ -8,6 +8,16 @@ a.btn:empty {
   display: none;
 }
 
+button[data-content=""],
+button[data-content="Firmware: "] {
+  cursor: not-allowed;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  opacity: .65;
+  pointer-events: none;
+}
+
 .comments {
   font-size: .8em;
   margin-left: auto;
