@@ -1,5 +1,5 @@
 <?php
-  include 'res/config.inc.php';
+  include_once 'res/config.inc.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
