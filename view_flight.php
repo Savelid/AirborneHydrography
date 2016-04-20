@@ -1,6 +1,6 @@
 <?php
 session_start();
-$titel = 'Data set ' . $_GET['id'];
+$titel = 'Dataset ' . $_GET['id'];
 include 'res/header.inc.php';
 
 if (!empty($_GET['id'])) {
@@ -32,7 +32,7 @@ else {
 ?>
 
 <section class="top_content hidden-print">
-	<a href="edit_flight.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit flight</a>
+	<a href="edit_flight.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
 </section>
 
 <section class="content">

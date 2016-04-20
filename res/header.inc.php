@@ -51,7 +51,7 @@
         <li class="my_nav_item"><a href="main_overview.php">Overview</a></li>
         <li class="my_nav_item"><a href="main_systems.php">Systems</a></li>
         <li class="my_nav_item"><a href="main_parts.php">Parts</a></li>
-        <li class="my_nav_item"><a href="main_flights.php">Data sets</a></li>
+        <li class="my_nav_item"><a href="main_flights.php">Datasets</a></li>
         <li class="my_nav_item"><a href="main_isp.php">ISP</a></li>
         <li class="my_nav_item"><a href="main_log.php">Log</a></li>
       </ul>

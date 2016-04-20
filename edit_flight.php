@@ -117,7 +117,7 @@ if ($run_query) {
 
 $conn->close();
 
-$titel = 'Edit data set';
+$titel = 'Edit dataset';
 include 'res/header.inc.php';
 ?>
 <script type="text/javascript">
