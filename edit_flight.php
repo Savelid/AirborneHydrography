@@ -43,11 +43,13 @@ if ($conn->connect_error) {
 }
 
 //Get number for Dataset ID
-$sql = "SELECT dataset_id FROM flight WHERE dataset_id LIKE 'AHAB_DATA_%' ORDER BY dataset_id DESC LIMIT 1 ;";
+$sql = "SELECT dataset_id FROM flight WHERE dataset_id LIKE 'AHAB-DATA-%' ORDER BY dataset_id DESC LIMIT 1 ;";
 $result_dataset_id = $conn->query($sql);
 $row_dataset_id = $result_dataset_id->fetch_array(MYSQLI_NUM);
 $int_dataset_id = filter_var($row_dataset_id[0], FILTER_SANITIZE_NUMBER_INT);
-$int_dataset_id = intval($int_dataset_id) + 1;
+$int_dataset_id = str_replace('-', '', $int_dataset_id);
+$int_dataset_id = intval($int_dataset_id);
+$int_dataset_id = $int_dataset_id + 1;
 debug_to_console("Dataset id nummer" . $int_dataset_id);
 
 $run_query = false;
@@ -142,7 +144,7 @@ $(document).ready(function(){
 				<div class="form-group">
 					<label for="dataset_id" class="col-xs-4 control-label">Dataset ID</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="dataset_id" <?= !empty($row['dataset_id']) ?  'value="' . $row['dataset_id'] . '"' : 'value="AHAB_DATA_"' . $int_dataset_id ; ?>>
+						<input type="text" class="form-control" name="dataset_id" <?= !empty($row['dataset_id']) ?  'value="' . $row['dataset_id'] . '"' : 'value="AHAB-DATA-' . sprintf("%04d", $int_dataset_id) .'"' ; ?> required />
 					</div>
 				</div>
 
