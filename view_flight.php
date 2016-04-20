@@ -1,6 +1,6 @@
 <?php
 session_start();
-$titel = 'Flight ' . $_GET['id'];
+$titel = 'Data set ' . $_GET['id'];
 include 'res/header.inc.php';
 
 if (!empty($_GET['id'])) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$titel = 'Flights';
+$titel = 'Data sets';
 include 'res/header.inc.php';
 ?>
 
@@ -20,7 +20,7 @@ include 'res/header.inc.php';
   }
   ?>
 
-  <a href="edit_flight.php" class="btn btn-default navbar-btn" role="button">New flight</a>
+  <a href="edit_flight.php" class="btn btn-default navbar-btn" role="button">New data set</a>
   <form class="navbar-form navbar-right" action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="GET">
     <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="search">

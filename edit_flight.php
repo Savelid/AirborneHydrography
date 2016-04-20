@@ -117,7 +117,7 @@ if ($run_query) {
 
 $conn->close();
 
-$titel = 'Edit Flight ' . $id;
+$titel = 'Edit data set';
 include 'res/header.inc.php';
 ?>
 <script type="text/javascript">
@@ -142,7 +142,10 @@ $(document).ready(function(){
 				<div class="col-xs-8 col-xs-offset-4"><h4>Flight</h4></div>
 
 				<div class="form-group">
-					<label for="dataset_id" class="col-xs-4 control-label">Dataset ID</label>
+					<label for="dataset_id" class="col-xs-4 control-label">
+						Dataset ID
+						<div class ="comments">AHAB-DATA-xxxx</div>
+					</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="dataset_id" <?= !empty($row['dataset_id']) ?  'value="' . $row['dataset_id'] . '"' : 'value="AHAB-DATA-' . sprintf("%04d", $int_dataset_id) .'"' ; ?> required />
 					</div>
