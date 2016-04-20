@@ -376,16 +376,6 @@ $(document).ready(function(){
 			<div class="col-xs-12">
 
 				<div class="form-group">
-					<label for="ranging" class="col-sm-3 col-xs-12 control-label">
-						Ranging
-						<div class ="comments">What ranging datasets are applicable for those sensors?</div>
-					</label>
-					<div class="col-sm-8 col-xs-12">
-						<textarea class="form-control" name="ranging" rows="5"><?= !empty($row['ranging']) ?  $row['ranging'] : '' ; ?></textarea>
-					</div>
-				</div>
-
-				<div class="form-group">
 					<label for="type_of_data" class="col-sm-3 col-xs-12 control-label">
 						Type of data
 						<div class ="comments">Har inte en aning</div>

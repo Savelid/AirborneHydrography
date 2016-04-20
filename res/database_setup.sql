@@ -250,7 +250,6 @@ CREATE TABLE flight (
 	imu_1_sn VARCHAR(30),
 	imu_2_sn VARCHAR(30),
 
-	ranging TEXT,
 	type_of_data VARCHAR(100),
 	purpose_of_flight TEXT,
 	evaluation_of_flight TEXT,

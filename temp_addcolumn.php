@@ -34,6 +34,15 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE flight DROP COLUMN ranging';
+
+      if($mysqli->query($query)) {
+          echo "<br>DROP ranging worked";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
   } catch (Exception $e) {
       print($e->getMessage());
   }

@@ -119,15 +119,6 @@ else {
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Ranging</h3>
-				</div>
-				<div class="panel-body">
-					<?php echo nl2br($query['ranging']); ?>
-				</div>
-			</div><!-- end panel -->
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
 					<h3 class="panel-title">Purpose of flight</h3>
 				</div>
 				<div class="panel-body">
