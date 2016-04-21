@@ -159,6 +159,22 @@ $(document).ready(function(){
 				</div>
 
 				<div class="form-group">
+					<label for="type_of_data" class="col-xs-4 control-label">Type of data</label>
+					<div class="col-xs-8">
+						<select class="form-control" name="type_of_data">
+							<?php
+							foreach($dataset_type_of_data as $i){
+								$selected = '';
+								if(!empty($row['type_of_data']) && $row['type_of_data'] == $i){$selected = 'selected';}
+								$s = '<option value="%s" %s>%s</option>';
+								echo sprintf($s, $i, $selected, $i);
+							}
+							?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
 					<label for="location" class="col-xs-4 control-label">Location</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="location" <?= !empty($row['location']) ?  'value="' . $row['location'] . '"' : '' ; ?>>
@@ -303,7 +319,6 @@ $(document).ready(function(){
 					<div class="col-xs-12">
 						<select class="form-control" name="calibration_file">
 							<?php
-							$calibration_file_values = array('None', 'Final', 'Temporary');
 							foreach($calibration_file_values as $i){
 								$selected = '';
 								if(!empty($row['calibration_file']) && $row['calibration_file'] == $i){$selected = 'selected';}
@@ -374,16 +389,6 @@ $(document).ready(function(){
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-
-				<div class="form-group">
-					<label for="type_of_data" class="col-sm-3 col-xs-12 control-label">
-						Type of data
-						<div class ="comments">Har inte en aning</div>
-					</label>
-					<div class="col-sm-8 col-xs-12">
-						<textarea class="form-control" name="type_of_data" rows="2"><?= !empty($row['type_of_data']) ?  $row['type_of_data'] : '' ; ?></textarea>
-					</div>
-				</div>
 
 				<div class="form-group">
 					<label for="purpose_of_flight" class="col-sm-3 col-xs-12 control-label">
