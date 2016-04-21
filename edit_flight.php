@@ -3,6 +3,96 @@ session_start();
 include_once 'res/config.inc.php';
 include_once('res/functions.inc.php');
 
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+	die("Connection failed: " . $conn->connect_error);
+}
+
+//Get number for Dataset ID
+$sql = "SELECT dataset_id FROM flight WHERE dataset_id LIKE 'AHAB-DATA-%' ORDER BY dataset_id DESC LIMIT 1 ;";
+$result_dataset_id = $conn->query($sql);
+$row_dataset_id = $result_dataset_id->fetch_array(MYSQLI_NUM);
+$int_dataset_id = filter_var($row_dataset_id[0], FILTER_SANITIZE_NUMBER_INT);
+$int_dataset_id = str_replace('-', '', $int_dataset_id);
+$int_dataset_id = intval($int_dataset_id);
+$int_dataset_id = $int_dataset_id + 1;
+debug_to_console("Dataset id nummer" . $int_dataset_id);
+
+// $run_query = false;
+// $id = "";
+// if($_SERVER['REQUEST_METHOD'] == 'POST'){
+// 	if (isset($_POST['id'])) {
+// 		$id = $_POST['id'];
+// 	}
+// 	debug_to_console("id copied from POST to GET");
+// 	$_SESSION['showalert'] = 'true';
+// 	$_SESSION['alert'] = "";
+// 	$run_query = true;
+// }
+// if (!empty($_GET['id'])) {
+// 	$id = $_GET['id'];
+// 	$run_query = true;
+// }
+// if ($run_query) {
+// 	$sql = "SELECT * FROM flight WHERE id = '$id';";
+// 	$result = $conn->query($sql);
+// 	if ($result->num_rows < 1) {
+// 		debug_to_console("Query for this id failed");
+// 		if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+// 			debug_to_console("Creating new Dataset");
+// 			$sql_insert = "INSERT INTO flight SET id = '$id', " . $database_columns . ";";
+// 			$type = 'Add Flight';
+// 			if ($conn->query($sql_insert) === TRUE) {
+// 				$_SESSION['alert'] .= "New record created successfully <br>";
+// 				//split string
+// 				$tags = explode(',',$database_columns);
+// 				//print only those that are not empty
+// 				foreach($tags as $key) {
+// 					$pos = strpos($key, "''");
+// 					if ($pos === false) {
+//     				$_SESSION['alert'] .= $key.'<br/>';
+// 					}
+// 				}
+// 			}else{
+// 				$_SESSION['alert'] .= "New record failed <br>" . $sql . "<br>" . $conn->error;
+// 			}
+// 			header("Location: main_flights.php");
+// 		}
+// 	}else {
+// 		$row = $result->fetch_array(MYSQLI_BOTH);
+// 		debug_to_console("result added to row");
+// 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// 			$sql_insert = "UPDATE flight SET " . $database_columns . " WHERE id = '$id' ;";
+// 			$type = 'Update Flight';
+// 			if ($conn->query($sql_insert) === TRUE) {
+// 				$_SESSION['alert'] .= "Record updated successfully <br>";
+// 				$sql = "SELECT * FROM flight WHERE id = '$id';";
+// 				$result2 = $conn->query($sql);
+// 				if (!$result2) {
+// 					$_SESSION['alert'] .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
+// 				}else {
+// 					$new_row = $result2->fetch_array(MYSQLI_BOTH);
+// 					for ($x = 0; $x <= count($new_row); $x++) {
+// 						if(strcmp($new_row[$x], $row[$x]) == 0) {
+// 							$_SESSION['alert'] .= " . ";
+// 						}else {
+// 							$_SESSION['alert'] .= $row[$x] ." -> ".$new_row[$x]."<br>";
+// 						}
+// 					}
+// 				}
+// 			}else{
+// 				$_SESSION['alert'] .= "Update failed <br>" . $sql . "<br>" . $conn->error;
+// 			}
+// 			header("Location: main_flights.php");
+// 		}
+// 	}
+// }
+			//postToLog(mysqli_real_escape_string($conn, $sql_insert));
+
+$conn->close();
+
 $database_columns = "
 	datetime = '$_POST[datetime]',
 	dataset_id = '$_POST[dataset_id]',
@@ -33,96 +123,8 @@ $database_columns = "
 	raw_data_in_archive = '$_POST[raw_data_in_archive]',
 	raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 	";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-	die("Connection failed: " . $conn->connect_error);
-}
-
-//Get number for Dataset ID
-$sql = "SELECT dataset_id FROM flight WHERE dataset_id LIKE 'AHAB-DATA-%' ORDER BY dataset_id DESC LIMIT 1 ;";
-$result_dataset_id = $conn->query($sql);
-$row_dataset_id = $result_dataset_id->fetch_array(MYSQLI_NUM);
-$int_dataset_id = filter_var($row_dataset_id[0], FILTER_SANITIZE_NUMBER_INT);
-$int_dataset_id = str_replace('-', '', $int_dataset_id);
-$int_dataset_id = intval($int_dataset_id);
-$int_dataset_id = $int_dataset_id + 1;
-debug_to_console("Dataset id nummer" . $int_dataset_id);
-
-$run_query = false;
-$id = "";
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if (isset($_POST['id'])) {
-		$id = $_POST['id'];
-	}
-	debug_to_console("id copied from POST to GET");
-	$_SESSION['showalert'] = 'true';
-	$_SESSION['alert'] = "";
-	$run_query = true;
-}
-if (!empty($_GET['id'])) {
-	$id = $_GET['id'];
-	$run_query = true;
-}
-if ($run_query) {
-	$sql = "SELECT * FROM flight WHERE id = '$id';";
-	$result = $conn->query($sql);
-	if ($result->num_rows < 1) {
-		debug_to_console("Query for this id failed");
-		if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-			debug_to_console("Creating new Dataset");
-			$sql_insert = "INSERT INTO flight SET id = '$id', " . $database_columns . ";";
-			$type = 'Add Flight';
-			if ($conn->query($sql_insert) === TRUE) {
-				$_SESSION['alert'] .= "New record created successfully <br>";
-				//split string
-				$tags = explode(',',$database_columns);
-				//print only those that are not empty
-				foreach($tags as $key) {
-					$pos = strpos($key, "''");
-					if ($pos === false) {
-    				$_SESSION['alert'] .= $key.'<br/>';
-					}
-				}
-			}else{
-				$_SESSION['alert'] .= "New record failed <br>" . $sql . "<br>" . $conn->error;
-			}
-			header("Location: main_flights.php");
-		}
-	}else {
-		$row = $result->fetch_array(MYSQLI_BOTH);
-		debug_to_console("result added to row");
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$sql_insert = "UPDATE flight SET " . $database_columns . " WHERE id = '$id' ;";
-			$type = 'Update Flight';
-			if ($conn->query($sql_insert) === TRUE) {
-				$_SESSION['alert'] .= "Record updated successfully <br>";
-				$sql = "SELECT * FROM flight WHERE id = '$id';";
-				$result2 = $conn->query($sql);
-				if (!$result2) {
-					$_SESSION['alert'] .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
-				}else {
-					$new_row = $result2->fetch_array(MYSQLI_BOTH);
-					for ($x = 0; $x <= count($new_row); $x++) {
-						if(strcmp($new_row[$x], $row[$x]) == 0) {
-							$_SESSION['alert'] .= " . ";
-						}else {
-							$_SESSION['alert'] .= $row[$x] ." -> ".$new_row[$x]."<br>";
-						}
-					}
-				}
-			}else{
-				$_SESSION['alert'] .= "Update failed <br>" . $sql . "<br>" . $conn->error;
-			}
-			header("Location: main_flights.php");
-		}
-	}
-}
-			//postToLog(mysqli_real_escape_string($conn, $sql_insert));
-
-$conn->close();
+include_once 'res/postfunctions.inc.php';
+$row = postFunction('flight', $database_columns, 'main_flights.php');
 
 $titel = 'Edit dataset';
 include 'res/header.inc.php';

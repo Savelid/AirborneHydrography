@@ -70,38 +70,6 @@ function listAllX($select, $from, $where, $id){
 }
 ?>
 
-<?PHP
-	// Add all requests saved by this page to LOG
-	function postToLogFormated($sql_string) {
-
-		// Create connection
-		include 'res/config.inc.php';
-		$conn = new mysqli($servername, $username, $password, $dbname);
-		// Check connection
-		if ($conn->connect_error) {
-		    die("Connection failed: " . $conn->connect_error);
-		}
-
-		$sql = " SELECT *
-		FROM isp
-		WHERE id = '$_POST[id]';";
-		$result = $conn->query($sql);
-		if (!$result) {
-			die("Query failed! <br>Error:" . $sql . "<br>" . $conn->error ."<br><br> This is normal if adding a new id");
-		}
-		$current = $result->fetch_array(MYSQLI_ASSOC);
-
-		$sql_log = "INSERT INTO log (type, user, sql_string, diff, serial_nr, comment)
-					VALUES ('$_GET[type]', '$_POST[user]', '$sql_string', '$_POST[serial_nr]', '$_POST[log_comment]')";
-		if ($conn->query($sql_log) === TRUE) {
-			echo "Log created successfully";
-
-		} else {
-			echo "Error: " . $sql_log . "<br>" . $conn->error;
-		}
-	}
-?>
-
 <?php
 /**
  * Send debug code to the Javascript console

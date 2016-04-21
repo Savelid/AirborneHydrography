@@ -7,6 +7,7 @@ CREATE TABLE log (
 	user VARCHAR(100),
 	sql_string TEXT,
 	serial_nr VARCHAR(30),
+	changes TEXT,
 	comment TEXT,
 
 	PRIMARY KEY (id)
