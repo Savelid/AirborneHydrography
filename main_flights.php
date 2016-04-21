@@ -72,7 +72,7 @@ include 'res/header.inc.php';
     <tr>
     <th>Date</th>
     <th>Dataset</th>
-    <th>Location</th>
+    <th>Purpose</th>
     <th>System</th>
     <th>Sys.Model</th>
     <th>Topo1</th>
@@ -108,21 +108,17 @@ include 'res/header.inc.php';
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
-      // // shorten too long client names
-      // $client = $row["client"];
-      // if (strlen ($client) >= 14) {
-      //   $client = substr($client, 0, 12) . "..";
-      // }
-      // // shorten too long comments
-      // $comment = $row["comment"];
-      // if (strlen ($comment) >= 32) {
-      //   $comment = substr($comment, 0, 30) . "..";
-      // }
+      // shorten too long text
+      $purpose_of_flight = $row["purpose_of_flight"];
+      if (strlen ($purpose_of_flight) >= 12) {
+        $purpose_of_flight = substr($purpose_of_flight, 0, 10) . "..";
+      }
+      $purpose_of_flight = '<span class="clickable" data-toggle="popover" data-placement="bottom" data-content="'.$row["purpose_of_flight"].'">'.$purpose_of_flight.'</span>';
 
       echo sprintf($table_row_formating,
       substr($row["datetime"], 0 , 10),
       $row["dataset_id"],
-      $row["location"],
+      $purpose_of_flight,
       $row["system_id"],
       $row["system_model"],
       $row["topo_sensor_1_sn"],
@@ -148,7 +144,11 @@ include 'res/header.inc.php';
 <footer>
 
 </footer>
-
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
 <?php
 include 'res/footer.inc.php';
 ?>

@@ -4,6 +4,10 @@
   color: #000000;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 a.btn:empty {
   display: none;
 }
