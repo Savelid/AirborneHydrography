@@ -27,7 +27,7 @@ CREATE TABLE overview (
 CREATE TABLE system (
 
 	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	art_nr VARCHAR(30),
@@ -58,7 +58,7 @@ CREATE TABLE system (
 CREATE TABLE system_status (
 
 	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 
 	status_potta_heat BOOLEAN,
 	status_shallow_heat BOOLEAN,
@@ -75,7 +75,7 @@ CREATE TABLE system_status (
 CREATE TABLE sensor_unit (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	imu VARCHAR(30),
@@ -92,7 +92,7 @@ CREATE TABLE sensor_unit (
 CREATE TABLE control_system (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	battery VARCHAR(30),
@@ -107,7 +107,7 @@ CREATE TABLE control_system (
 CREATE TABLE deep_system (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	cooling_system VARCHAR(30),
@@ -122,7 +122,7 @@ CREATE TABLE deep_system (
 CREATE TABLE scu (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	configuration VARCHAR(30),
@@ -139,7 +139,7 @@ CREATE TABLE scu (
 CREATE TABLE sensor (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 	sensor_type ENUM('topo', 'shallow', 'deep'),
 
@@ -164,7 +164,7 @@ CREATE TABLE sensor (
 CREATE TABLE hv_card (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	art_nr VARCHAR(30),
@@ -177,7 +177,7 @@ CREATE TABLE hv_card (
 CREATE TABLE laser (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	serial_nr VARCHAR(30) NOT NULL,
+	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
 	v_0 FLOAT,
@@ -237,9 +237,9 @@ CREATE TABLE leica (
 CREATE TABLE flight (
 
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dataset_id VARCHAR(50) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
-	dataset_id VARCHAR(100),
 	location VARCHAR(100),
 	system_id VARCHAR(30),
 	system_model VARCHAR(30),

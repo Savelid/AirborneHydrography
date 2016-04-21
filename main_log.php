@@ -37,6 +37,7 @@ include 'res/header.inc.php';
         <th>User</th>
         <th>Serial nr.</th>
         <th class="hidden-print">Comment</th>
+        <th class="hidden-print">Changes</th>
         <th class="hidden-print">SQL</th>
       </tr>
     </thead>
@@ -57,6 +58,7 @@ if(isset($_GET['search'])){
   OR type LIKE '%" . $_GET['search'] . "%'
   OR user LIKE '%" . $_GET['search'] . "%'
   OR sql_string LIKE '%" . $_GET['search'] . "%'
+  OR changes LIKE '%" . $_GET['search'] . "%'
   OR serial_nr LIKE '%" . $_GET['search'] . "%'
   OR comment LIKE '%" . $_GET['search'] . "%'";
 }
@@ -75,6 +77,10 @@ if ($result->num_rows > 0) {
       <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
       . $row["comment"] .
       '">View</button>';
+      $changesButton = '
+      <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
+      . $row["changes"] .
+      '">Changes</button>';
       $sqlButton = '
       <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-html="true" data-placement="left" data-content="'
       . $row["sql_string"] .
@@ -85,6 +91,7 @@ if ($result->num_rows > 0) {
       echo '<td>' . $row["user"]      . '</td>';
       echo '<td>' . $row["serial_nr"] . '</td>';
       echo '<td class="hidden-print">' . $commentButton . '</td>';
+      echo '<td class="hidden-print">' . $changesButton . '</td>';
       echo '<td class="hidden-print">' . $sqlButton . '</td>';
       echo '</tr>';
     }

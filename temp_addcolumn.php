@@ -53,6 +53,16 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE log
+                ADD COLUMN changes TEXT';
+
+      if($mysqli->query($query)) {
+          echo "<br>ADD changes COLUMN to log worked";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
   } catch (Exception $e) {
       print($e->getMessage());
   }

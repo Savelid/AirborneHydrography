@@ -8,16 +8,6 @@ function postFunction($table, $database_columns, $redirect){
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql_col_names = "SHOW COLUMNS FROM $table;";
-	$result_col_names = $conn->query($sql_col_names);
-	if ($result_col_names->num_rows > 0) {
-	    // output data of each row
-			$i = 0;
-	    while($row_col_names = $result_col_names->fetch_assoc()) {
-				$column_names[$i] = $row_col_names['field'];
-				$i++;
-			}
-		}
 
 	$run_query = false;
 	$changes = "";
@@ -35,6 +25,18 @@ function postFunction($table, $database_columns, $redirect){
 		$id = $_GET['id'];
 		$run_query = true;
 	}
+
+	$sql_col_names = "SHOW COLUMNS FROM $table;";
+	$result_col_names = $conn->query($sql_col_names);
+	if ($result_col_names->num_rows > 0) {
+	    // output data of each row
+			$i = 0;
+	    while($row_col_names = $result_col_names->fetch_assoc()) {
+				$column_names[$i] = $row_col_names['Field'];
+				$i++;
+			}
+	}
+
 	if ($run_query) {
 
 		$sql = "SELECT * FROM $table WHERE id = '$id';";
@@ -57,6 +59,7 @@ function postFunction($table, $database_columns, $redirect){
 						}
 					}
 					$_SESSION['alert'] .= "<br/>" . $changes;
+					postToLogFormated($type, mysqli_real_escape_string($conn, $sql_insert), mysqli_real_escape_string($conn, $changes));
 				}else{
 					$_SESSION['alert'] .= "New record failed <br>" . $sql . "<br>" . $conn->error;
 				}
@@ -80,12 +83,14 @@ function postFunction($table, $database_columns, $redirect){
 							if(strcmp($new_row[$x], $row[$x]) != 0) {
 								$this_col = "";
 								if (isset($column_names)) {
-									$this_col = $column_names[$x];
+									//$this_col = $column_names[$x];
+									$this_col = sprintf("%20s", $column_names[$x]); // left-justification with spaces
 								}
-								$changes .= $this_col . " | " . $row[$x] ." -> ".$new_row[$x]."<br>";
+								$changes .=  $this_col ." | ". $row[$x] ." -> ".$new_row[$x]."<br>";
 							}
 						}
 						$_SESSION['alert'] .= "<br/>" . $changes;
+						postToLogFormated($type, mysqli_real_escape_string($conn, $sql_insert), mysqli_real_escape_string($conn, $changes));
 					}
 				}else{
 					$_SESSION['alert'] .= "Update failed <br>" . $sql . "<br>" . $conn->error;
@@ -106,32 +111,34 @@ function postFunction($table, $database_columns, $redirect){
 
 <?PHP
 	// Add all requests saved by this page to LOG
-	function postToLogFormated($sql_string) {
+	function postToLogFormated($this_type, $this_sql_string, $this_changes) {
+		$this_serial_nr = "";
+		if (!empty($_POST['serial_nr'])) {
+			$this_serial_nr = $_POST['serial_nr'];
+		}
+		elseif (!empty($_POST['isp_nr'])) {
+			$this_serial_nr = $_POST['isp_nr'];
+		}
+		elseif (!empty($_POST['dataset_id'])) {
+			$this_serial_nr = $_POST['dataset_id'];
+		}
+		elseif(!empty($_POST['id'])) {
+			$this_serial_nr = $_POST['id'];
+		}
 
 		// Create connection
 		include 'res/config.inc.php';
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		// Check connection
 		if ($conn->connect_error) {
-		    die("Connection failed: " . $conn->connect_error);
+		    die("Log: db connection failed: " . $conn->connect_error);
 		}
-
-		$sql = " SELECT *
-		FROM isp
-		WHERE id = '$_POST[id]';";
-		$result = $conn->query($sql);
-		if (!$result) {
-			die("Query failed! <br>Error:" . $sql . "<br>" . $conn->error ."<br><br> This is normal if adding a new id");
-		}
-		$current = $result->fetch_array(MYSQLI_ASSOC);
-
-		$sql_log = "INSERT INTO log (type, user, sql_string, diff, serial_nr, comment)
-					VALUES ('$_GET[type]', '$_POST[user]', '$sql_string', '$_POST[serial_nr]', '$_POST[log_comment]')";
+		$sql_log = "INSERT INTO log SET type = '$this_type', user = '$_POST[user]', sql_string = '$this_sql_string', changes = '$this_changes', serial_nr = '$this_serial_nr', comment = '$_POST[log_comment]';";
 		if ($conn->query($sql_log) === TRUE) {
-			echo "Log created successfully";
+			$_SESSION['alert'] .= "<br/>Log created successfully";
 
 		} else {
-			echo "Error: " . $sql_log . "<br>" . $conn->error;
+			$_SESSION['alert'] .= "<br/>Log Error: " . $sql_log . "<br>" . $conn->error;
 		}
 	}
 ?>
