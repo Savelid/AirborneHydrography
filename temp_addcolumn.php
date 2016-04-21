@@ -43,6 +43,16 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE leica
+                MODIFY COLUMN type VARCHAR(30)';
+
+      if($mysqli->query($query)) {
+          echo "<br>ALTER datatype of leica|type worked";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
   } catch (Exception $e) {
       print($e->getMessage());
   }

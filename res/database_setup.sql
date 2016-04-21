@@ -227,7 +227,7 @@ CREATE TABLE leica (
 	serial_nr VARCHAR(30) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
-	type ENUM('Camera', 'OC60', 'CC32', 'PAV'),
+	type VARCHAR(30),
 	firmware VARCHAR(30),
 
 	PRIMARY KEY (id)

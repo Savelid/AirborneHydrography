@@ -17,7 +17,6 @@ $database_columns = "
 	imu_1_sn = '$_POST[imu_1_sn]',
 	imu_2_sn = '$_POST[imu_2_sn]',
 
-	ranging = '$_POST[ranging]',
 	type_of_data = '$_POST[type_of_data]',
 	purpose_of_flight = '$_POST[purpose_of_flight]',
 	evaluation_of_flight = '$_POST[evaluation_of_flight]',
@@ -53,8 +52,11 @@ $int_dataset_id = $int_dataset_id + 1;
 debug_to_console("Dataset id nummer" . $int_dataset_id);
 
 $run_query = false;
-if(!empty($_POST)){
-	$id = $_POST['id'];
+$id = "";
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	if (isset($_POST['id'])) {
+		$id = $_POST['id'];
+	}
 	debug_to_console("id copied from POST to GET");
 	$_SESSION['showalert'] = 'true';
 	$_SESSION['alert'] = "";
@@ -69,27 +71,30 @@ if ($run_query) {
 	$result = $conn->query($sql);
 	if ($result->num_rows < 1) {
 		debug_to_console("Query for this id failed");
-		if (!empty($_POST)){
+		if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+			debug_to_console("Creating new Dataset");
 			$sql_insert = "INSERT INTO flight SET id = '$id', " . $database_columns . ";";
 			$type = 'Add Flight';
 			if ($conn->query($sql_insert) === TRUE) {
 				$_SESSION['alert'] .= "New record created successfully <br>";
+				//split string
 				$tags = explode(',',$database_columns);
+				//print only those that are not empty
 				foreach($tags as $key) {
 					$pos = strpos($key, "''");
 					if ($pos === false) {
     				$_SESSION['alert'] .= $key.'<br/>';
 					}
 				}
-				//$new_data_formated = preg_replace("/<br>(.*)''<br>/","",$new_data_formated);
-				//$_SESSION['alert'] .= $new_data_formated;
+			}else{
+				$_SESSION['alert'] .= "New record failed <br>" . $sql . "<br>" . $conn->error;
 			}
-			//header("Location: main_flights.php");
+			header("Location: main_flights.php");
 		}
 	}else {
 		$row = $result->fetch_array(MYSQLI_BOTH);
 		debug_to_console("result added to row");
-		if (!empty($_POST)) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$sql_insert = "UPDATE flight SET " . $database_columns . " WHERE id = '$id' ;";
 			$type = 'Update Flight';
 			if ($conn->query($sql_insert) === TRUE) {
@@ -108,8 +113,10 @@ if ($run_query) {
 						}
 					}
 				}
+			}else{
+				$_SESSION['alert'] .= "Update failed <br>" . $sql . "<br>" . $conn->error;
 			}
-			//header("Location: main_flights.php");
+			header("Location: main_flights.php");
 		}
 	}
 }
@@ -120,14 +127,7 @@ $conn->close();
 $titel = 'Edit dataset';
 include 'res/header.inc.php';
 ?>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('.combobox').combobox();
-});
-</script>
 <section class="content">
-
-	<?php echo $_SESSION['alert']; ?>
 
 	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 
@@ -444,5 +444,10 @@ $(document).ready(function(){
 <footer>
 
 </footer>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.combobox').combobox();
+});
+</script>
 
 <?php include 'res/footer.inc.php'; ?>

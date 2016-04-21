@@ -1,7 +1,5 @@
 <?php
 session_start();
-$titel = 'Dataset ' . $_GET['id'];
-include 'res/header.inc.php';
 
 if (!empty($_GET['id'])) {
 
@@ -29,6 +27,9 @@ else {
 	header("Location: main_flights.php");
 	die();
 }
+
+$titel = 'Dataset ' . $query['dataset_id'];
+include 'res/header.inc.php';
 ?>
 
 <section class="top_content hidden-print">

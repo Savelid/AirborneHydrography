@@ -39,7 +39,7 @@ $(document).ready(function(){
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">
 
-				<div class="col-xs-8 col-xs-offset-4"><h4>Leica Camera</h4></div>
+				<div class="col-xs-8 col-xs-offset-4"><h4>Leica Unit</h4></div>
 
 				<div class="form-group">
 					<label for="serial_nr" class="col-xs-4 control-label">Serial Number</label>
@@ -63,6 +63,8 @@ $(document).ready(function(){
 							<option value="CC32">CC32</option>
 							<option value="PAV">PAV</option>
 							<option value="Camera">Camera</option>
+							<option value="IMU">IMU</option>
+							<option value="Pilot Monitor">Pilot Monitor</option>
 						</select>
 					</div>
 				</div>
