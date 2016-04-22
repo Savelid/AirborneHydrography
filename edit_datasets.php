@@ -58,7 +58,7 @@ debug_to_console("Dataset id nummer" . $int_dataset_id);
 // 			}else{
 // 				$_SESSION['alert'] .= "New record failed <br>" . $sql . "<br>" . $conn->error;
 // 			}
-// 			header("Location: main_flights.php");
+// 			header("Location: main_datasets.php");
 // 		}
 // 	}else {
 // 		$row = $result->fetch_array(MYSQLI_BOTH);
@@ -85,7 +85,7 @@ debug_to_console("Dataset id nummer" . $int_dataset_id);
 // 			}else{
 // 				$_SESSION['alert'] .= "Update failed <br>" . $sql . "<br>" . $conn->error;
 // 			}
-// 			header("Location: main_flights.php");
+// 			header("Location: main_datasets.php");
 // 		}
 // 	}
 // }
@@ -124,7 +124,7 @@ $database_columns = "
 	raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 	";
 include_once 'res/postfunctions.inc.php';
-$row = postFunction('datasets', $database_columns, 'main_flights.php');
+$row = postFunction('datasets', $database_columns, 'main_datasets.php');
 
 $titel = 'Edit dataset';
 include 'res/header.inc.php';

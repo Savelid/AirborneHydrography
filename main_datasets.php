@@ -20,7 +20,7 @@ include 'res/header.inc.php';
   }
   ?>
 
-  <a href="edit_flight.php" class="btn btn-default navbar-btn" role="button">New dataset</a>
+  <a href="edit_datasets.php" class="btn btn-default navbar-btn" role="button">New dataset</a>
   <form class="navbar-form navbar-right" action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="GET">
     <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="search">
@@ -92,7 +92,7 @@ include 'res/header.inc.php';
     <tr>
 
     <td> %1$s </td>
-    <td><a href="view_flight.php?id=%13$s"> %2$s </a></td>
+    <td><a href="view_datasets.php?id=%13$s"> %2$s </a></td>
     <td> %3$s </td>
     <td><a href="view_system.php?system=%4$s"> %4$s </a></td>
     <td> %5$s </td>
@@ -151,4 +151,5 @@ $(function () {
 </script>
 <?php
 include 'res/footer.inc.php';
+
 ?>

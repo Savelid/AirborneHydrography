@@ -626,7 +626,7 @@ if($_GET['type'] == 'add_flight' || $_GET['type'] == 'update_flight') {
 		echo "New record created successfully";
 		postToLog(mysqli_real_escape_string($conn, $sql_insert));
 		$_SESSION['alert'] = 'Flight log updated';
-		header("Location: main_flights.php");
+		header("Location: main_datasets.php");
 		die();
 	} else {
 		echo "Error: " . $sql_insert . "<br>" . $conn->error;

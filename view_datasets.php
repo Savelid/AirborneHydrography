@@ -26,7 +26,7 @@ if (!empty($_GET['id'])) {
 else {
 	$_SESSION['showalert'] = 'true';
 	$_SESSION['alert'] = 'No dataset with this id';
-	header("Location: main_flights.php");
+	header("Location: main_datasets.php");
 	die();
 }
 
@@ -35,7 +35,7 @@ include 'res/header.inc.php';
 ?>
 
 <section class="top_content hidden-print">
-	<a href="edit_flight.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
+	<a href="edit_datasets.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
 </section>
 
 <section class="content">
