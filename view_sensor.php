@@ -188,7 +188,7 @@ $(function () {
 
           <?php if($sensor['sensor_type'] == 'deep'):?>
           <div class="row">
-            <div class="col-xs-6"><strong>Input offset rec:</strong></div>
+            <div class="col-xs-6"><strong>Input offset rec wide:</strong></div>
             <div class="col-xs-6"><?php echo $sensor['dps_value_input_offset_rec_wide'];?></div>
           </div>
           <?php endif; ?>
