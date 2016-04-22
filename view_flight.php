@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include_once 'res/config.inc.php';
+
 if (!empty($_GET['id'])) {
 
 	// Create connection
@@ -11,7 +13,7 @@ if (!empty($_GET['id'])) {
 	}
 
 	$sql = " SELECT *
-	FROM flight
+	FROM datasets
 	WHERE id = '$_GET[id]';";
 	$result = $conn->query($sql);
 	if (!$result) {
@@ -23,7 +25,7 @@ if (!empty($_GET['id'])) {
 }
 else {
 	$_SESSION['showalert'] = 'true';
-	$_SESSION['alert'] = 'No flight with this id';
+	$_SESSION['alert'] = 'No dataset with this id';
 	header("Location: main_flights.php");
 	die();
 }

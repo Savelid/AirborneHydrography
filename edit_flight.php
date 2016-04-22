@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 //Get number for Dataset ID
-$sql = "SELECT dataset_id FROM flight WHERE dataset_id LIKE 'AHAB-DATA-%' ORDER BY dataset_id DESC LIMIT 1 ;";
+$sql = "SELECT dataset_id FROM datasets WHERE dataset_id LIKE 'AHAB-DATA-%' ORDER BY dataset_id DESC LIMIT 1 ;";
 $result_dataset_id = $conn->query($sql);
 $row_dataset_id = $result_dataset_id->fetch_array(MYSQLI_NUM);
 $int_dataset_id = filter_var($row_dataset_id[0], FILTER_SANITIZE_NUMBER_INT);
@@ -124,7 +124,7 @@ $database_columns = "
 	raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 	";
 include_once 'res/postfunctions.inc.php';
-$row = postFunction('flight', $database_columns, 'main_flights.php');
+$row = postFunction('datasets', $database_columns, 'main_flights.php');
 
 $titel = 'Edit dataset';
 include 'res/header.inc.php';

@@ -15,6 +15,8 @@
       if ($mysqli->connect_errno) {
           throw new Exception("Failed to connect to MySQL: " . $mysqli->connect_error);
       }
+      ////////////////////////////////////
+
 
       $query = 'ALTER TABLE sensor ADD dps_value_input_offset_rec_wide INTEGER AFTER dps_value_input_offset_rec';
 
@@ -62,6 +64,25 @@
       else {
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
+
+      $query = 'RENAME TABLE flight TO datasets;';
+
+      if($mysqli->query($query)) {
+          echo "<br>Changed neme of flight to datasets";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE datasets ADD UNIQUE (dataset_id);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to dataset_id";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
 
   } catch (Exception $e) {
       print($e->getMessage());

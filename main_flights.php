@@ -40,7 +40,7 @@ include 'res/header.inc.php';
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql = "  SELECT * FROM flight ";
+  $sql = "  SELECT * FROM datasets ";
   if(isset($_GET['search'])){
     $sql .= "WHERE datetime LIKE '%" . $_GET['search'] . "%'
     OR dataset_id LIKE '%" . $_GET['search'] . "%'
