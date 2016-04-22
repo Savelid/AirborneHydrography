@@ -83,6 +83,87 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE system ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in system";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE system_status ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in system_status";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE sensor_unit ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in sensor_unit";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE control_system ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in control_system";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE deep_system ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in deep_system";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE scu ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in scu";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE sensor ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in sensor";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE hv_card ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in hv_card";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE laser ADD UNIQUE (serial_nr);';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add UNIQUE to serial_nr in laser";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
 
   } catch (Exception $e) {
       print($e->getMessage());
