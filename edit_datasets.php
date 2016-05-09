@@ -138,7 +138,7 @@ include 'res/header.inc.php';
 	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 
 		<?php
-		if(isset($_GET['id'])){
+		if(!empty($_GET['id'])){
 			echo '<input type="hidden" class="form-control" name="id" value="' . $_GET['id'] . '"/>';
 		}
 		?>

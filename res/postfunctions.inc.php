@@ -49,7 +49,7 @@ function postFunction($table, $database_columns, $redirect){
 			if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				debug_to_console("Creating new Dataset");
 				$sql_insert = "INSERT INTO $table SET id = '$id', " . $database_columns . ";";
-				$type = 'Add' . $table;
+				$type = 'Add ' . $table;
 				if ($conn->query($sql_insert) === TRUE) {
 					$_SESSION['alert'] .= "New record created successfully <br>";
 					//split string

@@ -1,9 +1,8 @@
 <?php
 session_start();
-$titel = 'System ' . $_GET['system'];
-include 'res/header.inc.php';
+include_once 'res/config.inc.php';
 
-if (!empty($_GET['system'])) {
+if (!empty($_GET['id'])) {
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -18,7 +17,7 @@ if (!empty($_GET['system'])) {
 	LEFT JOIN leica AS leica_oc60_1 ON leica_oc60_1.serial_nr = oc60_1_sn
 	LEFT JOIN leica AS leica_oc60_2 ON leica_oc60_2.serial_nr = oc60_2_sn
 	LEFT JOIN leica AS leica_pav ON leica_pav.serial_nr = pav_sn
-	WHERE system.serial_nr = '$_GET[system]';";
+	WHERE system.id = '$_GET[id]';";
 	$result = $conn->query($sql);
 	if (!$result) {
 		die("Query 1 failed! <br>Error:" . $sql . "<br>" . $conn->error);
@@ -71,10 +70,13 @@ else {
 	header("Location: main_systems.php");
 	die();
 }
+
+$titel = 'System ' . $system['serial_nr'];
+include 'res/header.inc.php';
 ?>
 
 <section class="top_content hidden-print">
-	<a href="edit_system.php?system=<?php echo $_GET['system']; ?>" class="btn btn-default" role="button">Edit system</a>
+	<a href="edit_system.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit system</a>
 	<a href="edit_isp.php?receiver=<?php echo $system['client']; ?>" class="btn btn-default" role="button">New ISP log</a>
 </section>
 
