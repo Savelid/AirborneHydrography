@@ -58,6 +58,11 @@ include 'res/header.inc.php';
 					</div>
 
 					<div class="row">
+						<div class="col-xs-6"><strong>Disc id</strong></div>
+						<div class="col-xs-6"><?php echo $query['disc_id'];?></div>
+					</div>
+
+					<div class="row">
 						<div class="col-xs-6"><strong>Location</strong></div>
 						<div class="col-xs-6"><?php echo $query['location'];?></div>
 					</div>

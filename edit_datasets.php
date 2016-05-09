@@ -93,36 +93,40 @@ debug_to_console("Dataset id nummer" . $int_dataset_id);
 
 $conn->close();
 
-$database_columns = "
-	datetime = '$_POST[datetime]',
-	dataset_id = '$_POST[dataset_id]',
-	location = '$_POST[location]',
-	system_id = '$_POST[system_id]',
-	system_model = '$_POST[system_model]',
-	topo_sensor_1_sn = '$_POST[topo_sensor_1_sn]',
-	topo_sensor_2_sn = '$_POST[topo_sensor_2_sn]',
-	shallow_sensor_sn = '$_POST[shallow_sensor_sn]',
-	deep_sensor_sn = '$_POST[deep_sensor_sn]',
-	scu_sn = '$_POST[scu_sn]',
-	imu_1_sn = '$_POST[imu_1_sn]',
-	imu_2_sn = '$_POST[imu_2_sn]',
+$database_columns = "";
+if(!empty($_POST)){
+	$database_columns = "
+		datetime = '$_POST[datetime]',
+		dataset_id = '$_POST[dataset_id]',
+		disc_id = '$_POST[disc_id]',
+		location = '$_POST[location]',
+		system_id = '$_POST[system_id]',
+		system_model = '$_POST[system_model]',
+		topo_sensor_1_sn = '$_POST[topo_sensor_1_sn]',
+		topo_sensor_2_sn = '$_POST[topo_sensor_2_sn]',
+		shallow_sensor_sn = '$_POST[shallow_sensor_sn]',
+		deep_sensor_sn = '$_POST[deep_sensor_sn]',
+		scu_sn = '$_POST[scu_sn]',
+		imu_1_sn = '$_POST[imu_1_sn]',
+		imu_2_sn = '$_POST[imu_2_sn]',
 
-	type_of_data = '$_POST[type_of_data]',
-	purpose_of_flight = '$_POST[purpose_of_flight]',
-	evaluation_of_flight = '$_POST[evaluation_of_flight]',
-	flight_logs = '$_POST[flight_logs]',
-	data_evaluation = '$_POST[data_evaluation]',
+		type_of_data = '$_POST[type_of_data]',
+		purpose_of_flight = '$_POST[purpose_of_flight]',
+		evaluation_of_flight = '$_POST[evaluation_of_flight]',
+		flight_logs = '$_POST[flight_logs]',
+		data_evaluation = '$_POST[data_evaluation]',
 
-	nav_data_processing_log = '$_POST[nav_data_processing_log]',
-	calibration_file = '$_POST[calibration_file]',
-	processing_settings_file = '$_POST[processing_settings_file]',
-	configuration_file = '$_POST[configuration_file]',
-	calibration_report = '$_POST[calibration_report]',
-	acceptance_report = '$_POST[acceptance_report]',
-	system_fully_functional = '$_POST[system_fully_functional]',
-	raw_data_in_archive = '$_POST[raw_data_in_archive]',
-	raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
-	";
+		nav_data_processing_log = '$_POST[nav_data_processing_log]',
+		calibration_file = '$_POST[calibration_file]',
+		processing_settings_file = '$_POST[processing_settings_file]',
+		configuration_file = '$_POST[configuration_file]',
+		calibration_report = '$_POST[calibration_report]',
+		acceptance_report = '$_POST[acceptance_report]',
+		system_fully_functional = '$_POST[system_fully_functional]',
+		raw_data_in_archive = '$_POST[raw_data_in_archive]',
+		raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
+		";
+}
 include_once 'res/postfunctions.inc.php';
 $row = postFunction('datasets', $database_columns, 'main_datasets.php');
 
@@ -146,10 +150,20 @@ include 'res/header.inc.php';
 				<div class="form-group">
 					<label for="dataset_id" class="col-xs-4 control-label">
 						Dataset ID
-						<div class ="comments">AHAB-DATA-xxxx</div>
+						<div class="comments">AHAB-DATA-xxxx</div>
 					</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="dataset_id" <?= !empty($row['dataset_id']) ?  'value="' . $row['dataset_id'] . '"' : 'value="AHAB-DATA-' . sprintf("%04d", $int_dataset_id) .'"' ; ?> required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="disc_id" class="col-xs-4 control-label">
+						Disc ID
+						<div class="comments">Example: D012 D014</div>
+					</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="disc_id" <?= !empty($row['disc_id']) ?  'value="' . $row['disc_id'] . '"' : '' ; ?> />
 					</div>
 				</div>
 

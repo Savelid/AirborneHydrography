@@ -16,6 +16,9 @@ function postFunction($table, $database_columns, $redirect){
 		if (isset($_POST['id'])) {
 			$id = $_POST['id'];
 		}
+		if (isset($_POST['id'])) {
+			$_SESSION['user'] = $_POST['user'];
+		}
 		debug_to_console("id copied from POST to GET");
 		$_SESSION['showalert'] = 'true';
 		$_SESSION['alert'] = "";
@@ -78,7 +81,7 @@ function postFunction($table, $database_columns, $redirect){
 					if (!$result2) {
 						$_SESSION['alert'] .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
 					}else {
-						$new_row = $result2->fetch_array(MYSQLI_BOTH);
+						$new_row = $result2->fetch_array(MYSQLI_NUM);
 						for ($x = 0; $x <= count($new_row); $x++) {
 							if(strcmp($new_row[$x], $row[$x]) != 0) {
 								$this_col = "";

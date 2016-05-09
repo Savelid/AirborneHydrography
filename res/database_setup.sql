@@ -240,6 +240,7 @@ CREATE TABLE datasets (
 	dataset_id VARCHAR(50) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 
+	disc_id VARCHAR(100),
 	location VARCHAR(100),
 	system_id VARCHAR(30),
 	system_model VARCHAR(30),
