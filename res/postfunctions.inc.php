@@ -8,6 +8,10 @@
 function postFunction($id_name, $table, $database_columns, $redirect){
 
 	include 'res/config.inc.php';
+	$run_query = false;
+	$changes = "";
+	$id = "";
+
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
@@ -15,36 +19,26 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 		die("Connection failed: " . $conn->connect_error);
 	}
 
-	$run_query = false;
-	$changes = "";
-	$id = "";
-	$id_name = "id";
+	// Get id when posting to the database.
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
-		if (isset($_POST['id'])) {
-			$id = $_POST['id'];
-			$id_name = "id";
+		if (isset($_POST[$id_name])) {
+			$id = $_POST[$id_name];
 			$_SESSION['user'] = $_POST['user'];
 		}
-		elseif (isset($_POST['serial_nr'])) {
-			$id = $_POST['serial_nr'];
-			$id_name = "serial_nr";
-			$_SESSION['user'] = $_POST['user'];
-		}
-		debug_to_console("id copied from POST to GET");
 		$_SESSION['showalert'] = 'true';
 		$_SESSION['alert'] = "";
 		$run_query = true;
-	}
-	if (!empty($_GET['id'])) {
-		$id = $_GET['id'];
-		$id_name = "id";
-		$run_query = true;
-	}elseif (!empty($_GET['serial_nr'])) {
-		$id_name = "serial_nr ";
-		$id = $_GET['serial_nr'];
-		$run_query = true;
+		debug_to_console("id copied from POST");
 	}
 
+	// Get id when showing data in the form.
+	if (!empty($_GET[$id_name])) {
+		$id = $_GET[$id_name];
+		$run_query = true;
+		debug_to_console("id copied from GET");
+	}
+
+	// Get the names of the columns. Will be shown toghether with the list of changes
 	$sql_col_names = "SHOW COLUMNS FROM $table;";
 	$result_col_names = $conn->query($sql_col_names);
 	if ($result_col_names->num_rows > 0) {
@@ -55,16 +49,16 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 				$i++;
 			}
 	}
-
-	if ($run_query) {
-
+		debug_to_console("before run_query: " . $id . " ID name: " . $id_name);
+	if ($run_query) { // If not a new empty form.
+		debug_to_console("run_query");
 		$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
 		$result = $conn->query($sql);
 		if ($result->num_rows < 1) {
 			echo $sql;
 			debug_to_console("Query for this id failed");
 			if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-				debug_to_console("Creating new Dataset");
+				debug_to_console("Creating new row");
 				$sql_insert = "INSERT INTO $table SET $id_name = '$id', " . $database_columns . ";";
 				$type = 'Add ' . $table;
 				if ($conn->query($sql_insert) === TRUE) {
@@ -79,7 +73,7 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 						}
 					}
 					$_SESSION['alert'] .= "<br/>" . $changes;
-					postToLogFormated($type, mysqli_real_escape_string($conn, $sql_insert), mysqli_real_escape_string($conn, $changes));
+					postToLogFormated($id_name, $type, mysqli_real_escape_string($conn, $sql_insert), mysqli_real_escape_string($conn, $changes));
 				}else{
 					$_SESSION['alert'] .= "New record failed <br>" . $sql . "<br>" . $conn->error;
 				}
@@ -110,7 +104,7 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 							}
 						}
 						$_SESSION['alert'] .= "<br/>" . $changes;
-						postToLogFormated($type, mysqli_real_escape_string($conn, $sql_insert), mysqli_real_escape_string($conn, $changes));
+						postToLogFormated($id_name, $type, mysqli_real_escape_string($conn, $sql_insert), mysqli_real_escape_string($conn, $changes));
 					}
 				}else{
 					$_SESSION['alert'] .= "Update failed <br>" . $sql . "<br>" . $conn->error;
@@ -131,20 +125,20 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 
 <?PHP
 	// Add all requests saved by this page to LOG
-	function postToLogFormated($this_type, $this_sql_string, $this_changes) {
-		$this_serial_nr = "";
-		if (!empty($_POST['serial_nr'])) {
-			$this_serial_nr = $_POST['serial_nr'];
-		}
-		elseif (!empty($_POST['isp_nr'])) {
-			$this_serial_nr = $_POST['isp_nr'];
-		}
-		elseif (!empty($_POST['dataset_id'])) {
-			$this_serial_nr = $_POST['dataset_id'];
-		}
-		elseif(!empty($_POST['id'])) {
-			$this_serial_nr = $_POST['id'];
-		}
+	function postToLogFormated($this_id_name, $this_type, $this_sql_string, $this_changes) {
+		$this_serial_nr = $_POST[$this_id_name];
+		// if (!empty($_POST['serial_nr'])) {
+		// 	$this_serial_nr = $_POST['serial_nr'];
+		// }
+		// elseif (!empty($_POST['isp_nr'])) {
+		// 	$this_serial_nr = $_POST['isp_nr'];
+		// }
+		// elseif (!empty($_POST['dataset_id'])) {
+		// 	$this_serial_nr = $_POST['dataset_id'];
+		// }
+		// elseif(!empty($_POST['id'])) {
+		// 	$this_serial_nr = $_POST['id'];
+		// }
 
 		// Create connection
 		include 'res/config.inc.php';
