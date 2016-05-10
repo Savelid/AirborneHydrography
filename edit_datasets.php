@@ -2,6 +2,7 @@
 session_start();
 include_once 'res/config.inc.php';
 include_once('res/functions.inc.php');
+include_once 'res/postfunctions.inc.php';
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -127,7 +128,6 @@ if(!empty($_POST)){
 		raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 		";
 }
-include_once 'res/postfunctions.inc.php';
 $row = postFunction('datasets', $database_columns, 'main_datasets.php');
 
 $titel = 'Edit dataset';

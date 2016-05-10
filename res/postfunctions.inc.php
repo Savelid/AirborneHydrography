@@ -12,11 +12,16 @@ function postFunction($table, $database_columns, $redirect){
 	$run_query = false;
 	$changes = "";
 	$id = "";
+	$id_type = "id";
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		if (isset($_POST['id'])) {
 			$id = $_POST['id'];
+			$id_type = "id";
+			$_SESSION['user'] = $_POST['user'];
 		}
-		if (isset($_POST['id'])) {
+		elseif (isset($_POST['serial_nr'])) {
+			$id = $_POST['serial_nr'];
+			$id_type = "serial_nr";
 			$_SESSION['user'] = $_POST['user'];
 		}
 		debug_to_console("id copied from POST to GET");
@@ -26,6 +31,11 @@ function postFunction($table, $database_columns, $redirect){
 	}
 	if (!empty($_GET['id'])) {
 		$id = $_GET['id'];
+		$id_type = "id";
+		$run_query = true;
+	}elseif (!empty($_GET['serial_nr'])) {
+		$id_type = "serial_nr ";
+		$id = $_GET['serial_nr'];
 		$run_query = true;
 	}
 
@@ -42,13 +52,14 @@ function postFunction($table, $database_columns, $redirect){
 
 	if ($run_query) {
 
-		$sql = "SELECT * FROM $table WHERE id = '$id';";
+		$sql = "SELECT * FROM $table WHERE $id_type = '$id';";
 		$result = $conn->query($sql);
 		if ($result->num_rows < 1) {
+			echo $sql;
 			debug_to_console("Query for this id failed");
 			if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				debug_to_console("Creating new Dataset");
-				$sql_insert = "INSERT INTO $table SET id = '$id', " . $database_columns . ";";
+				$sql_insert = "INSERT INTO $table SET $id_type = '$id', " . $database_columns . ";";
 				$type = 'Add ' . $table;
 				if ($conn->query($sql_insert) === TRUE) {
 					$_SESSION['alert'] .= "New record created successfully <br>";
@@ -72,11 +83,11 @@ function postFunction($table, $database_columns, $redirect){
 			$row = $result->fetch_array(MYSQLI_BOTH);
 			debug_to_console("result added to row");
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$sql_insert = "UPDATE $table SET " . $database_columns . " WHERE id = '$id' ;";
+				$sql_insert = "UPDATE $table SET " . $database_columns . " WHERE $id_type = '$id' ;";
 				$type = 'Update ' . $table;
 				if ($conn->query($sql_insert) === TRUE) {
 					$_SESSION['alert'] .= "Record updated successfully <br>";
-					$sql = "SELECT * FROM $table WHERE id = '$id';";
+					$sql = "SELECT * FROM $table WHERE $id_type = '$id';";
 					$result2 = $conn->query($sql);
 					if (!$result2) {
 						$_SESSION['alert'] .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;

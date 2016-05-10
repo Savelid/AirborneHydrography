@@ -1,35 +1,27 @@
 <?php
 session_start();
+include_once 'res/config.inc.php';
+include_once('res/functions.inc.php');
+include_once 'res/postfunctions.inc.php';
+
+$database_columns = "";
+if(!empty($_POST)){
+	$database_columns = "
+		datetime = '$_POST[datetime]',
+		imu = '$_POST[imu]',
+		leica_cam_sn = '$_POST[leica_cam]',
+		leica_lens = '$_POST[leica_lens]',
+		topo_sensor_sn = '$_POST[topo_sensor]',
+		topo_sensor_2_sn = '$_POST[topo_sensor_2]',
+		shallow_sensor_sn = '$_POST[shallow_sensor]',
+		comment = '$_POST[comment]'
+		";
+}
+$row = postFunction('sensor_unit', $database_columns, 'main_parts.php');
+
 $titel = 'Edit Sensor Unit';
 include 'res/header.inc.php';
-$type = 'add_sensor_unit';
-if (!empty($_GET['serial_nr'])) {
-	$type = 'update_sensor_unit';
-
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-
-	//
-	$sn = $_GET['serial_nr'];
-	$sql = "SELECT *
-	FROM sensor_unit
-	WHERE serial_nr = $sn";
-	$result = $conn->query($sql);
-	if (!$result) {
-		echo "Error: " . $sql_insert . "<br>" . $conn->error;
-		die();
-	}
-
-	$row = $result->fetch_array(MYSQLI_ASSOC);
-	$conn->close();
-}
-$path = 'post_add_update.php?type=' . $type; // path for form
 ?>
-<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.combobox').combobox();
@@ -37,7 +29,7 @@ $(document).ready(function(){
 </script>
 <section class="content">
 
-	<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
+	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">
 
