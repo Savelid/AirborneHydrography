@@ -5,8 +5,6 @@
   $user = $username;
   $database = $dbname;
 
-  echo "This page should start the download of a SQL file";
-
   try {
       // open the connection to the database - $host, $user, $password, $database should already be set
       $mysqli = new mysqli($host, $user, $password, $database);
