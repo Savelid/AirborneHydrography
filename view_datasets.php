@@ -3,7 +3,7 @@ session_start();
 
 include_once 'res/config.inc.php';
 
-if (!empty($_GET['id'])) {
+if (!empty($_GET['dataset_id'])) {
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,7 +14,7 @@ if (!empty($_GET['id'])) {
 
 	$sql = " SELECT *
 	FROM datasets
-	WHERE id = '$_GET[id]';";
+	WHERE dataset_id = '$_GET[dataset_id]';";
 	$result = $conn->query($sql);
 	if (!$result) {
 		die("Query 1 failed! <br>Error:" . $sql . "<br>" . $conn->error);
@@ -35,7 +35,7 @@ include 'res/header.inc.php';
 ?>
 
 <section class="top_content hidden-print">
-	<a href="edit_datasets.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
+	<a href="edit_datasets.php?dataset_id=<?php echo $_GET['dataset_id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
 </section>
 
 <section class="content">

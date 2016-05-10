@@ -92,9 +92,9 @@ include 'res/header.inc.php';
     <tr>
 
     <td> %1$s </td>
-    <td><a href="view_datasets.php?id=%13$s"> %2$s </a></td>
+    <td><a href="view_datasets.php?dataset_id=%2$s"> %2$s </a></td>
     <td> %3$s </td>
-    <td><a href="view_system.php?system=%4$s"> %4$s </a></td>
+    <td><a href="view_system.php?serial_nr=%4$s"> %4$s </a></td>
     <td> %5$s </td>
     <td><a href="view_sensor.php?serial_nr=%6$s"> %6$s </a></td>
     <td><a href="view_sensor.php?serial_nr=%7$s"> %7$s </a></td>
@@ -127,9 +127,7 @@ include 'res/header.inc.php';
       $row["deep_sensor_sn"],
       $row["scu_sn"],
       $row["imu_1_sn"],
-      $row["imu_2_sn"],
-
-      $row["id"]);
+      $row["imu_2_sn"]);
     }
     echo '
     </tbody>
