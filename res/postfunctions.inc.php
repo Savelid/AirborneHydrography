@@ -1,5 +1,11 @@
 <?php
-function postFunction($table, $database_columns, $redirect){
+// @param id_name - Set what column will be the key when picking one item for updates.
+// @param table - What table will the data be stored in.
+// @param database_columns - a string with all columns and the values.
+// @param redirect - Where will the user be sent after the query is done.
+// @return array with results from databse.
+
+function postFunction($id_name, $table, $database_columns, $redirect){
 
 	include 'res/config.inc.php';
 	// Create connection
@@ -12,16 +18,16 @@ function postFunction($table, $database_columns, $redirect){
 	$run_query = false;
 	$changes = "";
 	$id = "";
-	$id_type = "id";
+	$id_name = "id";
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		if (isset($_POST['id'])) {
 			$id = $_POST['id'];
-			$id_type = "id";
+			$id_name = "id";
 			$_SESSION['user'] = $_POST['user'];
 		}
 		elseif (isset($_POST['serial_nr'])) {
 			$id = $_POST['serial_nr'];
-			$id_type = "serial_nr";
+			$id_name = "serial_nr";
 			$_SESSION['user'] = $_POST['user'];
 		}
 		debug_to_console("id copied from POST to GET");
@@ -31,10 +37,10 @@ function postFunction($table, $database_columns, $redirect){
 	}
 	if (!empty($_GET['id'])) {
 		$id = $_GET['id'];
-		$id_type = "id";
+		$id_name = "id";
 		$run_query = true;
 	}elseif (!empty($_GET['serial_nr'])) {
-		$id_type = "serial_nr ";
+		$id_name = "serial_nr ";
 		$id = $_GET['serial_nr'];
 		$run_query = true;
 	}
@@ -52,14 +58,14 @@ function postFunction($table, $database_columns, $redirect){
 
 	if ($run_query) {
 
-		$sql = "SELECT * FROM $table WHERE $id_type = '$id';";
+		$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
 		$result = $conn->query($sql);
 		if ($result->num_rows < 1) {
 			echo $sql;
 			debug_to_console("Query for this id failed");
 			if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				debug_to_console("Creating new Dataset");
-				$sql_insert = "INSERT INTO $table SET $id_type = '$id', " . $database_columns . ";";
+				$sql_insert = "INSERT INTO $table SET $id_name = '$id', " . $database_columns . ";";
 				$type = 'Add ' . $table;
 				if ($conn->query($sql_insert) === TRUE) {
 					$_SESSION['alert'] .= "New record created successfully <br>";
@@ -83,11 +89,11 @@ function postFunction($table, $database_columns, $redirect){
 			$row = $result->fetch_array(MYSQLI_BOTH);
 			debug_to_console("result added to row");
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				$sql_insert = "UPDATE $table SET " . $database_columns . " WHERE $id_type = '$id' ;";
+				$sql_insert = "UPDATE $table SET " . $database_columns . " WHERE $id_name = '$id' ;";
 				$type = 'Update ' . $table;
 				if ($conn->query($sql_insert) === TRUE) {
 					$_SESSION['alert'] .= "Record updated successfully <br>";
-					$sql = "SELECT * FROM $table WHERE $id_type = '$id';";
+					$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
 					$result2 = $conn->query($sql);
 					if (!$result2) {
 						$_SESSION['alert'] .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;

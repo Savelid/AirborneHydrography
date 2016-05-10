@@ -7,17 +7,17 @@ include_once 'res/postfunctions.inc.php';
 $database_columns = "";
 if(!empty($_POST)){
 	$database_columns = "
-		datetime = '$_POST[datetime]',
-		imu = '$_POST[imu]',
-		leica_cam_sn = '$_POST[leica_cam]',
-		leica_lens = '$_POST[leica_lens]',
-		topo_sensor_sn = '$_POST[topo_sensor]',
-		topo_sensor_2_sn = '$_POST[topo_sensor_2]',
-		shallow_sensor_sn = '$_POST[shallow_sensor]',
-		comment = '$_POST[comment]'
-		";
+	datetime = '$_POST[datetime]',
+	imu = '$_POST[imu]',
+	leica_cam_sn = '$_POST[leica_cam]',
+	leica_lens = '$_POST[leica_lens]',
+	topo_sensor_sn = '$_POST[topo_sensor]',
+	topo_sensor_2_sn = '$_POST[topo_sensor_2]',
+	shallow_sensor_sn = '$_POST[shallow_sensor]',
+	comment = '$_POST[comment]'
+	";
 }
-$row = postFunction('sensor_unit', $database_columns, 'main_parts.php');
+$row = postFunction('serial_nr', 'sensor_unit', $database_columns, 'main_parts.php');
 
 $titel = 'Edit Sensor Unit';
 include 'res/header.inc.php';

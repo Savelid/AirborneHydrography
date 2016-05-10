@@ -7,7 +7,6 @@ include_once 'res/postfunctions.inc.php';
 $database_columns = "";
 if(!empty($_POST)){
 	$database_columns = "
-	serial_nr = '$_POST[serial_nr]',
 	art_nr = '$_POST[art_nr]',
 	client = '$_POST[client]',
 	place = '$_POST[place]',
@@ -31,12 +30,11 @@ if(!empty($_POST)){
 	bitfile_sat = '$_POST[bitfile_sat]'
 	";
 }
-$row = postFunction('system', $database_columns, 'main_systems.php');
+$row = postFunction('serial_nr', 'system', $database_columns, 'main_systems.php');
 
 $database_columns2 = "";
 if(!empty($_POST)){
 	$database_columns2 = "
-	serial_nr = '$_POST[serial_nr]',
 	status_potta_heat = '$_POST[status_potta_heat]',
 	status_shallow_heat = '$_POST[status_shallow_heat]',
 	status_scu_pdu = '$_POST[status_scu_pdu]',
@@ -47,34 +45,10 @@ if(!empty($_POST)){
 	status_pwr_cable = '$_POST[status_pwr_cable]'
 	";
 }
-$row2 = postFunction('system_status', $database_columns2, 'main_systems.php');
+$row2 = postFunction('serial_nr', 'system_status', $database_columns2, 'main_systems.php');
 
 $titel = 'Edit System';
 include 'res/header.inc.php';
-// $type = 'add_system';
-// if (!empty($_GET['system'])) {
-// 	$type = 'update_system';
-
-// 	// Create connection
-// 	$conn = new mysqli($servername, $username, $password, $dbname);
-// 	// Check connection
-// 	if ($conn->connect_error) {
-//     	die("Connection failed: " . $conn->connect_error);
-// 	}
-//
-// 	$sql = "SELECT *, system.serial_nr AS serial_nr
-// 			FROM system
-// 			LEFT JOIN system_status ON system_status.serial_nr = system.serial_nr
-//             WHERE system.serial_nr = '$_GET[system]';";
-// 	$result = $conn->query($sql);
-// 	if (!$result) {
-// 		die("Query 1 failed! " . $sql . "<br>" . $conn->error);
-// 	}
-//     $row = $result->fetch_array(MYSQLI_ASSOC);
-//
-//     $conn->close();
-// }
-// $path = 'post_add_update.php?type=' . $type;
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -89,17 +63,11 @@ $(document).ready(function(){
 
 				<div class="col-xs-8 col-xs-offset-4"><h4>System</h4></div>
 
-				<?php
-				if(!empty($_GET['id'])){
-					echo '<input type="hidden" class="form-control" name="id" value="' . $_GET['id'] . '"/>';
-				}
-				?>
-
 				<div class="form-group">
 					<label for="serial_nr" class="col-xs-4 control-label">Serial Number</label>
 					<div class="col-xs-8">
 						<?php
-						if (!empty($_GET['id'])) {
+						if (!empty($_GET['serial_nr'])) {
 							echo '<input type="hidden" name="serial_nr" value="' . $row['serial_nr'] . '" />'
 							. '<input type="text" class="form-control" placeholder="' . $row['serial_nr'] . '" disabled />';
 						}else {

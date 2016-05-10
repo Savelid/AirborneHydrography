@@ -2,7 +2,7 @@
 session_start();
 include_once 'res/config.inc.php';
 
-if (!empty($_GET['id'])) {
+if (!empty($_GET['serial_nr'])) {
 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -17,7 +17,7 @@ if (!empty($_GET['id'])) {
 	LEFT JOIN leica AS leica_oc60_1 ON leica_oc60_1.serial_nr = oc60_1_sn
 	LEFT JOIN leica AS leica_oc60_2 ON leica_oc60_2.serial_nr = oc60_2_sn
 	LEFT JOIN leica AS leica_pav ON leica_pav.serial_nr = pav_sn
-	WHERE system.id = '$_GET[id]';";
+	WHERE system.serial_nr = '$_GET[serial_nr]';";
 	$result = $conn->query($sql);
 	if (!$result) {
 		die("Query 1 failed! <br>Error:" . $sql . "<br>" . $conn->error);
@@ -71,12 +71,12 @@ else {
 	die();
 }
 
-$titel = 'System ' . $system['serial_nr'];
+$titel = 'System ' . $_GET['serial_nr'];
 include 'res/header.inc.php';
 ?>
 
 <section class="top_content hidden-print">
-	<a href="edit_system.php?id=<?php echo $_GET['id']; ?>" class="btn btn-default" role="button">Edit system</a>
+	<a href="edit_system.php?serial_nr=<?php echo $_GET['serial_nr']; ?>" class="btn btn-default" role="button">Edit system</a>
 	<a href="edit_isp.php?receiver=<?php echo $system['client']; ?>" class="btn btn-default" role="button">New ISP log</a>
 </section>
 

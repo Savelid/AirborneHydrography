@@ -56,7 +56,7 @@ $(function () {
         die("Connection failed: " . $conn->connect_error);
       }
 
-      $sql = "  SELECT system.id AS id, system.serial_nr, client, configuration, sensor_unit_sn, control_system_sn, deep_system_sn,
+      $sql = "  SELECT system.serial_nr AS serial_nr, client, configuration, sensor_unit_sn, control_system_sn, deep_system_sn,
       sensor_unit.topo_sensor_sn, sensor_unit.topo_sensor_2_sn, sensor_unit.shallow_sensor_sn, deep_system.deep_sensor_sn,
       control_system.scu_sn, status, system.comment
       FROM system
@@ -80,9 +80,9 @@ $(function () {
       %1$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><a href="view_system.php?id=%12$s">View</a></li>
+      <li><a href="view_system.php?serial_nr=%12$s">View</a></li>
       <li role="separator" class="divider"></li>
-      <li><a href="edit_system.php?id=%12$s">Edit</a></li>
+      <li><a href="edit_system.php?serial_nr=%12$s">Edit</a></li>
       </ul>
       </div>
       </td>
@@ -171,7 +171,7 @@ $(function () {
           $row["comment"],
           $formating1,
           $formating2,
-          $row["id"]);
+          $row["serial_nr"]);
         }
       } else {
         echo "No messages";

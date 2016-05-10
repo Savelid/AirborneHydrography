@@ -128,7 +128,7 @@ if(!empty($_POST)){
 		raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 		";
 }
-$row = postFunction('datasets', $database_columns, 'main_datasets.php');
+$row = postFunction('id', 'datasets', $database_columns, 'main_datasets.php');
 
 $titel = 'Edit dataset';
 include 'res/header.inc.php';
