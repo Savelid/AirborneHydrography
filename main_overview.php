@@ -165,7 +165,7 @@ else:
 
                 $table_row_formating = '
                 <tr>
-                <td><a href="view_system.php?system=%s" class="btn btn-default btn-sm">%s</a></td>
+                <td><a href="view_system.php?serial_nr=%s" class="btn btn-default btn-sm">%s</a></td>
                 <td>%s</td>
                 <td>%s</td>
                 <td>%s</td>

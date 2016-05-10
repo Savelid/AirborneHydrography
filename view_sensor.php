@@ -143,7 +143,7 @@ $(function () {
           <div class="row">
             <div class="col-xs-6"><strong>Parent System:</strong></div>
             <div class="col-xs-6">
-              <a href="view_system.php?system=<?php echo $parent['system_serial_nr'];?>"><?php echo $parent['system_serial_nr'];?></a>
+              <a href="view_system.php?serial_nr=<?php echo $parent['system_serial_nr'];?>"><?php echo $parent['system_serial_nr'];?></a>
             </div>
           </div>
           <?php

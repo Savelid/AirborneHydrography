@@ -302,7 +302,7 @@ $(function(){
                 }
 
                 $formated_parent = '';
-                if(isset($parent["serial_nr"]) && $parent["serial_nr"] != '') {$formated_parent = '<li><a href="view_system.php?system=' . $parent["serial_nr"] . '">Parent system</a></li>';}
+                if(isset($parent["serial_nr"]) && $parent["serial_nr"] != '') {$formated_parent = '<li><a href="view_system.php?serial_nr=' . $parent["serial_nr"] . '">Parent system</a></li>';}
 
                 echo sprintf($table_row_formating,
                 $row["serial_nr"],
@@ -376,7 +376,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_sensor_unit.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a>%12$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a>%12$s</td>
             <td>%3$s</td>
             <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %11$s">
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
@@ -497,7 +497,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_control_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a> %9$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a> %9$s</td>
             <td>%3$s</td>
             <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %8$s">
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
@@ -602,7 +602,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_deep_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?system=%2$s" class="btn btn-default btn-sm">%2$s</a> %8$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a> %8$s</td>
             <td>%3$s</td>
             <td>%4$s</td>
             <td>%5$s</td>
