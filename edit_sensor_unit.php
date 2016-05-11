@@ -7,7 +7,6 @@ include_once 'res/postfunctions.inc.php';
 $database_columns = "";
 if(!empty($_POST)){
 	$database_columns = "
-	datetime = '$_POST[datetime]',
 	imu = '$_POST[imu]',
 	leica_cam_sn = '$_POST[leica_cam]',
 	leica_lens = '$_POST[leica_lens]',
