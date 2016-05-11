@@ -1,33 +1,26 @@
 <?php
 session_start();
+include_once 'res/config.inc.php';
+include_once('res/functions.inc.php');
+include_once 'res/postfunctions.inc.php';
+
+$database_columns = "";
+if(!empty($_POST)){
+	$database_columns = "
+	configuration = '$_POST[configuration]',
+	digitaizer1 = '$_POST[digitaizer1]',
+	digitaizer2 = '$_POST[digitaizer2]',
+	sat = '$_POST[sat]',
+	cpu = '$_POST[cpu]',
+	status = '$_POST[status]',
+	comment = '$_POST[comment]'
+	";
+}
+$row = postFunction('serial_nr', 'scu', $database_columns, 'main_parts.php');
+
 $titel = 'Edit SCU';
 include 'res/header.inc.php';
-$type = 'add_scu';
-if (!empty($_GET['serial_nr'])) {
-	$type = 'update_scu';
-
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-    	die("Connection failed: " . $conn->connect_error);
-	}
-
-	$sql = "SELECT *
-			FROM scu
-			WHERE serial_nr = '$_GET[serial_nr]'";
-	$result = $conn->query($sql);
-	if (!$result) {
-		echo "Error: " . $sql_insert . "<br>" . $conn->error;
-		die();
-	}
-
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-    $conn->close();
-}
-$path = 'post_add_update.php?type=' . $type; // path for form
 ?>
-<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
   $(document).ready(function(){
     $('.combobox').combobox();
@@ -35,7 +28,7 @@ $path = 'post_add_update.php?type=' . $type; // path for form
 </script>
 <section class="content">
 
-<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
+<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
 
