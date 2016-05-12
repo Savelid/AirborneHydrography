@@ -83,3 +83,246 @@ function debug_to_console($data) {
 	}
 }
 ?>
+
+<?php
+// @param id_name - Set what column will be the key when picking one item for updates.
+// @param table - What table will the data be stored in.
+// @param database_columns - a string with all columns and the values.
+// @param redirect - Where will the user be sent after the query is done.
+// @return array with results from databse.
+
+function postFunction($id_name, $table, $database_columns, $redirect){
+
+	if(!empty($_GET[$id_name])){
+		$row = getDatabaseRow($table, $id_name, $_GET[$id_name]);
+	}
+	if (isset($_POST[$id_name])) {
+		$post_status = postToDatabase($table, $id_name, $_POST[$id_name], $database_columns);
+
+		$_SESSION['showalert'] = 'true';
+		$_SESSION['alert'] = $table . ": " . $post_status['status'];
+		$_SESSION['alert'] .= "<br><br>";
+		$_SESSION['alert'] .= $post_status['updates'];
+
+		$log_status = postToLog($_POST[$id_name], $post_status['type'] . " " . $table, $post_status['query'], $post_status['updates'], $_POST['user'], $_POST['log_comment']);
+		header("Location: " . $redirect);
+	}
+
+	if (isset($row)) {
+		return $row;
+	}
+}
+?>
+
+<?php
+// @param table - What table will the data be stored in.
+// @param id_name - Set what column will be the key when picking one item for updates.
+// @param id - Set the id coresponding to the id_name
+// @param database_columns - a string with all columns and the values.
+// @return an array with strings.
+// 'changes' made in the current row.
+// 'query' used to post to database.
+// 'type' update or add
+//
+// Updating a current row if awailable, otherwise posting to a new row.
+// Also makes a string with changes done to the affected row.
+
+function postToDatabase($table, $id_name, $id, $database_columns){
+	if($_SERVER['REQUEST_METHOD'] == 'POST'){
+		$changes = "";
+		$query = "";
+		$type = "";
+		$status = "";
+		//session_start();
+		include 'res/config.inc.php';
+		// Make sure username is saved between pages.
+		if(!empty($_POST['user'])){
+			$_SESSION['user'] = $_POST['user'];
+		}
+		// Create connection
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+
+		// Get the names of the columns. Will be shown toghether with the list of changes
+		$sql_col_names = "SHOW COLUMNS FROM $table;";
+		$result_col_names = $conn->query($sql_col_names);
+		if ($result_col_names->num_rows > 0) {
+		    // output data of each row
+				$i = 0;
+		    while($row_col_names = $result_col_names->fetch_assoc()) {
+					$column_names[$i] = $row_col_names['Field'];
+					$i++;
+				}
+		}
+
+		$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
+		$result = $conn->query($sql);
+		if ($result->num_rows < 1) {
+
+				debug_to_console("Creating new row");
+				$query = "INSERT INTO $table SET $id_name = '$id', " . $database_columns . ";";
+				$type = 'Add';
+				if ($conn->query($query) === TRUE) {
+					$status = "New record created successfully";
+					//split string
+					$tags = explode(',',$database_columns);
+					//print only those that are not empty
+					foreach($tags as $key) {
+						$pos = strpos($key, "''");
+						if ($pos === false) {
+	    				$changes .= $key.'<br/>';
+						}
+					}
+				}else{
+					$status = "New record failed <br>" . $sql . "<br>" . $conn->error;
+				}
+
+		}else {
+			$row = $result->fetch_array(MYSQLI_BOTH);
+			debug_to_console("result added to row");
+				$query = "UPDATE $table SET " . $database_columns . " WHERE $id_name = '$id' ;";
+				$type = 'Update';
+				if ($conn->query($query) === TRUE) {
+					$status= "Record updated successfully";
+					$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
+					$result2 = $conn->query($sql);
+					if (!$result2) {
+						$status .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
+					}else {
+						$new_row = $result2->fetch_array(MYSQLI_NUM);
+						for ($x = 0; $x <= count($new_row); $x++) {
+							if(!empty($new_row[$x]) && !empty($new_row[$x])){
+								if(strcmp($new_row[$x], $row[$x]) === 0) {
+									debug_to_console("Skip unchanged item");
+								}else {
+									$this_col = "";
+									if (isset($column_names)) {
+										//$this_col = $column_names[$x];
+										$this_col = sprintf("%20s", $column_names[$x]); // left-justification with spaces
+									}
+									$changes .=  $this_col ." | ". $row[$x] ." -> ".$new_row[$x]."<br>";
+								}
+							}else {
+								debug_to_console("Minor error: Empty row");
+							}
+						}
+					}
+				}else{
+					$status= "Update failed <br>" . $sql . "<br>" . $conn->error;
+				}
+		}
+		$conn->close();
+		return array(
+	    'updates'  => $changes,
+	    'query' => $query,
+	    'type' => $type,
+	    'status' => $status
+		);
+	}
+	return NULL;
+}
+?>
+
+<?php
+// @param table - What table will be queried.
+// @param id_name - Set what column will be the key when picking one row
+// @param id - Set the id coresponding to the id_name
+// @return array with results from databse.
+//
+// Querries the database and return exactly one row, or NULL
+
+function getDatabaseRow($table, $id_name, $id){
+
+	include 'res/config.inc.php';
+
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+
+	$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
+	$result = $conn->query($sql);
+	if ($result->num_rows < 1) {
+			echo $sql;
+			debug_to_console("Query for this id failed, no results");
+	}
+	elseif ($result->num_rows > 1) {
+			echo $sql;
+			debug_to_console("Query for this id failed, too many results");
+	}else {
+			$row = $result->fetch_array(MYSQLI_BOTH);
+			debug_to_console("result added to row");
+	}
+
+	$conn->close();
+	if (isset($row)) {
+		return $row;
+	}else{
+		return NULL;
+	}
+}
+?>
+
+<?PHP
+	// Add all requests saved by this page to LOG
+	function postToLogFormated($this_id_name, $this_type, $this_sql_string, $this_changes) {
+		$this_serial_nr = $_POST[$this_id_name];
+		// if (!empty($_POST['serial_nr'])) {
+		// 	$this_serial_nr = $_POST['serial_nr'];
+		// }
+		// elseif (!empty($_POST['isp_nr'])) {
+		// 	$this_serial_nr = $_POST['isp_nr'];
+		// }
+		// elseif (!empty($_POST['dataset_id'])) {
+		// 	$this_serial_nr = $_POST['dataset_id'];
+		// }
+		// elseif(!empty($_POST['id'])) {
+		// 	$this_serial_nr = $_POST['id'];
+		// }
+
+		// Create connection
+		include 'res/config.inc.php';
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		if ($conn->connect_error) {
+		    die("Log: db connection failed: " . $conn->connect_error);
+		}
+		$sql_log = "INSERT INTO log SET type = '$this_type', user = '$_POST[user]', sql_string = '$this_sql_string', changes = '$this_changes', serial_nr = '$this_serial_nr', comment = '$_POST[log_comment]';";
+		if ($conn->query($sql_log) === TRUE) {
+			$_SESSION['alert'] .= "<br/>Log created successfully";
+
+		} else {
+			$_SESSION['alert'] .= "<br/>Log Error: " . $sql_log . "<br>" . $conn->error;
+		}
+	}
+?>
+
+<?PHP
+	// Add all requests saved by this page to LOG
+	function postToLog($id, $type, $query, $changes, $user, $comment) {
+
+		// Create connection
+		include 'res/config.inc.php';
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		if ($conn->connect_error) {
+		    die("Log: db connection failed: " . $conn->connect_error);
+		}
+		$query = $conn->real_escape_string($query);
+		$changes = $conn->real_escape_string($changes);
+		$sql_log = "INSERT INTO log SET type = '$type', user = '$user', sql_string = '$query', changes = '$changes', serial_nr = '$id', comment = '$comment';";
+		if ($conn->query($sql_log) === TRUE) {
+			$status = "Log created successfully";
+
+		} else {
+			$status = "Log Error: " . $sql_log . "<br>" . $conn->error;
+		}
+		$conn->close();
+		return $status;
+	}
+?>

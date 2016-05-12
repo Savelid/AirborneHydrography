@@ -1,47 +1,70 @@
 <?php
 session_start();
+include_once 'res/config.inc.php';
+include_once('res/functions.inc.php');
+
+// $database_columns = "";
+// if(!empty($_POST)){
+// 	$database_columns = "
+// 	art_nr = '$_POST[art_nr]',
+// 	receiver_chip_sn = '$_POST[receiver_chip]'
+// 	";
+// }
+// $r_unit = postFunction('serial_nr', 'receiver_unit', $database_columns, 'main_parts.php');
+//
+// $database_columns2 = "";
+// if(!empty($_POST)){
+// 	$database_columns2 = "
+// 	breakdown_voltage = '$_POST[breakdown_voltage]',
+// 	operating_voltage = '$_POST[operating_voltage]'
+// 	";
+// }
+// $r_chip = postFunction('serial_nr', 'receiver_chip', $database_columns2, 'main_parts.php');
+if(!empty($_GET['serial_nr'])){
+	$r_unit = getDatabaseRow('receiver_unit', 'serial_nr', $_GET['serial_nr']);
+}
+if(!empty($r_unit['receiver_chip_sn'])){
+	$r_chip = getDatabaseRow('receiver_chip', 'serial_nr', $r_unit['receiver_chip_sn']);
+}
+
+if (isset($_POST['serial_nr'])) {
+
+	$database_columns = "";
+	if(!empty($_POST)){
+		$database_columns = "
+		art_nr = '$_POST[art_nr]',
+		receiver_chip_sn = '$_POST[receiver_chip]'
+		";
+	}
+	$database_columns2 = "";
+	if(!empty($_POST)){
+		$database_columns2 = "
+		breakdown_voltage = '$_POST[breakdown_voltage]',
+		operating_voltage = '$_POST[operating_voltage]'
+		";
+	}
+
+	$post_status = postToDatabase('receiver_unit', 'serial_nr', $_POST['serial_nr'], $database_columns);
+	$post_status2 = postToDatabase('receiver_chip', 'serial_nr', $_POST['receiver_chip'], $database_columns2);
+
+	$_SESSION['showalert'] = 'true';
+	$_SESSION['alert'] = "Receiver unit: " . $post_status['status'];
+	$_SESSION['alert'] .= "<br>";
+	$_SESSION['alert'] .= "Receiver chip: " . $post_status2['status'];
+	$_SESSION['alert'] .= "<br><br>";
+	$_SESSION['alert'] .= $post_status['updates'];
+	$_SESSION['alert'] .= $post_status2['updates'];
+
+	$log_status = postToLog($_POST['serial_nr'], $post_status['type'] . " receiver", $post_status['query'] . "<br>" . $post_status2['query'], $post_status['updates'] . "<br>" . $post_status2['updates'], $_POST['user'], $_POST['log_comment']);
+	header("Location: main_parts.php");
+}
+
 $titel = 'Edit Receiver';
 include 'res/header.inc.php';
-$type = 'add_receiver';
-if (!empty($_GET['serial_nr'])) {
-	$type = 'update_receiver';
-
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-    	die("Connection failed: " . $conn->connect_error);
-	}
-
-	$sql = "SELECT *
-			FROM receiver_unit
-			WHERE serial_nr = '$_GET[serial_nr]'";
-	$result = $conn->query($sql);
-	if (!$result) {
-		echo "Error 1: " . $sql . "<br>" . $conn->error;
-		die();
-	}
-
-    $r_unit = $result->fetch_array(MYSQLI_ASSOC);
-
-    $sql = "SELECT *
-			FROM receiver_chip
-			WHERE serial_nr = '$r_unit[receiver_chip_sn]'";
-	$result = $conn->query($sql);
-	if (!$result) {
-		echo "Error 2: " . $sql . "<br>" . $conn->error;
-		die();
-	}
-
-    $r_chip = $result->fetch_array(MYSQLI_ASSOC);
-
-    $conn->close();
-}
-$path = 'post_add_update.php?type=' . $type; // path for form
 ?>
 <section class="content">
 
-<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
+<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
   <div class="row">
 	<div class="col-sm-6 col-sm-offset-1">
 
