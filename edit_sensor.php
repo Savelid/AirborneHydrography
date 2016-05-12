@@ -1,35 +1,33 @@
 <?php
 session_start();
+include_once 'res/config.inc.php';
+include_once('res/functions.inc.php');
+
+$database_columns = "";
+if(!empty($_POST)){
+	$database_columns = "
+	sensor_type = '$_POST[sensor_type]',
+	cat = '$_POST[cat]',
+	fpga_id = '$_POST[fpga_id]',
+	mirror = '$_POST[mirror]',
+	laser_sn = '$_POST[laser]',
+	hv_card_sn = '$_POST[hv_card]',
+	receiver_unit_sn = '$_POST[receiver_unit]',
+	hv_card_2_sn = '$_POST[hv_card_2]',
+	receiver_unit_2_sn = '$_POST[receiver_unit_2]',
+	dps_value_input_offset_t0 = '$_POST[dps_value_input_offset_t0]',
+	dps_value_input_offset_rec = '$_POST[dps_value_input_offset_rec]',
+	dps_value_input_offset_rec_wide = '$_POST[dps_value_input_offset_rec_wide]',
+	dps_value_pulse_width_t0 = '$_POST[dps_value_pulse_width_t0]',
+	dps_value_pulse_width_rec = '$_POST[dps_value_pulse_width_rec]',
+	status = '$_POST[status]'
+	";
+}
+$row = postFunction('serial_nr', 'sensor', $database_columns, 'main_parts.php');
+
 $titel = 'Edit Sensor';
 include 'res/header.inc.php';
-$type = 'add_sensor';
-if (!empty($_GET['serial_nr'])) {
-	$type = 'update_sensor';
-
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-
-	//
-	$sn = $_GET['serial_nr'];
-	$sql = "SELECT *
-	FROM sensor
-	WHERE serial_nr = $sn";
-	$result = $conn->query($sql);
-	if (!$result) {
-		echo "Error: " . $sql_insert . "<br>" . $conn->error;
-		die();
-	}
-
-	$row = $result->fetch_array(MYSQLI_ASSOC);
-	$conn->close();
-}
-$path = 'post_add_update.php?type=' . $type; // path for form
 ?>
-<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.combobox').combobox();
@@ -37,7 +35,7 @@ $(document).ready(function(){
 </script>
 <section class="content">
 
-	<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
+	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">
 
