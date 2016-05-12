@@ -74,7 +74,7 @@ $(function () {
     <tr>
 
     <td>
-      <a href="edit_isp.php?id=%10$s" class="btn btn-default btn-sm">
+      <a href="edit_isp.php?isp_nr=%10$s" class="btn btn-default btn-sm">
       <span class="glyphicon glyphicon-pencil hidden-print" aria-hidden="true"></span>
       %1$s
       </a>
@@ -105,7 +105,7 @@ $(function () {
       $row["amount"],
       $row["value"],
       $row["comment"],
-      $row["id"]);
+      $row["isp_nr"]);
     }
     echo '
     </tbody>

@@ -1,32 +1,38 @@
 <?php
 session_start();
+include_once 'res/config.inc.php';
+include_once('res/functions.inc.php');
+
+$database_columns = "";
+if(!empty($_POST)){
+	$database_columns = "
+	datetime = '$_POST[datetime]',
+	product = '$_POST[product]',
+	amount = '$_POST[amount]',
+	value = '$_POST[value]',
+	receiver = '$_POST[receiver]',
+	country = '$_POST[country]',
+	code = '$_POST[code]',
+	comment = '$_POST[comment]'
+	";
+}
+$row = postFunction('isp_nr', 'isp', $database_columns, 'main_isp.php');
+if ($row == NULL) {
+	debug_to_console("Database request returned NULL");
+}
 $titel = 'Edit ISP log';
 include 'res/header.inc.php';
-$type = 'add_isp';
-if (!empty($_GET['id'])) {
-	$type = 'update_isp';
 
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-
-	$sql = "SELECT *
-	FROM isp
-	WHERE id = '$_GET[id]';";
-	$result = $conn->query($sql);
-	if (!$result) {
-		die("Query 1 failed! " . $sql . "<br>" . $conn->error);
-	}
-	$row = $result->fetch_array(MYSQLI_ASSOC);
-
-	$conn->close();
-}
 // *** Prefill the form with this data *** //
-if (!empty($row['isp_nr'])) $isp_nr = $row['isp_nr'];
-else $isp_nr = '';
+if (!empty($row['isp_nr'])) {
+	debug_to_console($row['isp_nr']);
+	$isp_nr = $row['isp_nr'];
+	debug_to_console("isp_nr changed");
+}else {
+	debug_to_console($row['isp_nr']);
+	$isp_nr = '';
+	debug_to_console("isp_nr changed");
+}
 
 if (!empty($row['datetime'])) $datetime = substr($row['datetime'], 0, 10);
 else $datetime = '';
@@ -49,10 +55,7 @@ else $value = '';
 
 if (!empty($row['comment'])) $comment = $row['comment'];
 else $comment = '';
-
-$path = 'post_add_update.php?type=' . $type;
 ?>
-<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.combobox').combobox();
@@ -60,13 +63,7 @@ $(document).ready(function(){
 </script>
 <section class="content">
 
-	<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
-
-		<?php
-		if(isset($_GET['id'])){
-			echo '<input type="hidden" class="form-control" name="id" value="' . $_GET['id'] . '"/>';
-		}
-		?>
+	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">
 

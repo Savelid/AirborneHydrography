@@ -110,6 +110,9 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 
 	if (isset($row)) {
 		return $row;
+	}else {
+		debug_to_console("postFunction: Return null");
+		return NULL;
 	}
 }
 ?>
@@ -222,6 +225,7 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 	    'status' => $status
 		);
 	}
+	debug_to_console("postToDatabase: Return null");
 	return NULL;
 }
 ?>
@@ -262,44 +266,11 @@ function getDatabaseRow($table, $id_name, $id){
 	$conn->close();
 	if (isset($row)) {
 		return $row;
-	}else{
+	}else {
+		debug_to_console("getDatabaseRow: Return null");
 		return NULL;
 	}
 }
-?>
-
-<?PHP
-	// Add all requests saved by this page to LOG
-	function postToLogFormated($this_id_name, $this_type, $this_sql_string, $this_changes) {
-		$this_serial_nr = $_POST[$this_id_name];
-		// if (!empty($_POST['serial_nr'])) {
-		// 	$this_serial_nr = $_POST['serial_nr'];
-		// }
-		// elseif (!empty($_POST['isp_nr'])) {
-		// 	$this_serial_nr = $_POST['isp_nr'];
-		// }
-		// elseif (!empty($_POST['dataset_id'])) {
-		// 	$this_serial_nr = $_POST['dataset_id'];
-		// }
-		// elseif(!empty($_POST['id'])) {
-		// 	$this_serial_nr = $_POST['id'];
-		// }
-
-		// Create connection
-		include 'res/config.inc.php';
-		$conn = new mysqli($servername, $username, $password, $dbname);
-		// Check connection
-		if ($conn->connect_error) {
-		    die("Log: db connection failed: " . $conn->connect_error);
-		}
-		$sql_log = "INSERT INTO log SET type = '$this_type', user = '$_POST[user]', sql_string = '$this_sql_string', changes = '$this_changes', serial_nr = '$this_serial_nr', comment = '$_POST[log_comment]';";
-		if ($conn->query($sql_log) === TRUE) {
-			$_SESSION['alert'] .= "<br/>Log created successfully";
-
-		} else {
-			$_SESSION['alert'] .= "<br/>Log Error: " . $sql_log . "<br>" . $conn->error;
-		}
-	}
 ?>
 
 <?PHP
