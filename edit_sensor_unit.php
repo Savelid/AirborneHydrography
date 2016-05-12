@@ -2,7 +2,6 @@
 session_start();
 include_once 'res/config.inc.php';
 include_once('res/functions.inc.php');
-include_once 'res/postfunctions.inc.php';
 
 $database_columns = "";
 if(!empty($_POST)){
@@ -27,7 +26,6 @@ $(document).ready(function(){
 });
 </script>
 <section class="content">
-
 	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">

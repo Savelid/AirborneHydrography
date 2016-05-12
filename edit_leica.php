@@ -1,41 +1,27 @@
 <?php
 session_start();
+include_once 'res/config.inc.php';
+include_once('res/functions.inc.php');
+
+$database_columns = "";
+if(!empty($_POST)){
+	$database_columns = "
+	type = '$_POST[type]',
+	firmware = '$_POST[firmware]'
+	";
+}
+$row = postFunction('serial_nr', 'leica', $database_columns, 'main_parts.php');
+
 $titel = 'Edit Leica';
 include 'res/header.inc.php';
-$type = 'add_leica';
-if (!empty($_GET['serial_nr'])) {
-	$type = 'update_leica';
-
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-
-	$sql = "SELECT *
-	FROM leica
-	WHERE serial_nr = '$_GET[serial_nr]'";
-	$result = $conn->query($sql);
-	if (!$result) {
-		echo "Error: " . $sql . "<br>" . $conn->error;
-		die();
-	}
-
-	$row = $result->fetch_array(MYSQLI_ASSOC);
-	$conn->close();
-}
-$path = 'post_add_update.php?type=' . $type; // path for form
-
 ?>
-<?php require_once('res/functions.inc.php'); ?>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.combobox').combobox();
 });
 </script>
 <section class="content">
-	<form action= <?php echo htmlspecialchars($path); ?> method="post" class="form-horizontal">
+	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">
 
