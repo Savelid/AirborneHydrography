@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!empty($_POST)):
+if($_SERVER['REQUEST_METHOD'] == 'POST'):
   $_SESSION['showalert'] = 'true';
   include 'res/config.inc.php';
   // Create connection
@@ -10,13 +10,29 @@ if (!empty($_POST)):
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $sql = "DELETE FROM overview WHERE id = '$_POST[id]';";
-  if ($conn->query($sql) === TRUE) {
-    $_SESSION['alert'] = 'Message deleted';
-    header("Location: main_overview.php");
-    die();
-  } else {
-    echo "Error: " . $sql_insert . "<br>" . $conn->error;
+  if (!empty($_POST['id'])){
+    $sql = "DELETE FROM overview WHERE id = '$_POST[id]';";
+    if ($conn->query($sql) === TRUE) {
+      $_SESSION['alert'] = 'Message deleted';
+      header("Location: main_overview.php");
+      die();
+    } else {
+      echo "Error: " . $sql_insert . "<br>" . $conn->error;
+    }
+  }
+
+  if (!empty($_POST['user'])){
+    $sql_insert = "INSERT INTO overview (message, author)
+  	VALUES ('$_POST[message]', '$_POST[user]')";
+
+  	if ($conn->query($sql_insert) === TRUE) {
+      	echo "New record created successfully";
+      	$_SESSION['alert'] = 'New message';
+      	header("Location: main_overview.php");
+  		die();
+  	} else {
+      	echo "Error: " . $sql_insert . "<br>" . $conn->error;
+  	}
   }
   $conn->close();  // close db
 else:
@@ -118,7 +134,7 @@ else:
 
           ?>
         </dl>
-        <form action="post_add_update.php?type=add_message" method="post" class="hidden-print">
+        <form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="hidden-print">
           <div class="form-group">
             <label for="message">Message</label>
             <textarea class="form-control" name="message" rows="3"></textarea>
