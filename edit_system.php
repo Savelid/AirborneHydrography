@@ -4,48 +4,70 @@ include_once 'res/config.inc.php';
 include_once('res/functions.inc.php');
 include_once 'res/postfunctions.inc.php';
 
-$database_columns = "";
-if(!empty($_POST)){
-	$database_columns = "
-	art_nr = '$_POST[art_nr]',
-	client = '$_POST[client]',
-	place = '$_POST[place]',
-	configuration = '$_POST[configuration]',
-	status = '$_POST[status]',
-	comment = '$_POST[comment]',
-	sensor_unit_sn = '$_POST[sensor_unit]',
-	control_system_sn = '$_POST[control_system]',
-	deep_system_sn = '$_POST[deep_system]',
-	pd60 = '$_POST[pd60]',
-	oc60_1_sn = '$_POST[oc60_1]',
-	oc60_2_sn = '$_POST[oc60_2]',
-	pav_sn = '$_POST[pav]',
-
-	oc = '$_POST[oc]',
-	bitfile_topo = '$_POST[bitfile_topo]',
-	bitfile_shallow = '$_POST[bitfile_shallow]',
-	bitfile_deep = '$_POST[bitfile_deep]',
-	bitfile_digitaizer1 = '$_POST[bitfile_digitaizer1]',
-	bitfile_digitaizer2 = '$_POST[bitfile_digitaizer2]',
-	bitfile_sat = '$_POST[bitfile_sat]'
-	";
+if(!empty($_GET['serial_nr'])){
+	$row = getDatabaseRow('system', 'serial_nr', $_GET['serial_nr']);
+	$row2 = getDatabaseRow('system_status', 'serial_nr', $_GET['serial_nr']);
 }
-$row = postFunction('serial_nr', 'system', $database_columns, 'main_systems.php');
 
-$database_columns2 = "";
-if(!empty($_POST)){
-	$database_columns2 = "
-	status_potta_heat = '$_POST[status_potta_heat]',
-	status_shallow_heat = '$_POST[status_shallow_heat]',
-	status_scu_pdu = '$_POST[status_scu_pdu]',
-	status_hv_topo = '$_POST[status_hv_topo]',
-	status_hv_shallow = '$_POST[status_hv_shallow]',
-	status_hv_deep = '$_POST[status_hv_deep]',
-	status_cat = '$_POST[status_cat]',
-	status_pwr_cable = '$_POST[status_pwr_cable]'
-	";
+if (isset($_POST['serial_nr'])) {
+
+	$database_columns = "";
+	if(!empty($_POST)){
+		$database_columns = "
+		art_nr = '$_POST[art_nr]',
+		client = '$_POST[client]',
+		place = '$_POST[place]',
+		configuration = '$_POST[configuration]',
+		status = '$_POST[status]',
+		comment = '$_POST[comment]',
+		sensor_unit_sn = '$_POST[sensor_unit]',
+		control_system_sn = '$_POST[control_system]',
+		deep_system_sn = '$_POST[deep_system]',
+		pd60 = '$_POST[pd60]',
+		oc60_1_sn = '$_POST[oc60_1]',
+		oc60_2_sn = '$_POST[oc60_2]',
+		pav_sn = '$_POST[pav]',
+
+		oc = '$_POST[oc]',
+		bitfile_topo = '$_POST[bitfile_topo]',
+		bitfile_shallow = '$_POST[bitfile_shallow]',
+		bitfile_deep = '$_POST[bitfile_deep]',
+		bitfile_digitaizer1 = '$_POST[bitfile_digitaizer1]',
+		bitfile_digitaizer2 = '$_POST[bitfile_digitaizer2]',
+		bitfile_sat = '$_POST[bitfile_sat]'
+		";
+	}
+	//$row = postFunction('serial_nr', 'system', $database_columns, 'main_systems.php');
+
+	$database_columns2 = "";
+	if(!empty($_POST)){
+		$database_columns2 = "
+		status_potta_heat = '$_POST[status_potta_heat]',
+		status_shallow_heat = '$_POST[status_shallow_heat]',
+		status_scu_pdu = '$_POST[status_scu_pdu]',
+		status_hv_topo = '$_POST[status_hv_topo]',
+		status_hv_shallow = '$_POST[status_hv_shallow]',
+		status_hv_deep = '$_POST[status_hv_deep]',
+		status_cat = '$_POST[status_cat]',
+		status_pwr_cable = '$_POST[status_pwr_cable]'
+		";
+	}
+	//$row2 = postFunction('serial_nr', 'system_status', $database_columns2, 'main_systems.php');
+
+	$post_status = postToDatabase('system', 'serial_nr', $_POST['serial_nr'], $database_columns);
+	$post_status2 = postToDatabase('system_status', 'serial_nr', $_POST['serial_nr'], $database_columns2);
+
+	$_SESSION['showalert'] = 'true';
+	$_SESSION['alert'] = "Receiver unit: " . $post_status['status'];
+	$_SESSION['alert'] .= "<br>";
+	$_SESSION['alert'] .= "Receiver chip: " . $post_status2['status'];
+	$_SESSION['alert'] .= "<br><br>";
+	$_SESSION['alert'] .= $post_status['updates'];
+	$_SESSION['alert'] .= $post_status2['updates'];
+
+	$log_status = postToLog($_POST['serial_nr'], $post_status['type'] . " system", $post_status['query'] . "<br>" . $post_status2['query'], $post_status['updates'] . "<br>" . $post_status2['updates'], $_POST['user'], $_POST['log_comment']);
+	header("Location: main_systems.php");
 }
-$row2 = postFunction('serial_nr', 'system_status', $database_columns2, 'main_systems.php');
 
 $titel = 'Edit System';
 include 'res/header.inc.php';
