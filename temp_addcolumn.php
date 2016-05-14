@@ -21,7 +21,25 @@
       $query = 'ALTER TABLE datasets ADD disc_id VARCHAR(100) AFTER datetime';
 
       if($mysqli->query($query)) {
-          echo "ADD disc_id worked";
+          echo "<br>ADD disc_id worked";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE datasets ADD leica_pav_sn VARCHAR(30) AFTER imu_2_sn';
+
+      if($mysqli->query($query)) {
+          echo "<br>ADD leica_pav_sn worked";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE datasets ADD leica_cam_sn VARCHAR(30) AFTER leica_pav_sn';
+
+      if($mysqli->query($query)) {
+          echo "<br>ADD leica_cam_sn worked";
       }
       else {
         echo "Error: " . $query . "<br><br>" . $mysqli->error;

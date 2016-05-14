@@ -113,6 +113,16 @@ include 'res/header.inc.php';
 					</div>
 
 					<div class="row">
+						<div class="col-xs-6"><strong>PAV</strong></div>
+						<div class="col-xs-6"><?php echo $query['leica_pav_sn'];?></div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-6"><strong>Camera</strong></div>
+						<div class="col-xs-6"><?php echo $query['leica_cam_sn'];?></div>
+					</div>
+
+					<div class="row">
 						<div class="col-xs-6"><strong>Type of data</strong></div>
 						<div class="col-xs-6"><?php echo $query['type_of_data'];?></div>
 					</div>

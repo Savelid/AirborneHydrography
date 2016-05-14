@@ -38,6 +38,8 @@ if(!empty($_POST)){
 		scu_sn = '$_POST[scu_sn]',
 		imu_1_sn = '$_POST[imu_1_sn]',
 		imu_2_sn = '$_POST[imu_2_sn]',
+		leica_pav_sn = '$_POST[leica_pav]',
+		leica_cam_sn = '$_POST[leica_cam]',
 
 		type_of_data = '$_POST[type_of_data]',
 		purpose_of_flight = '$_POST[purpose_of_flight]',
@@ -221,7 +223,10 @@ include 'res/header.inc.php';
 				</div>
 
 				<div class="form-group">
-					<label for="imu_1_sn" class="col-xs-4 control-label">IMU 1 (sensor unit)</label>
+					<label for="imu_1_sn" class="col-xs-4 control-label">
+						IMU 1
+						<div class="comments">Sensor unit</div>
+					</label>
 					<div class="col-xs-8">
 						<select class="combobox form-control" name="imu_1_sn">
 
@@ -235,7 +240,10 @@ include 'res/header.inc.php';
 				</div>
 
 				<div class="form-group">
-					<label for="imu_2_sn" class="col-xs-4 control-label">IMU 2 (deep system)</label>
+					<label for="imu_2_sn" class="col-xs-4 control-label">
+						IMU 2
+						<div class="comments">Deep system</div>
+					</label>
 					<div class="col-xs-8">
 						<select class="combobox form-control" name="imu_2_sn">
 
@@ -243,6 +251,40 @@ include 'res/header.inc.php';
 							$sn = '';
 							if(!empty($row['imu_2_sn'])){ $sn = $row['imu_2_sn'];}
 							listAllX('imu', 'deep_system', ''	, $sn);
+							?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="leica_pav" class="col-xs-4 control-label">
+						PAV
+						<div class="comments">Leica</div>
+					</label>
+					<div class="col-xs-8">
+						<select class="combobox form-control" name="leica_pav">
+
+							<?php
+							$sn = '';
+							if(!empty($row['leica_pav_sn'])){ $sn = $row['leica_pav_sn'];}
+							listAllX('serial_nr', 'leica', "WHERE type = 'PAV'"	, $sn);
+							?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="leica_cam" class="col-xs-4 control-label">
+						Camera
+						<div class="comments">Leica</div>
+					</label>
+					<div class="col-xs-8">
+						<select class="combobox form-control" name="leica_cam">
+
+							<?php
+							$sn = '';
+							if(!empty($row['leica_cam_sn'])){ $sn = $row['leica_cam_sn'];}
+							listAllX('serial_nr', 'leica', "WHERE type = 'Camera'"	, $sn);
 							?>
 						</select>
 					</div>

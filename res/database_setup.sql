@@ -251,6 +251,8 @@ CREATE TABLE datasets (
 	scu_sn VARCHAR(30),
 	imu_1_sn VARCHAR(30),
 	imu_2_sn VARCHAR(30),
+	leica_pav_sn VARCHAR(30),
+	leica_cam_sn VARCHAR(30),
 
 	type_of_data VARCHAR(100),
 	purpose_of_flight TEXT,
