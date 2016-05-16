@@ -23,49 +23,88 @@ debug_to_console("Dataset id nummer" . $int_dataset_id);
 
 $conn->close();
 
+$status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
-	$database_columns = "
-		datetime = '$_POST[datetime]',
-		disc_id = '$_POST[disc_id]',
-		location = '$_POST[location]',
-		system_id = '$_POST[system_id]',
-		system_model = '$_POST[system_model]',
-		topo_sensor_1_sn = '$_POST[topo_sensor_1_sn]',
-		topo_sensor_2_sn = '$_POST[topo_sensor_2_sn]',
-		shallow_sensor_sn = '$_POST[shallow_sensor_sn]',
-		deep_sensor_sn = '$_POST[deep_sensor_sn]',
-		scu_sn = '$_POST[scu_sn]',
-		imu_1_sn = '$_POST[imu_1_sn]',
-		imu_2_sn = '$_POST[imu_2_sn]',
-		leica_pav_sn = '$_POST[leica_pav]',
-		leica_cam_sn = '$_POST[leica_cam]',
 
-		type_of_data = '$_POST[type_of_data]',
-		purpose_of_flight = '$_POST[purpose_of_flight]',
-		evaluation_of_flight = '$_POST[evaluation_of_flight]',
-		flight_logs = '$_POST[flight_logs]',
-		data_evaluation = '$_POST[data_evaluation]',
+		$target_dir = "flight_logs/";
+		$target_file = $target_dir . $_POST['dataset_id'] . "_" . basename($_FILES["flight_logs"]["name"]);
+		$uploadOk = 1;
+		$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
-		nav_data_processing_log = '$_POST[nav_data_processing_log]',
-		calibration_file = '$_POST[calibration_file]',
-		processing_settings_file = '$_POST[processing_settings_file]',
-		configuration_file = '$_POST[configuration_file]',
-		calibration_report = '$_POST[calibration_report]',
-		acceptance_report = '$_POST[acceptance_report]',
-		system_fully_functional = '$_POST[system_fully_functional]',
-		raw_data_in_archive = '$_POST[raw_data_in_archive]',
-		raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
-		";
+		// Check if file already exists
+		if (file_exists($target_file)) {
+    		$status_msg .= "Sorry, file already exists.";
+    		$uploadOk = 0;
+		}
+
+		// Check file size
+		if ($_FILES["flight_logs"]["size"] > 50000000) {
+			 $status_msg .= "Sorry, your file is too large.";
+			 $uploadOk = 0;
+		}
+
+		// Allow certain file formats
+		if($fileType != "pdf") {
+		    $status_msg .= "Sorry, only PDF files are allowed.";
+		    $uploadOk = 0;
+		}
+
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		    $status_msg .= "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		    if (move_uploaded_file($_FILES["flight_logs"]["tmp_name"], $target_file)) {
+		        $status_msg .= "The file ". basename( $_FILES["flight_logs"]["name"]). " has been uploaded.";
+		    } else {
+		        $status_msg .= "Sorry, there was an error uploading your file.";
+		    }
+		}
+
+		$database_columns = "
+			datetime = '$_POST[datetime]',
+			disc_id = '$_POST[disc_id]',
+			location = '$_POST[location]',
+			system_id = '$_POST[system_id]',
+			system_model = '$_POST[system_model]',
+			topo_sensor_1_sn = '$_POST[topo_sensor_1_sn]',
+			topo_sensor_2_sn = '$_POST[topo_sensor_2_sn]',
+			shallow_sensor_sn = '$_POST[shallow_sensor_sn]',
+			deep_sensor_sn = '$_POST[deep_sensor_sn]',
+			scu_sn = '$_POST[scu_sn]',
+			imu_1_sn = '$_POST[imu_1_sn]',
+			imu_2_sn = '$_POST[imu_2_sn]',
+			leica_pav_sn = '$_POST[leica_pav]',
+			leica_cam_sn = '$_POST[leica_cam]',
+
+			type_of_data = '$_POST[type_of_data]',
+			purpose_of_flight = '$_POST[purpose_of_flight]',
+			evaluation_of_flight = '$_POST[evaluation_of_flight]',
+			flight_logs = '$target_file',
+			data_evaluation = '$_POST[data_evaluation]',
+
+			nav_data_processing_log = '$_POST[nav_data_processing_log]',
+			calibration_file = '$_POST[calibration_file]',
+			processing_settings_file = '$_POST[processing_settings_file]',
+			configuration_file = '$_POST[configuration_file]',
+			calibration_report = '$_POST[calibration_report]',
+			acceptance_report = '$_POST[acceptance_report]',
+			system_fully_functional = '$_POST[system_fully_functional]',
+			raw_data_in_archive = '$_POST[raw_data_in_archive]',
+			raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
+			";
 }
+
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
+$_SESSION['alert'] .= "<br>" . $status_msg;
 
 $titel = 'Edit dataset';
 include 'res/header.inc.php';
 ?>
 <section class="content">
 
-	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal">
+	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal" enctype="multipart/form-data">
 
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">
@@ -392,22 +431,22 @@ include 'res/header.inc.php';
 				</div>
 
 				<div class="form-group">
-					<label for="flight_logs" class="col-sm-3 col-xs-12 control-label">
-						Flight logs
-						<div class ="comments">Describe encountered problems during flight</div>
-					</label>
-					<div class="col-sm-8 col-xs-12">
-						<textarea class="form-control" name="flight_logs" rows="2"><?= !empty($row['flight_logs']) ?  $row['flight_logs'] : '' ; ?></textarea>
-					</div>
-				</div>
-
-				<div class="form-group">
 					<label for="data_evaluation" class="col-sm-3 col-xs-12 control-label">
 						Data evaluation
 						<div class ="comments">Describe the results regarding the purpose of the flight but also if other issues was noted. Must also be long enough to be useful after three years.</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="data_evaluation" rows="5"><?= !empty($row['data_evaluation']) ?  $row['data_evaluation'] : '' ; ?></textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="flight_logs" class="col-sm-3 col-xs-12 control-label">
+						Flight logs
+						<div class ="comments">Describe encountered problems during flight</div>
+					</label>
+					<div class="col-sm-8 col-xs-12">
+						<input type="file" class="form-control" name="flight_logs" id="flight_logs">
 					</div>
 				</div>
 

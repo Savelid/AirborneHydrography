@@ -46,6 +46,8 @@
       }
 
 
+ALTER TABLE xyz CHANGE manufacurerid manufacturerid INT;
+
   } catch (Exception $e) {
       print($e->getMessage());
   }
