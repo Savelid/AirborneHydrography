@@ -27,7 +27,6 @@ $database_columns = "";
 if(!empty($_POST)){
 
 		$database_columns = "
-			datetime = '$_POST[datetime]',
 			dataset_id = '$_POST[dataset_id]',
 			comment = '$_POST[comment]'
 			";

@@ -83,7 +83,7 @@ if ($result->num_rows > 0) {
 
       echo '<tr>';
       echo '<td>' . substr($row["datetime"], 0 , 10)  . '</td>';
-      echo '<td>' . $row["calibration_id"]      . '</td>';
+      echo '<td> <a href="edit_calibration.php?calibration_id=' . $row["calibration_id"] . '">' . $row["calibration_id"] . '</a> </td>';
       echo '<td> <a href="view_datasets.php?dataset_id=' . $row["dataset_id"] . '">' . $row["dataset_id"] . '</a> </td>';
       echo '<td>' . $row["type_of_data"]      . '</td>';
       echo '<td>' . $row["system_id"] . '</td>';

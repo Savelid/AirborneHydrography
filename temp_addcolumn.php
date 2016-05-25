@@ -49,7 +49,7 @@
 
       	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
       	calibration_id VARCHAR(50) NOT NULL UNIQUE,
-      	datetime TIMESTAMP,
+      	datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       	dataset_id VARCHAR(50),
       	comment TEXT,
 
