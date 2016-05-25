@@ -34,8 +34,8 @@ if(!empty($_POST)){
 
 		// Check if file already exists
 		if (file_exists($target_file)) {
-    		$status_msg .= "Sorry, file already exists.";
-    		$uploadOk = 0;
+    		$status_msg .= "File already exists. file will be overwriten <br>";
+    		//$uploadOk = 0;
 		}
 
 		// Check file size
@@ -443,7 +443,11 @@ include 'res/header.inc.php';
 				<div class="form-group">
 					<label for="flight_logs" class="col-sm-3 col-xs-12 control-label">
 						Flight logs
-						<div class ="comments">Describe encountered problems during flight</div>
+						<div class ="comments">
+							Describe encountered problems during flight
+							<br>
+							Warning: Sorry the system can not hadle some special characters like Å,Ä,Ö in the file name for now :(
+						</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
 						<input type="file" class="form-control" name="flight_logs" id="flight_logs">

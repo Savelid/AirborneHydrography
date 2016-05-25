@@ -130,7 +130,7 @@ include 'res/header.inc.php';
 
 					<div class="row">
 						<div class="col-xs-6"><strong>Flight logs</strong></div>
-						<div class="col-xs-6"><?php echo $query['flight_logs'];?></div>
+						<div class="col-xs-6"><a href="<?php echo $query['flight_logs'];?>"><?php echo $query['flight_logs'];?></a></div>
 					</div>
 
 				</div>
