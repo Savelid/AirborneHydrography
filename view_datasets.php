@@ -36,6 +36,7 @@ include 'res/header.inc.php';
 
 <section class="top_content hidden-print">
 	<a href="edit_datasets.php?dataset_id=<?php echo $_GET['dataset_id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
+	<a href="edit_calibration.php?dataset_id=<?php echo $_GET['dataset_id']; ?>" class="btn btn-default" role="button">Make/Edit Calibration</a>
 </section>
 
 <section class="content">

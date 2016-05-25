@@ -45,8 +45,24 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'CREATE TABLE calibration (
 
-ALTER TABLE xyz CHANGE manufacurerid manufacturerid INT;
+      	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      	calibration_id VARCHAR(50) NOT NULL UNIQUE,
+      	datetime TIMESTAMP,
+      	dataset_id VARCHAR(50),
+      	comment TEXT,
+
+      	PRIMARY KEY (id)
+      );';
+
+      if($mysqli->query($query)) {
+          echo "<br>CREATE calibration TABLE";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
 
   } catch (Exception $e) {
       print($e->getMessage());
