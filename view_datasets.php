@@ -150,7 +150,7 @@ include 'res/header.inc.php';
 					<h3 class="panel-title">Evaluation of flight</h3>
 				</div>
 				<div class="panel-body">
-					<?php echo nl2br($query['evaluation_of_flight']); ?>
+					<?php echo nl2br($query['flight_comments']); ?>
 				</div>
 			</div><!-- end panel -->
 
@@ -159,7 +159,7 @@ include 'res/header.inc.php';
 					<h3 class="panel-title">Evaluation of data</h3>
 				</div>
 				<div class="panel-body">
-					<?php echo nl2br($query['data_evaluation']); ?>
+					<?php echo nl2br($query['data_comments']); ?>
 				</div>
 			</div><!-- end panel -->
 

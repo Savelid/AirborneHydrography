@@ -63,6 +63,24 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE datasets CHANGE evaluation_of_flight flight_comments TEXT';
+
+      if($mysqli->query($query)) {
+          echo "<br>CHANGE name of evaluation_of_flight";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE datasets CHANGE data_evaluation data_comments TEXT';
+
+      if($mysqli->query($query)) {
+          echo "<br>CHANGE name of data_evaluation";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
 
   } catch (Exception $e) {
       print($e->getMessage());

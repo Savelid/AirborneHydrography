@@ -21,12 +21,25 @@ $int_dataset_id = intval($int_dataset_id);
 $int_dataset_id = $int_dataset_id + 1;
 debug_to_console("Dataset id nummer" . $int_dataset_id);
 
+///////////// Make another post to the database after the first including only the 2 comment values
+// if(!empty($_POST)){
+// 	$sql = "SELECT data_comments, flight_comments FROM datasets WHERE dataset_id = '$_POST[dataset_id]';";
+// 	$result_old_comments = $conn->query($sql);
+// 	$row_old_comments = $result_old_comments->fetch_array(MYSQLI_NUM);
+//
+// 	$data_comments = $row_old_comments['data_comments'] ."&|". $_POST['data_comments'] $_POST['data_comments']
+// }
+
+// 			flight_comments = '$_POST[flight_comments]',
+//			data_comments = '$_POST[data_comments]',
+
 $conn->close();
 
 $status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
 
+	if(!empty($_POST['flight_logs'])){
 		$target_dir = "flight_logs/";
 		$target_file = $target_dir . $_POST['dataset_id'] . "_" . basename($_FILES["flight_logs"]["name"]);
 		$uploadOk = 1;
@@ -61,7 +74,7 @@ if(!empty($_POST)){
 		        $status_msg .= "Sorry, there was an error uploading your file.";
 		    }
 		}
-
+}
 		$database_columns = "
 			datetime = '$_POST[datetime]',
 			disc_id = '$_POST[disc_id]',
@@ -80,9 +93,7 @@ if(!empty($_POST)){
 
 			type_of_data = '$_POST[type_of_data]',
 			purpose_of_flight = '$_POST[purpose_of_flight]',
-			evaluation_of_flight = '$_POST[evaluation_of_flight]',
 			flight_logs = '$target_file',
-			data_evaluation = '$_POST[data_evaluation]',
 
 			nav_data_processing_log = '$_POST[nav_data_processing_log]',
 			calibration_file = '$_POST[calibration_file]',
@@ -97,6 +108,17 @@ if(!empty($_POST)){
 }
 
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$row2 = getDatabaseRow('datasets', 'dataset_id', $_POST['dataset_id']);
+	$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['flight_comments'];
+	$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['data_comments'];
+	$database_columns2 = "
+		flight_comments = '$flight_comments',
+		data_comments = '$data_comments'
+	";
+	$results2 = postToDatabase('datasets', 'dataset_id', $_POST['dataset_id'], $database_columns2);
+	$_SESSION['alert'] .= "<br>" . $results2['status'];
+}
 $_SESSION['alert'] .= "<br>" . $status_msg;
 
 $titel = 'Edit dataset';
@@ -421,22 +443,22 @@ include 'res/header.inc.php';
 				</div>
 
 				<div class="form-group">
-					<label for="evaluation_of_flight" class="col-sm-3 col-xs-12 control-label">
-						Evaluation of flight
+					<label for="flight_comments" class="col-sm-3 col-xs-12 control-label">
+						Flight Comments
 						<div class ="comments">Describe encountered problems during flight</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<textarea class="form-control" name="evaluation_of_flight" rows="5"><?= !empty($row['evaluation_of_flight']) ?  $row['evaluation_of_flight'] : '' ; ?></textarea>
+						<textarea class="form-control" name="flight_comments" rows="5"></textarea>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="data_evaluation" class="col-sm-3 col-xs-12 control-label">
-						Data evaluation
+					<label for="data_comments" class="col-sm-3 col-xs-12 control-label">
+						Data Comments
 						<div class ="comments">Describe the results regarding the purpose of the flight but also if other issues was noted. Must also be long enough to be useful after three years.</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<textarea class="form-control" name="data_evaluation" rows="5"><?= !empty($row['data_evaluation']) ?  $row['data_evaluation'] : '' ; ?></textarea>
+						<textarea class="form-control" name="data_comments" rows="5"></textarea>
 					</div>
 				</div>
 
