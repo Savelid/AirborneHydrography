@@ -110,8 +110,16 @@ if(!empty($_POST)){
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$row2 = getDatabaseRow('datasets', 'dataset_id', $_POST['dataset_id']);
-	$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['flight_comments'];
-	$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['data_comments'];
+	if (!empty($_POST['flight_comments'])) {
+		$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['flight_comments'];
+	}else{
+		$flight_comments = $row2['flight_comments'];
+	}
+	if (!empty($_POST['data_comments'])) {
+		$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['data_comments'];
+	}else{
+		$data_comments = $row2['data_comments'];
+	}
 	$database_columns2 = "
 		flight_comments = '$flight_comments',
 		data_comments = '$data_comments'
