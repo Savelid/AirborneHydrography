@@ -21,25 +21,14 @@ $int_dataset_id = intval($int_dataset_id);
 $int_dataset_id = $int_dataset_id + 1;
 debug_to_console("Dataset id nummer" . $int_dataset_id);
 
-///////////// Make another post to the database after the first including only the 2 comment values
-// if(!empty($_POST)){
-// 	$sql = "SELECT data_comments, flight_comments FROM datasets WHERE dataset_id = '$_POST[dataset_id]';";
-// 	$result_old_comments = $conn->query($sql);
-// 	$row_old_comments = $result_old_comments->fetch_array(MYSQLI_NUM);
-//
-// 	$data_comments = $row_old_comments['data_comments'] ."&|". $_POST['data_comments'] $_POST['data_comments']
-// }
-
-// 			flight_comments = '$_POST[flight_comments]',
-//			data_comments = '$_POST[data_comments]',
-
 $conn->close();
 
 $status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
-
-	if(!empty($_POST['flight_logs'])){
+	debug_to_console("POST true. flight_logs: " . basename($_FILES["flight_logs"]["name"]));
+	if(!empty(basename($_FILES["flight_logs"]["name"]))){
+		debug_to_console("flight_logs not empty");
 		$target_dir = "flight_logs/";
 		$target_file = $target_dir . $_POST['dataset_id'] . "_" . basename($_FILES["flight_logs"]["name"]);
 		$uploadOk = 1;
@@ -93,7 +82,6 @@ if(!empty($_POST)){
 
 			type_of_data = '$_POST[type_of_data]',
 			purpose_of_flight = '$_POST[purpose_of_flight]',
-			flight_logs = '$target_file',
 
 			nav_data_processing_log = '$_POST[nav_data_processing_log]',
 			calibration_file = '$_POST[calibration_file]',
@@ -105,6 +93,9 @@ if(!empty($_POST)){
 			raw_data_in_archive = '$_POST[raw_data_in_archive]',
 			raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 			";
+		if (!empty($target_file)) {
+			$database_columns .= ", flight_logs = '$target_file'";
+		}
 }
 
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
@@ -480,7 +471,7 @@ include 'res/header.inc.php';
 						</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<input type="file" class="form-control" name="flight_logs" id="flight_logs">
+						<input type="file" class="form-control" name="flight_logs" id="flight_logs" >
 					</div>
 				</div>
 
