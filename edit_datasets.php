@@ -420,7 +420,7 @@ include 'res/header.inc.php';
 					</div>
 				</div>
 
-				<div class="form-group col-xs-12">
+				<div class="form-group col-xs-12" hidden>
 					<label for="log_comment">Log Comment</label>
 					<div>
 						<textarea class="form-control" name="log_comment" rows="3"></textarea>
