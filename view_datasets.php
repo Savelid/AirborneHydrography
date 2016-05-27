@@ -133,6 +133,37 @@ include 'res/header.inc.php';
 						<div class="col-xs-6"><a href="<?php echo $query['flight_logs'];?>"><?php echo $query['flight_logs'];?></a></div>
 					</div>
 
+					<?php
+					// Create connection
+					$conn = new mysqli($servername, $username, $password, $dbname);
+					// Check connection
+					if ($conn->connect_error) {
+						die("Connection failed: " . $conn->connect_error);
+					}
+
+					//Get number for Dataset ID
+					$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
+					$result = $conn->query($sql);
+					if (!$result) {
+						echo $sql . "<br><br>" . $conn->error;
+						die("Query failed!");
+					}
+					$calibration_id = "";
+					if ($result->num_rows > 0) {
+						// output data of each row
+						while($row = $result->fetch_assoc()) {
+							$calibration_id .= '<a href="main_calibration.php?search=' .$row['calibration_id']. '">' .$row['calibration_id']. "</a><br>";
+						}
+					}
+
+					$conn->close();
+					?>
+
+					<div class="row">
+						<div class="col-xs-6"><strong>Calibrations</strong></div>
+						<div class="col-xs-6"><?php echo $calibration_id;?></div>
+					</div>
+
 				</div>
 			</div><!-- end panel -->
 
