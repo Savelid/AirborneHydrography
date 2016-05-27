@@ -26,7 +26,7 @@ $conn->close();
 $status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
-	debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
+	//debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
 	if ($_FILES['flight_logs']['size'] > 0 && $_FILES['flight_logs']['error'] == 0){
 		debug_to_console("flight_logs not empty");
 		$target_dir = "flight_logs/";

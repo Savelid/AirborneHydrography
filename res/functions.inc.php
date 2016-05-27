@@ -105,7 +105,7 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 		$_SESSION['alert'] .= $post_status['updates'];
 
 		$log_status = postToLog($_POST[$id_name], $post_status['type'] . " " . $table, $post_status['query'], $post_status['updates'], $_POST['user'], $_POST['log_comment']);
-		//header("Location: " . $redirect);
+		header("Location: " . $redirect);
 	}
 
 	if (isset($row)) {

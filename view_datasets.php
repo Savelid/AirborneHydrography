@@ -33,6 +33,11 @@ else {
 $titel = 'Dataset ' . $query['dataset_id'];
 include 'res/header.inc.php';
 ?>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 
 <section class="top_content hidden-print">
 	<a href="edit_datasets.php?dataset_id=<?php echo $_GET['dataset_id']; ?>" class="btn btn-default" role="button">Edit Dataset</a>
@@ -141,7 +146,6 @@ include 'res/header.inc.php';
 						die("Connection failed: " . $conn->connect_error);
 					}
 
-					//Get number for Dataset ID
 					$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
 					$result = $conn->query($sql);
 					if (!$result) {
@@ -227,34 +231,52 @@ include 'res/header.inc.php';
 
 		</div><!-- end col -->
 
+		<?php
+		// Create connection
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+		$checkboxes = array("nav_data_processing_log", "calibration_file", "processing_settings_file", "configuration_file", "calibration_report", "acceptance_report", "system_fully_functional", "raw_data_in_archive", "raw_data_in_back_up_archive");
+		foreach ($checkboxes as $key => $value) {
+			$sql = "SELECT user FROM log WHERE changes LIKE '%$value%' ORDER BY datetime DESC LIMIT 1;";
+			$result = $conn->query($sql);
+			$x = $result->fetch_array(MYSQLI_NUM);
+			$changed_by[$value] = $x[0];
+		}
+
+		$conn->close();
+		?>
+
 		<div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
 			<ul class="list-group">
-				<li class="list-group-item <?=$query['nav_data_processing_log'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['nav_data_processing_log'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['nav_data_processing_log']; ?>">
 					Nav. data processing log
 				</li>
-				<li class="list-group-item <?=($query['calibration_file'] == 'Final') ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=($query['calibration_file'] == 'Final') ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['calibration_file']; ?>">
 					Calibration file: <br>
   					<b style="padding-left: 30px !important;"><?php echo $query['calibration_file'] ?></b>
 				</li>
-				<li class="list-group-item <?=$query['processing_settings_file'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					Processing settings file
+				<li class="list-group-item <?=$query['processing_settings_file'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['processing_settings_file']; ?>">
+						Processing settings file
 				</li>
-				<li class="list-group-item <?=$query['configuration_file'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['configuration_file'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['configuration_file']; ?>">
 					Configuration file
 				</li>
-				<li class="list-group-item <?=$query['calibration_report'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['calibration_report'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['calibration_report']; ?>">
 					Calibration report
 				</li>
-				<li class="list-group-item <?=$query['acceptance_report'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['acceptance_report'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['acceptance_report']; ?>">
 					Acceptance report
 				</li>
-				<li class="list-group-item <?=$query['system_fully_functional'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['system_fully_functional'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['system_fully_functional']; ?>">
 					System fully functional
 				</li>
-				<li class="list-group-item <?=$query['raw_data_in_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['raw_data_in_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_archive']; ?>">
 					Raw data in archive
 				</li>
-				<li class="list-group-item <?=$query['raw_data_in_back_up_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
+				<li class="list-group-item <?=$query['raw_data_in_back_up_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_back_up_archive']; ?>">
 					Raw data in back up archive
 				</li>
 			</ul>
