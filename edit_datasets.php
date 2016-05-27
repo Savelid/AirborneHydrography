@@ -26,11 +26,11 @@ $conn->close();
 $status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
-	debug_to_console("POST true. flight_logs: " . basename($_FILES["flight_logs"]["name"]));
-	if(!empty(basename($_FILES["flight_logs"]["name"]))){
+	debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
+	if ($_FILES['flight_logs']['size'] > 0 && $_FILES['flight_logs']['error'] == 0){
 		debug_to_console("flight_logs not empty");
 		$target_dir = "flight_logs/";
-		$target_file = $target_dir . $_POST['dataset_id'] . "_" . basename($_FILES["flight_logs"]["name"]);
+		$target_file = $target_dir . $_POST['dataset_id'] . "__" . basename($_FILES["flight_logs"]["name"]);
 		$uploadOk = 1;
 		$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
