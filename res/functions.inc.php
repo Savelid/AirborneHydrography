@@ -37,7 +37,89 @@ function listUnusedSerialNr($from, $where, $serial_nr){
 ?>
 
 <?php
+function listUnusedSerialNrold($from, $where, $serial_nr){
+
+	if($serial_nr != NULL && $serial_nr != ''){
+		echo '<option value="' . $serial_nr . '">' . $serial_nr . '</option>';
+	}
+	else {
+		echo '<option></option>';
+	}
+	echo '<option>-----</option>';
+
+	// open db
+	include 'res/config.inc.php';
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	// Add all unused sensor units to the list
+	$sql_unused = "  SELECT serial_nr
+	          FROM %s
+	          WHERE %s";
+	$result_unused = $conn->query(sprintf($sql_unused, $from, $where));
+		if (!$result_unused) {
+			die("</select> Query failed!" . $sql . "<br>" . $conn->error);
+		}
+	while($row_unused = $result_unused->fetch_assoc()) {
+		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){
+			echo '<option value="' . $row_unused['serial_nr'] . '" autofocus selected="selected">' . $row_unused['serial_nr'] . '</option>';
+		}else {
+			echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
+		}
+	}
+	$conn->close();
+}
+?>
+
+<?php
 function listAllX($select, $from, $where, $id){
+
+	$list = listAll($select, $from, $where, $id);
+	if ($list == NULL) {
+		debug_to_console("listAllX: Receved a NULL list");
+	}else {
+		$str = formatForSelect($list, $id);
+		echo $str;
+	}
+}
+?>
+
+<?php
+function listAll($select, $from, $where, $id){
+	// open db
+	include 'res/config.inc.php';
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	// Add all unused sensor units to the list
+	$sql_all = "  SELECT %s
+	          FROM %s
+						%s";
+	$result_all = $conn->query(sprintf($sql_all, $select, $from, $where));
+		if (!$result_all) {
+			die("Query failed!" . $sql . "<br>" . $conn->error);
+		}
+		while($row =$result_all->fetch_array(MYSQLI_NUM)) {
+		  $list[] = $row[0];
+		}
+	$conn->close();
+
+	if (isset($list)) {
+		return $list;
+	}else {
+		return NULL;
+	}
+}
+?>
+
+<?php
+function listAllXold($select, $from, $where, $id){
 
 	if($id != NULL && $id != ''){
 		echo '<option value="' . $id . '">' . $id . '</option>';
@@ -45,7 +127,7 @@ function listAllX($select, $from, $where, $id){
 	else {
 		echo '<option></option>';
 	}
-	echo '<option>-----</option>';
+	echo '<option>--!--</option>';
 
 	// open db
 	include 'res/config.inc.php';
@@ -70,6 +152,22 @@ function listAllX($select, $from, $where, $id){
 }
 ?>
 
+<?php
+function formatForSelect($listOfItems, $currentId){
+	if($currentId != NULL && $currentId != ''){
+		$return_string = '<option value="' . $currentId . '">' . $currentId . '</option>';
+	}
+	else {
+		$return_string = '<option></option>';
+	}
+	$return_string .= '<option>-----</option>';
+	foreach ($listOfItems as $key => $value) {
+		$return_string .= '<option value="' .$value. '">' .$value. '</option>';
+	}
+
+	return $return_string;
+}
+?>
 <?php
 /**
  * Send debug code to the Javascript console

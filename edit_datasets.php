@@ -293,7 +293,15 @@ include 'res/header.inc.php';
 							<?php
 							$sn = '';
 							if(!empty($row['imu_1_sn'])){ $sn = $row['imu_1_sn'];}
-							listAllX('imu', 'sensor_unit', ''	, $sn);
+							$imu1list = listAll('imu', 'sensor_unit', ''	, $sn);
+							$imu2list = listAll('imu', 'deep_system', ''	, $sn);
+							if ($imu1list == NULL || $imu2list == NULL) {
+								debug_to_console("listAllX: Receved a NULL list");
+							}else {
+								$imulist = array_merge($imu1list, $imu2list);
+								$imu_list_str = formatForSelect($imulist, $id);
+								echo $imu_list_str;
+							}
 							?>
 						</select>
 					</div>
@@ -310,7 +318,9 @@ include 'res/header.inc.php';
 							<?php
 							$sn = '';
 							if(!empty($row['imu_2_sn'])){ $sn = $row['imu_2_sn'];}
-							listAllX('imu', 'deep_system', ''	, $sn);
+							if (isset($imu_list_str)) {
+								echo $imu_list_str;
+							}
 							?>
 						</select>
 					</div>
