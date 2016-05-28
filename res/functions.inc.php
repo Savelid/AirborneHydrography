@@ -1,83 +1,20 @@
 <?php
-function listUnusedSerialNr($from, $where, $serial_nr){
-
-	if($serial_nr != NULL && $serial_nr != ''){
-		echo '<option value="' . $serial_nr . '">' . $serial_nr . '</option>';
+function listUnusedSerialNr($from, $where, $id){
+	$list = listAll("SELECT serial_nr FROM " .$from. " WHERE " .$where);
+	if ($list == NULL) {
+		debug_to_console("listUnusedSerialNr: Receved a NULL list");
+	}else {
+		$str = formatForSelect($list, $id);
+		//debug_to_console($str);
+		echo $str;
 	}
-	else {
-		echo '<option></option>';
-	}
-	echo '<option>-----</option>';
-
-	// open db
-	include 'res/config.inc.php';
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	// Add all unused sensor units to the list
-	$sql_unused = "  SELECT serial_nr
-	          FROM %s
-	          WHERE %s";
-	$result_unused = $conn->query(sprintf($sql_unused, $from, $where));
-		if (!$result_unused) {
-			die("</select> Query failed!" . $sql . "<br>" . $conn->error);
-		}
-	while($row_unused = $result_unused->fetch_assoc()) {
-		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){
-			echo '<option value="' . $row_unused['serial_nr'] . '" autofocus selected="selected">' . $row_unused['serial_nr'] . '</option>';
-		}else {
-			echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
-		}
-	}
-	$conn->close();
-}
-?>
-
-<?php
-function listUnusedSerialNrold($from, $where, $serial_nr){
-
-	if($serial_nr != NULL && $serial_nr != ''){
-		echo '<option value="' . $serial_nr . '">' . $serial_nr . '</option>';
-	}
-	else {
-		echo '<option></option>';
-	}
-	echo '<option>-----</option>';
-
-	// open db
-	include 'res/config.inc.php';
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	// Add all unused sensor units to the list
-	$sql_unused = "  SELECT serial_nr
-	          FROM %s
-	          WHERE %s";
-	$result_unused = $conn->query(sprintf($sql_unused, $from, $where));
-		if (!$result_unused) {
-			die("</select> Query failed!" . $sql . "<br>" . $conn->error);
-		}
-	while($row_unused = $result_unused->fetch_assoc()) {
-		if(isset($_GET[$name_sn]) && $_GET[$name_sn] == $row_unused['serial_nr']){
-			echo '<option value="' . $row_unused['serial_nr'] . '" autofocus selected="selected">' . $row_unused['serial_nr'] . '</option>';
-		}else {
-			echo '<option value="' . $row_unused['serial_nr'] . '">' . $row_unused['serial_nr'] . '</option>';
-		}
-	}
-	$conn->close();
 }
 ?>
 
 <?php
 function listAllX($select, $from, $where, $id){
 
-	$list = listAll($select, $from, $where, $id);
+	$list = listAll('SELECT ' .$select. ' FROM ' .$from. ' ' .$where);
 	if ($list == NULL) {
 		debug_to_console("listAllX: Receved a NULL list");
 	}else {
@@ -88,7 +25,7 @@ function listAllX($select, $from, $where, $id){
 ?>
 
 <?php
-function listAll($select, $from, $where, $id){
+function listAll($qurey){
 	// open db
 	include 'res/config.inc.php';
 	// Create connection
@@ -97,15 +34,12 @@ function listAll($select, $from, $where, $id){
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	// Add all unused sensor units to the list
-	$sql_all = "  SELECT %s
-	          FROM %s
-						%s";
-	$result_all = $conn->query(sprintf($sql_all, $select, $from, $where));
-		if (!$result_all) {
-			die("Query failed!" . $sql . "<br>" . $conn->error);
+	$result = $conn->query($qurey);
+		if (!$result) {
+			debug_to_console("Query failed!" . $qurey . "<br>" . $conn->error);
+			die("Query failed!" . $qurey . "<br>" . $conn->error);
 		}
-		while($row =$result_all->fetch_array(MYSQLI_NUM)) {
+		while($row =$result->fetch_array(MYSQLI_NUM)) {
 		  $list[] = $row[0];
 		}
 	$conn->close();
@@ -115,40 +49,6 @@ function listAll($select, $from, $where, $id){
 	}else {
 		return NULL;
 	}
-}
-?>
-
-<?php
-function listAllXold($select, $from, $where, $id){
-
-	if($id != NULL && $id != ''){
-		echo '<option value="' . $id . '">' . $id . '</option>';
-	}
-	else {
-		echo '<option></option>';
-	}
-	echo '<option>--!--</option>';
-
-	// open db
-	include 'res/config.inc.php';
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	// Add all unused sensor units to the list
-	$sql_all = "  SELECT %s
-	          FROM %s
-						%s";
-	$result_all = $conn->query(sprintf($sql_all, $select, $from, $where));
-		if (!$result_all) {
-			die("</select> Query failed!" . $sql . "<br>" . $conn->error);
-		}
-	while($row_all = $result_all->fetch_assoc()) {
-		echo '<option value="' . $row_all[$select] . '">' . $row_all[$select] . '</option>';
-	}
-	$conn->close();
 }
 ?>
 
@@ -168,6 +68,7 @@ function formatForSelect($listOfItems, $currentId){
 	return $return_string;
 }
 ?>
+
 <?php
 /**
  * Send debug code to the Javascript console

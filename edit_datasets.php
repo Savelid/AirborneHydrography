@@ -293,8 +293,8 @@ include 'res/header.inc.php';
 							<?php
 							$sn = '';
 							if(!empty($row['imu_1_sn'])){ $sn = $row['imu_1_sn'];}
-							$imu1list = listAll('imu', 'sensor_unit', ''	, $sn);
-							$imu2list = listAll('imu', 'deep_system', ''	, $sn);
+							$imu1list = listAll('SELECT imu FROM sensor_unit');
+							$imu2list = listAll('SELECT imu FROM deep_system');
 							if ($imu1list == NULL || $imu2list == NULL) {
 								debug_to_console("listAllX: Receved a NULL list");
 							}else {
