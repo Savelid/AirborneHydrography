@@ -89,7 +89,9 @@ if(!empty($_POST)){
 			configuration_file = '$_POST[configuration_file]',
 			calibration_report = '$_POST[calibration_report]',
 			acceptance_report = '$_POST[acceptance_report]',
-			system_fully_functional = '$_POST[system_fully_functional]',
+			camera_calibration = '$_POST[camera_calibration]',
+			delivered_data_in_archive = '$_POST[delivered_data_in_archive]',
+			system_not_working = '$_POST[system_not_working]',
 			raw_data_in_archive = '$_POST[raw_data_in_archive]',
 			raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 			";
@@ -382,6 +384,16 @@ include 'res/header.inc.php';
 				</div>
 
 				<div class="checkbox"><label>
+					<input type="hidden" name="raw_data_in_archive" value=0 />
+					<input type="checkbox" name="raw_data_in_archive" value=1 <?= !empty($row['raw_data_in_archive']) && $row['raw_data_in_archive'] ? 'checked' : ''; ?>/> raw_data_in_archive
+				</label></div>
+
+				<div class="checkbox"><label>
+					<input type="hidden" name="raw_data_in_back_up_archive" value=0 />
+					<input type="checkbox" name="raw_data_in_back_up_archive" value=1 <?= !empty($row['raw_data_in_back_up_archive']) && $row['raw_data_in_back_up_archive'] ? 'checked' : ''; ?>/> raw_data_in_back_up_archive
+				</label></div>
+
+				<div class="checkbox"><label>
 					<input type="hidden" name="nav_data_processing_log" value=0 />
 					<input type="checkbox" name="nav_data_processing_log" value=1 <?= !empty($row['nav_data_processing_log']) && $row['nav_data_processing_log'] ? 'checked' : ''; ?>/> nav_data_processing_log
 				</label></div>
@@ -407,18 +419,18 @@ include 'res/header.inc.php';
 				</label></div>
 
 				<div class="checkbox"><label>
-					<input type="hidden" name="system_fully_functional" value=0 />
-					<input type="checkbox" name="system_fully_functional" value=1 <?= !empty($row['system_fully_functional']) && $row['system_fully_functional'] ? 'checked' : ''; ?>/> system_fully_functional
+					<input type="hidden" name="delivered_data_in_archive" value=0 />
+					<input type="checkbox" name="delivered_data_in_archive" value=1 <?= !empty($row['delivered_data_in_archive']) && $row['delivered_data_in_archive'] ? 'checked' : ''; ?>/> delivered_data_in_archive
 				</label></div>
 
 				<div class="checkbox"><label>
-					<input type="hidden" name="raw_data_in_archive" value=0 />
-					<input type="checkbox" name="raw_data_in_archive" value=1 <?= !empty($row['raw_data_in_archive']) && $row['raw_data_in_archive'] ? 'checked' : ''; ?>/> raw_data_in_archive
+					<input type="hidden" name="camera_calibration" value=0 />
+					<input type="checkbox" name="camera_calibration" value=1 <?= !empty($row['camera_calibration']) && $row['camera_calibration'] ? 'checked' : ''; ?>/> camera_calibration
 				</label></div>
 
 				<div class="checkbox"><label>
-					<input type="hidden" name="raw_data_in_back_up_archive" value=0 />
-					<input type="checkbox" name="raw_data_in_back_up_archive" value=1 <?= !empty($row['raw_data_in_back_up_archive']) && $row['raw_data_in_back_up_archive'] ? 'checked' : ''; ?>/> raw_data_in_back_up_archive
+					<input type="hidden" name="system_not_working" value=0 />
+					<input type="checkbox" name="system_not_working" value=1 <?= !empty($row['system_not_working']) && $row['system_not_working'] ? 'checked' : ''; ?>/> system_not_working
 				</label></div>
 
 				<h4>Log</h4>

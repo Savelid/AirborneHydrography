@@ -35,13 +35,13 @@ function listAll($qurey){
 		die("Connection failed: " . $conn->connect_error);
 	}
 	$result = $conn->query($qurey);
-		if (!$result) {
-			debug_to_console("Query failed!" . $qurey . "<br>" . $conn->error);
-			die("Query failed!" . $qurey . "<br>" . $conn->error);
-		}
-		while($row =$result->fetch_array(MYSQLI_NUM)) {
-		  $list[] = $row[0];
-		}
+	if (!$result) {
+		debug_to_console("Query failed!" . $qurey . "<br>" . $conn->error);
+		die("Query failed!" . $qurey . "<br>" . $conn->error);
+	}
+	while($row =$result->fetch_array(MYSQLI_NUM)) {
+		$list[] = $row[0];
+	}
 	$conn->close();
 
 	if (isset($list)) {
@@ -60,7 +60,7 @@ function formatForSelect($listOfItems, $currentId){
 	else {
 		$return_string = '<option></option>';
 	}
-	$return_string .= '<option>-----</option>';
+	$return_string .= '<option>-</option>';
 	foreach ($listOfItems as $key => $value) {
 		$return_string .= '<option value="' .$value. '">' .$value. '</option>';
 	}
@@ -71,10 +71,10 @@ function formatForSelect($listOfItems, $currentId){
 
 <?php
 /**
- * Send debug code to the Javascript console
- */
+* Send debug code to the Javascript console
+*/
 function debug_to_console($data) {
-    if(is_array($data) || is_object($data))
+	if(is_array($data) || is_object($data))
 	{
 		echo("<script>console.log('PHP: ".json_encode($data)."');</script>");
 	} else {
@@ -152,76 +152,76 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 		$sql_col_names = "SHOW COLUMNS FROM $table;";
 		$result_col_names = $conn->query($sql_col_names);
 		if ($result_col_names->num_rows > 0) {
-		    // output data of each row
-				$i = 0;
-		    while($row_col_names = $result_col_names->fetch_assoc()) {
-					$column_names[$i] = $row_col_names['Field'];
-					$i++;
-				}
+			// output data of each row
+			$i = 0;
+			while($row_col_names = $result_col_names->fetch_assoc()) {
+				$column_names[$i] = $row_col_names['Field'];
+				$i++;
+			}
 		}
 
 		$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
 		$result = $conn->query($sql);
 		if ($result->num_rows < 1) {
 
-				debug_to_console("Creating new row");
-				$query = "INSERT INTO $table SET $id_name = '$id', " . $database_columns . ";";
-				$type = 'Add';
-				if ($conn->query($query) === TRUE) {
-					$status = "New record created successfully";
-					//split string
-					$tags = explode(',',$database_columns);
-					//print only those that are not empty
-					foreach($tags as $key) {
-						$pos = strpos($key, "''");
-						if ($pos === false) {
-	    				$changes .= $key.'<br/>';
-						}
+			debug_to_console("Creating new row");
+			$query = "INSERT INTO $table SET $id_name = '$id', " . $database_columns . ";";
+			$type = 'Add';
+			if ($conn->query($query) === TRUE) {
+				$status = "New record created successfully";
+				//split string
+				$tags = explode(',',$database_columns);
+				//print only those that are not empty
+				foreach($tags as $key) {
+					$pos = strpos($key, "''");
+					if ($pos === false) {
+						$changes .= $key.'<br/>';
 					}
-				}else{
-					$status = "New record failed <br>" . $sql . "<br>" . $conn->error;
 				}
+			}else{
+				$status = "New record failed <br>" . $sql . "<br>" . $conn->error;
+			}
 
 		}else {
 			$row = $result->fetch_array(MYSQLI_BOTH);
 			debug_to_console("result added to row");
-				$query = "UPDATE $table SET " . $database_columns . " WHERE $id_name = '$id' ;";
-				$type = 'Update';
-				if ($conn->query($query) === TRUE) {
-					$status= "Record updated successfully";
-					$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
-					$result2 = $conn->query($sql);
-					if (!$result2) {
-						$status .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
-					}else {
-						$new_row = $result2->fetch_array(MYSQLI_NUM);
-						for ($x = 0; $x <= count($new_row); $x++) {
-							if(!empty($new_row[$x]) && !empty($new_row[$x])){
-								if(strcmp($new_row[$x], $row[$x]) === 0) {
-									debug_to_console("Skip unchanged item");
-								}else {
-									$this_col = "";
-									if (isset($column_names)) {
-										//$this_col = $column_names[$x];
-										$this_col = sprintf("%20s", $column_names[$x]); // left-justification with spaces
-									}
-									$changes .=  $this_col ." | ". $row[$x] ." -> ".$new_row[$x]."<br>";
-								}
+			$query = "UPDATE $table SET " . $database_columns . " WHERE $id_name = '$id' ;";
+			$type = 'Update';
+			if ($conn->query($query) === TRUE) {
+				$status= "Record updated successfully";
+				$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
+				$result2 = $conn->query($sql);
+				if (!$result2) {
+					$status .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
+				}else {
+					$new_row = $result2->fetch_array(MYSQLI_NUM);
+					for ($x = 0; $x <= count($new_row); $x++) {
+						if(!empty($new_row[$x]) && !empty($new_row[$x])){
+							if(strcmp($new_row[$x], $row[$x]) === 0) {
+								debug_to_console("Skip unchanged item");
 							}else {
-								debug_to_console("Minor error: Empty row");
+								$this_col = "";
+								if (isset($column_names)) {
+									//$this_col = $column_names[$x];
+									$this_col = sprintf("%20s", $column_names[$x]); // left-justification with spaces
+								}
+								$changes .=  $this_col ." | ". $row[$x] ." -> ".$new_row[$x]."<br>";
 							}
+						}else {
+							debug_to_console("Minor error: Empty row");
 						}
 					}
-				}else{
-					$status= "Update failed <br>" . $sql . "<br>" . $conn->error;
 				}
+			}else{
+				$status= "Update failed <br>" . $sql . "<br>" . $conn->error;
+			}
 		}
 		$conn->close();
 		return array(
-	    'updates'  => $changes,
-	    'query' => $query,
-	    'type' => $type,
-	    'status' => $status
+			'updates'  => $changes,
+			'query' => $query,
+			'type' => $type,
+			'status' => $status
 		);
 	}
 	debug_to_console("postToDatabase: Return null");
@@ -251,15 +251,15 @@ function getDatabaseRow($table, $id_name, $id){
 	$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
 	$result = $conn->query($sql);
 	if ($result->num_rows < 1) {
-			echo $sql;
-			debug_to_console("Query for this id failed, no results");
+		echo $sql;
+		debug_to_console("Query for this id failed, no results");
 	}
 	elseif ($result->num_rows > 1) {
-			echo $sql;
-			debug_to_console("Query for this id failed, too many results");
+		echo $sql;
+		debug_to_console("Query for this id failed, too many results");
 	}else {
-			$row = $result->fetch_array(MYSQLI_BOTH);
-			debug_to_console("result added to row");
+		$row = $result->fetch_array(MYSQLI_BOTH);
+		debug_to_console("result added to row");
 	}
 
 	$conn->close();
@@ -273,26 +273,26 @@ function getDatabaseRow($table, $id_name, $id){
 ?>
 
 <?PHP
-	// Add all requests saved by this page to LOG
-	function postToLog($id, $type, $query, $changes, $user, $comment) {
+// Add all requests saved by this page to LOG
+function postToLog($id, $type, $query, $changes, $user, $comment) {
 
-		// Create connection
-		include 'res/config.inc.php';
-		$conn = new mysqli($servername, $username, $password, $dbname);
-		// Check connection
-		if ($conn->connect_error) {
-		    die("Log: db connection failed: " . $conn->connect_error);
-		}
-		$query = $conn->real_escape_string($query);
-		$changes = $conn->real_escape_string($changes);
-		$sql_log = "INSERT INTO log SET type = '$type', user = '$user', sql_string = '$query', changes = '$changes', serial_nr = '$id', comment = '$comment';";
-		if ($conn->query($sql_log) === TRUE) {
-			$status = "Log created successfully";
-
-		} else {
-			$status = "Log Error: " . $sql_log . "<br>" . $conn->error;
-		}
-		$conn->close();
-		return $status;
+	// Create connection
+	include 'res/config.inc.php';
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("Log: db connection failed: " . $conn->connect_error);
 	}
+	$query = $conn->real_escape_string($query);
+	$changes = $conn->real_escape_string($changes);
+	$sql_log = "INSERT INTO log SET type = '$type', user = '$user', sql_string = '$query', changes = '$changes', serial_nr = '$id', comment = '$comment';";
+	if ($conn->query($sql_log) === TRUE) {
+		$status = "Log created successfully";
+
+	} else {
+		$status = "Log Error: " . $sql_log . "<br>" . $conn->error;
+	}
+	$conn->close();
+	return $status;
+}
 ?>

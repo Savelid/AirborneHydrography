@@ -266,7 +266,9 @@ CREATE TABLE datasets (
 	configuration_file BOOLEAN,
 	calibration_report BOOLEAN,
 	acceptance_report BOOLEAN,
-	system_fully_functional BOOLEAN,
+	system_not_working BOOLEAN,
+	camera_calibration BOOLEAN,
+	delivered_data_in_archive BOOLEAN,
 	raw_data_in_archive BOOLEAN,
 	raw_data_in_back_up_archive BOOLEAN,
 

@@ -81,6 +81,32 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE datasets CHANGE system_fully_functional system_not_working BOOLEAN';
+
+      if($mysqli->query($query)) {
+          echo "<br>CHANGE name of system_fully_functional to system_not_working";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE datasets ADD delivered_data_in_archive BOOLEAN AFTER system_not_working';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add delivered_data_in_archive";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
+      $query = 'ALTER TABLE datasets ADD camera_calibration BOOLEAN AFTER delivered_data_in_archive';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add camera_calibration";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
 
   } catch (Exception $e) {
       print($e->getMessage());

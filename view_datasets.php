@@ -2,6 +2,7 @@
 session_start();
 
 include_once 'res/config.inc.php';
+include_once 'res/functions.inc.php';
 
 if (!empty($_GET['dataset_id'])) {
 
@@ -138,34 +139,17 @@ $(function () {
 						<div class="col-xs-6"><a href="<?php echo $query['flight_logs'];?>"><?php echo $query['flight_logs'];?></a></div>
 					</div>
 
-					<?php
-					// Create connection
-					$conn = new mysqli($servername, $username, $password, $dbname);
-					// Check connection
-					if ($conn->connect_error) {
-						die("Connection failed: " . $conn->connect_error);
-					}
-
-					$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
-					$result = $conn->query($sql);
-					if (!$result) {
-						echo $sql . "<br><br>" . $conn->error;
-						die("Query failed!");
-					}
-					$calibration_id = "";
-					if ($result->num_rows > 0) {
-						// output data of each row
-						while($row = $result->fetch_assoc()) {
-							$calibration_id .= '<a href="main_calibration.php?search=' .$row['calibration_id']. '">' .$row['calibration_id']. "</a><br>";
-						}
-					}
-
-					$conn->close();
-					?>
-
 					<div class="row">
 						<div class="col-xs-6"><strong>Calibrations</strong></div>
-						<div class="col-xs-6"><?php echo $calibration_id;?></div>
+						<div class="col-xs-6">
+							<?php
+							$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
+							$calibration_id_list = listAll($sql);
+							foreach ($calibration_id_list as $key => $value) {
+								echo '<a href="main_calibration.php?search=' .$value. '">' .$value. "</a><br>";
+							}
+							?>
+						</div>
 					</div>
 
 				</div>
@@ -238,7 +222,7 @@ $(function () {
 		if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 		}
-		$checkboxes = array("nav_data_processing_log", "calibration_file", "processing_settings_file", "configuration_file", "calibration_report", "acceptance_report", "system_fully_functional", "raw_data_in_archive", "raw_data_in_back_up_archive");
+		$checkboxes = array("nav_data_processing_log", "calibration_file", "processing_settings_file", "configuration_file", "calibration_report", "acceptance_report", "system_not_working", "camera_calibration", "delivered_data_in_archive", "raw_data_in_archive", "raw_data_in_back_up_archive");
 		foreach ($checkboxes as $key => $value) {
 			$sql = "SELECT user FROM log WHERE changes LIKE '%$value%' ORDER BY datetime DESC LIMIT 1;";
 			$result = $conn->query($sql);
@@ -251,12 +235,18 @@ $(function () {
 
 		<div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
 			<ul class="list-group">
-				<li class="list-group-item <?=$query['nav_data_processing_log'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['nav_data_processing_log']; ?>">
-					Nav. data processing log
-				</li>
 				<li class="list-group-item <?=($query['calibration_file'] == 'Final') ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['calibration_file']; ?>">
 					Calibration file: <br>
   					<b style="padding-left: 30px !important;"><?php echo $query['calibration_file'] ?></b>
+				</li>
+				<li class="list-group-item <?=$query['raw_data_in_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_archive']; ?>">
+					Raw data in archive
+				</li>
+				<li class="list-group-item <?=$query['raw_data_in_back_up_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_back_up_archive']; ?>">
+					Raw data in back up archive
+				</li>
+				<li class="list-group-item <?=$query['nav_data_processing_log'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['nav_data_processing_log']; ?>">
+					Nav. data processing log
 				</li>
 				<li class="list-group-item <?=$query['processing_settings_file'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['processing_settings_file']; ?>">
 						Processing settings file
@@ -270,14 +260,14 @@ $(function () {
 				<li class="list-group-item <?=$query['acceptance_report'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['acceptance_report']; ?>">
 					Acceptance report
 				</li>
-				<li class="list-group-item <?=$query['system_fully_functional'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['system_fully_functional']; ?>">
-					System fully functional
+				<li class="list-group-item <?=$query['delivered_data_in_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['delivered_data_in_archive']; ?>">
+					Delivered data into archive
 				</li>
-				<li class="list-group-item <?=$query['raw_data_in_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_archive']; ?>">
-					Raw data in archive
+				<li class="list-group-item <?=$query['camera_calibration'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['camera_calibration']; ?>">
+					Camera calibration
 				</li>
-				<li class="list-group-item <?=$query['raw_data_in_back_up_archive'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_back_up_archive']; ?>">
-					Raw data in back up archive
+				<li class="list-group-item <?=$query['system_not_working'] ? 'list-group-item-danger' : 'list-group-item-success'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['system_not_working']; ?>">
+					System not working
 				</li>
 			</ul>
 
