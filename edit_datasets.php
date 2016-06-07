@@ -453,9 +453,7 @@ include 'res/header.inc.php';
 					<label for="flight_logs" class="col-sm-3 col-xs-12 control-label">
 						Flight logs
 						<div class ="comments">
-							Describe encountered problems during flight
-							<br>
-							Warning: Sorry the system can not hadle some special characters like Å,Ä,Ö in the file name for now :(
+							Upload a copy of the flight log (PDF)
 						</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
