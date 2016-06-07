@@ -35,6 +35,16 @@ button[data-content="Firmware: "] {
   font-style: italic;
  }
 
+ .ahab-checked::before {
+   content: "\e067";
+   font-family: 'Glyphicons Halflings';
+ }
+
+ .ahab-unchecked::before {
+   content: "\e157";
+   font-family: 'Glyphicons Halflings';
+ }
+
 /*
  *
  * Header
