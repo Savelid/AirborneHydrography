@@ -108,6 +108,15 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE calibration ADD calibration_file TEXT AFTER dataset_id';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add calibration_file";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
   } catch (Exception $e) {
       print($e->getMessage());
   }

@@ -23,13 +23,20 @@ debug_to_console("Calibration id nummer" . $int_calibration_id);
 
 $conn->close();
 
+$status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
+	//	uploadFile($input_file_type, $name, $name_prefix, $target_dir, $max_size)
+	$uploaded_calibration_file = uploadFile("pdf", "calibration_file", $_POST['calibration_id'] . "__", "calibrations/", 50000000);
+	$status_msg .= $uploaded_calibration_file["status_msg"];
 
 		$database_columns = "
 			dataset_id = '$_POST[dataset_id]',
 			comment = '$_POST[comment]'
 			";
+			if ($uploaded_calibration_file != NULL && $uploaded_calibration_file["upload_ok"]) {
+				$database_columns .= ", calibration_file = '$uploaded_calibration_file[file_path]'";
+			}
 }
 
 $row = postFunction('calibration_id', 'calibration', $database_columns, 'main_calibration.php');
@@ -103,6 +110,18 @@ include 'res/header.inc.php';
 					</label>
 					<div class="col-sm-8 col-xs-12">
 						<textarea class="form-control" name="comment" rows="5"><?= !empty($row['comment']) ?  $row['comment'] : '' ; ?></textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="calibration_file" class="col-sm-3 col-xs-12 control-label">
+						Calibration
+						<div class ="comments">
+							Warning: Sorry the system can not hadle some special characters like Å,Ä,Ö in the file name for now :(
+						</div>
+					</label>
+					<div class="col-sm-8 col-xs-12">
+						<input type="file" class="form-control" name="calibration_file" id="calibration_file" >
 					</div>
 				</div>
 

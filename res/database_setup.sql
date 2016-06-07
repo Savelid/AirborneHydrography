@@ -281,6 +281,7 @@ CREATE TABLE calibration (
 	calibration_id VARCHAR(50) NOT NULL UNIQUE,
 	datetime TIMESTAMP,
 	dataset_id VARCHAR(50),
+	calibration_file TEXT,
 	comment TEXT,
 
 	PRIMARY KEY (id)

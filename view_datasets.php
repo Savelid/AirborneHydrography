@@ -140,6 +140,21 @@ $(function () {
 					</div>
 
 					<div class="row">
+						<div class="col-xs-6"><strong>Calibration file</strong></div>
+						<div class="col-xs-6">
+							<?php
+							$sql = "SELECT calibration_file FROM calibration WHERE dataset_id = '$query[dataset_id]';";
+							$calibration_file_list = listAll($sql);
+							if ($calibration_file_list != NULL) {
+								foreach ($calibration_file_list as $key => $value) {
+									echo '<a href="' .$value. '">' .$value. "</a><br>";
+								}
+							}
+							?>
+						</div>
+					</div>
+
+					<div class="row">
 						<div class="col-xs-6"><strong>Calibrations</strong></div>
 						<div class="col-xs-6">
 							<?php
