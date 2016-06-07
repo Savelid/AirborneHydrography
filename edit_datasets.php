@@ -47,7 +47,6 @@ if(!empty($_POST)){
 			leica_cam_sn = '$_POST[leica_cam]',
 
 			type_of_data = '$_POST[type_of_data]',
-			purpose_of_flight = '$_POST[purpose_of_flight]',
 
 			nav_data_processing_log = '$_POST[nav_data_processing_log]',
 			calibration_file = '$_POST[calibration_file]',
@@ -65,7 +64,6 @@ if(!empty($_POST)){
 			$database_columns .= ", flight_logs = '$uploaded_flight_logs_file[file_path]'";
 		}
 }
-
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$row2 = getDatabaseRow('datasets', 'dataset_id', $_POST['dataset_id']);
@@ -79,9 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}else{
 		$data_comments = $row2['data_comments'];
 	}
+	if (!empty($_POST['purpose_of_flight'])) {
+		$purpose_of_flight = $row2['purpose_of_flight'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['purpose_of_flight'];
+	}else{
+		$purpose_of_flight = $row2['purpose_of_flight'];
+	}
 	$database_columns2 = "
 		flight_comments = '$flight_comments',
-		data_comments = '$data_comments'
+		data_comments = '$data_comments',
+		purpose_of_flight = '$purpose_of_flight'
 	";
 	$results2 = postToDatabase('datasets', 'dataset_id', $_POST['dataset_id'], $database_columns2);
 	$_SESSION['alert'] .= "<br>" . $results2['status'];
@@ -432,7 +436,7 @@ include 'res/header.inc.php';
 								}
 						 	?>
 						</div>
-						<textarea class="form-control" name="purpose_of_flight" rows="5"><?= !empty($row['purpose_of_flight']) ?  $row['purpose_of_flight'] : '' ; ?></textarea>
+						<textarea class="form-control" name="purpose_of_flight" rows="5"></textarea>
 					</div>
 				</div>
 
