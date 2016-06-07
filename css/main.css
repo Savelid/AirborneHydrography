@@ -22,6 +22,12 @@ button[data-content="Firmware: "] {
   pointer-events: none;
 }
 
+.ahab-scroll-box {
+  max-height:100px;
+  overflow: auto;
+  padding: 5px 15px;
+}
+
 .comments {
   font-size: .8em;
   margin-left: auto;

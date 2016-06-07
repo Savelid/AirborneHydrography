@@ -367,3 +367,24 @@ function _uploadFile_test_fileType($target_file, $input_file_type){
 	return false;
 }
 ?>
+
+<?php
+function formatComment($string){
+	$comments = explode("&|", $string);
+	$return_string = "";
+	foreach ($comments as $key => $value) {
+		if (!empty($value[0])) {
+			if ($value[0] == "A") {
+				$return_string .= '<b>' .substr($value, 1). '</b>';
+			}elseif ($value[0] == "D") {
+				$return_string .= ' - <i>' .substr($value, 1). '</i>';
+			}elseif ($value[0] == "M") {
+				$return_string .= '<p>' .nl2br(substr($value, 1)). '</p>';
+			}else{
+				$return_string .= $value;
+			}
+		}
+	}
+	return $return_string;
+}
+?>

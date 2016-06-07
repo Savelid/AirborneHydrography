@@ -425,6 +425,13 @@ include 'res/header.inc.php';
 						<div class ="comments">A not too short explanation of why the flight was done. It must be long enough to be useful three years later</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
+						<div class ="ahab-scroll-box">
+							<?php
+								if (!empty($row['purpose_of_flight'])) {
+									echo formatComment($row['purpose_of_flight']);
+								}
+						 	?>
+						</div>
 						<textarea class="form-control" name="purpose_of_flight" rows="5"><?= !empty($row['purpose_of_flight']) ?  $row['purpose_of_flight'] : '' ; ?></textarea>
 					</div>
 				</div>
@@ -435,6 +442,13 @@ include 'res/header.inc.php';
 						<div class ="comments">Describe encountered problems during flight</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
+						<div class ="ahab-scroll-box">
+							<?php
+								if (!empty($row['flight_comments'])) {
+									echo formatComment($row['flight_comments']);
+								}
+						 	?>
+						</div>
 						<textarea class="form-control" name="flight_comments" rows="5"></textarea>
 					</div>
 				</div>
@@ -445,6 +459,13 @@ include 'res/header.inc.php';
 						<div class ="comments">Describe the results regarding the purpose of the flight but also if other issues was noted. Must also be long enough to be useful after three years.</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
+						<div class ="ahab-scroll-box">
+							<?php
+								if (!empty($row['data_comments'])) {
+									echo formatComment($row['data_comments']);
+								}
+						 	?>
+						</div>
 						<textarea class="form-control" name="data_comments" rows="5"></textarea>
 					</div>
 				</div>

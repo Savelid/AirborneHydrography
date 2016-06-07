@@ -177,7 +177,9 @@ $(function () {
 					<h3 class="panel-title">Purpose of flight</h3>
 				</div>
 				<div class="panel-body">
-					<?php echo nl2br($query['purpose_of_flight']); ?>
+					<?php
+						echo formatComment($query['purpose_of_flight']);
+					?>
 				</div>
 			</div><!-- end panel -->
 
@@ -187,20 +189,7 @@ $(function () {
 				</div>
 				<div class="panel-body">
 					<?php
-						$flight_comments = explode("&|", $query['flight_comments']);
-						foreach ($flight_comments as $key => $value) {
-							if (!empty($value[0])) {
-								if ($value[0] == "A") {
-									echo '<b>' .substr($value, 1). '</b>';
-								}elseif ($value[0] == "D") {
-									echo ' - <i>' .substr($value, 1). '</i>';
-								}elseif ($value[0] == "M") {
-									echo '<p>' .nl2br(substr($value, 1)). '</p>';
-								}else{
-									echo $value;
-								}
-							}
-						}
+						echo formatComment($query['flight_comments']);
 					?>
 				</div>
 			</div><!-- end panel -->
@@ -211,20 +200,7 @@ $(function () {
 				</div>
 				<div class="panel-body">
 					<?php
-						$data_comments = explode("&|", $query['data_comments']);
-						foreach ($data_comments as $key => $value) {
-							if (!empty($value[0])) {
-								if ($value[0] == "A") {
-									echo '<b>' .substr($value, 1). '</b>';
-								}elseif ($value[0] == "D") {
-									echo ' - <i>' .substr($value, 1). '</i>';
-								}elseif ($value[0] == "M") {
-									echo '<p>' .nl2br(substr($value, 1)). '</p>';
-								}else{
-									echo $value;
-								}
-							}
-						}
+						echo formatComment($query['data_comments']);
 					?>
 					<?php //echo nl2br($query['data_comments']); ?>
 				</div>
