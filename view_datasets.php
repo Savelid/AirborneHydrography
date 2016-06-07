@@ -145,8 +145,10 @@ $(function () {
 							<?php
 							$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
 							$calibration_id_list = listAll($sql);
-							foreach ($calibration_id_list as $key => $value) {
-								echo '<a href="main_calibration.php?search=' .$value. '">' .$value. "</a><br>";
+							if ($calibration_id_list != NULL) {
+								foreach ($calibration_id_list as $key => $value) {
+									echo '<a href="main_calibration.php?search=' .$value. '">' .$value. "</a><br>";
+								}
 							}
 							?>
 						</div>

@@ -26,44 +26,48 @@ $conn->close();
 $status_msg = "";
 $database_columns = "";
 if(!empty($_POST)){
-	//debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
-	if ($_FILES['flight_logs']['size'] > 0 && $_FILES['flight_logs']['error'] == 0){
-		debug_to_console("flight_logs not empty");
-		$target_dir = "flight_logs/";
-		$target_file = $target_dir . $_POST['dataset_id'] . "__" . basename($_FILES["flight_logs"]["name"]);
-		$uploadOk = 1;
-		$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
+	// //debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
+	// if ($_FILES['flight_logs']['size'] > 0 && $_FILES['flight_logs']['error'] == 0){
+	// 	debug_to_console("flight_logs not empty");
+	// 	$target_dir = "flight_logs/";
+	// 	$target_file = $target_dir . $_POST['dataset_id'] . "__" . basename($_FILES["flight_logs"]["name"]);
+	// 	$uploadOk = 1;
+	// 	$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
+	//
+	// 	// Check if file already exists
+	// 	if (file_exists($target_file)) {
+  //   		$status_msg .= "File already exists. file will be overwriten <br>";
+  //   		//$uploadOk = 0;
+	// 	}
+	//
+	// 	// Check file size
+	// 	if ($_FILES["flight_logs"]["size"] > 50000000) {
+	// 		 $status_msg .= "Sorry, your file is too large.";
+	// 		 $uploadOk = 0;
+	// 	}
+	//
+	// 	// Allow certain file formats
+	// 	if($fileType != "pdf") {
+	// 	    $status_msg .= "Sorry, only PDF files are allowed.";
+	// 	    $uploadOk = 0;
+	// 	}
+	//
+	// 	// Check if $uploadOk is set to 0 by an error
+	// 	if ($uploadOk == 0) {
+	// 	    $status_msg .= "Sorry, your file was not uploaded.";
+	// 	// if everything is ok, try to upload file
+	// 	} else {
+	// 	    if (move_uploaded_file($_FILES["flight_logs"]["tmp_name"], $target_file)) {
+	// 	        $status_msg .= "The file ". basename( $_FILES["flight_logs"]["name"]). " has been uploaded.";
+	// 	    } else {
+	// 	        $status_msg .= "Sorry, there was an error uploading your file.";
+	// 	    }
+	// 	}
+  //}
+	//	uploadFile($input_file_type, $name, $name_prefix, $target_dir, $max_size)
+		$uploaded_file = uploadFile("pdf", "flight_logs", $_POST['dataset_id'] . "__", "flight_logs/", 50000000);
+		$status_msg = $uploaded_file["status_msg"];
 
-		// Check if file already exists
-		if (file_exists($target_file)) {
-    		$status_msg .= "File already exists. file will be overwriten <br>";
-    		//$uploadOk = 0;
-		}
-
-		// Check file size
-		if ($_FILES["flight_logs"]["size"] > 50000000) {
-			 $status_msg .= "Sorry, your file is too large.";
-			 $uploadOk = 0;
-		}
-
-		// Allow certain file formats
-		if($fileType != "pdf") {
-		    $status_msg .= "Sorry, only PDF files are allowed.";
-		    $uploadOk = 0;
-		}
-
-		// Check if $uploadOk is set to 0 by an error
-		if ($uploadOk == 0) {
-		    $status_msg .= "Sorry, your file was not uploaded.";
-		// if everything is ok, try to upload file
-		} else {
-		    if (move_uploaded_file($_FILES["flight_logs"]["tmp_name"], $target_file)) {
-		        $status_msg .= "The file ". basename( $_FILES["flight_logs"]["name"]). " has been uploaded.";
-		    } else {
-		        $status_msg .= "Sorry, there was an error uploading your file.";
-		    }
-		}
-}
 		$database_columns = "
 			datetime = '$_POST[datetime]',
 			disc_id = '$_POST[disc_id]',
@@ -95,8 +99,8 @@ if(!empty($_POST)){
 			raw_data_in_archive = '$_POST[raw_data_in_archive]',
 			raw_data_in_back_up_archive = '$_POST[raw_data_in_back_up_archive]'
 			";
-		if (!empty($target_file)) {
-			$database_columns .= ", flight_logs = '$target_file'";
+		if ($uploaded_file != NULL && $uploaded_file["upload_ok"]) {
+			$database_columns .= ", flight_logs = '$uploaded_file[file_path]'";
 		}
 }
 

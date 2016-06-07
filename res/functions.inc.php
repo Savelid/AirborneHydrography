@@ -296,3 +296,74 @@ function postToLog($id, $type, $query, $changes, $user, $comment) {
 	return $status;
 }
 ?>
+
+<?php
+function uploadFile($input_file_type, $name, $name_prefix, $target_dir, $max_size){
+	//debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
+	if ($_FILES[$name]['size'] > 0 && $_FILES[$name]['error'] == 0){
+		debug_to_console($name. " not empty");
+		$target_file = $target_dir . $name_prefix . basename($_FILES[$name]["name"]);
+		$uploadOk = 1;
+
+		// Check if file already exists
+		if (file_exists($target_file)) {
+    		$status_msg .= "File already exists. file will be overwriten <br>";
+    		//$uploadOk = 0;
+		}
+
+		$isRightFileType = _uploadFile_test_fileType($target_file, $input_file_type);
+		if(!$isRightFileType){
+			$status_msg .= "Sorry, this file format is not allowed.";
+			$uploadOk = 0;
+		}
+		$isRightSize = _uploadFile_test_size($name, $max_size);
+		if(!$isRightSize){
+			$status_msg .= "Sorry, this file has an invalid size.";
+			$uploadOk = 0;
+		}
+
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		    $status_msg .= " Your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		    if (move_uploaded_file($_FILES[$name]["tmp_name"], $target_file)) {
+		        $status_msg .= "The file ". basename( $_FILES[$name]["name"]). " has been uploaded.";
+		    } else {
+		        $status_msg .= "Sorry, there was an error uploading your file.";
+		    }
+		}
+		return array(	"status_msg" => $status_msg,
+									"upload_ok" => $uploadOk,
+									"file_name" => basename($_FILES[$name]["name"]),
+									"file_path" => $target_file);
+	}
+	return NULL;
+}
+
+function _uploadFile_test_size($name, $max_size){
+	// Check file size
+	if ($_FILES[$name]["size"] > $max_size) {
+		 return false;
+	}else {
+		return true;
+	}
+}
+
+function _uploadFile_test_fileType($target_file, $input_file_type){
+	$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
+	// Allow certain file formats
+	if (is_array($input_file_type)) {
+		foreach ($input_file_type as $key => $value) {
+			if($fileType == $value) {
+					return true;
+			}
+		}
+	}else{
+		if($fileType == $input_file_type) {
+				return true;
+		}
+	}
+	return false;
+}
+?>
