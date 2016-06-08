@@ -62,7 +62,7 @@ include 'res/header.inc.php';
 
 				<div class="form-group">
 					<label for="calibration_id" class="col-xs-4 control-label">
-						Dataset ID
+						Calibration id
 						<div class="comments">AHAB-CALIB-xxxx</div>
 					</label>
 					<div class="col-xs-8">
@@ -72,7 +72,7 @@ include 'res/header.inc.php';
 
 				<div class="form-group">
 					<label for="dataset_id" class="col-xs-4 control-label">
-						Disc ID
+						Dataset id
 						<div class="comments">AHAB-DATA-xxxx</div>
 					</label>
 					<div class="col-xs-8">
@@ -92,7 +92,7 @@ include 'res/header.inc.php';
 					</div>
 				</div>
 
-				<div class="form-group col-xs-12">
+				<div class="form-group col-xs-12" hidden>
 					<label for="log_comment">Log Comment</label>
 					<div>
 						<textarea class="form-control" name="log_comment" rows="3"></textarea>
@@ -115,7 +115,7 @@ include 'res/header.inc.php';
 
 				<div class="form-group">
 					<label for="calibration_file" class="col-sm-3 col-xs-12 control-label">
-						Calibration
+						Calibration file
 						<div class ="comments">
 							Warning: Sorry the system can not hadle some special characters like Å,Ä,Ö in the file name for now :(
 						</div>

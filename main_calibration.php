@@ -40,7 +40,7 @@ include 'res/header.inc.php';
         <th>Dataset</th>
         <th>Type</th>
         <th>System</th>
-        <th class="hidden-print">PDF</th>
+        <th class="hidden-print">Calib. file</th>
         <th class="hidden-print">Comment</th>
       </tr>
     </thead>
