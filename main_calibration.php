@@ -60,7 +60,7 @@ $sql .= " LEFT JOIN datasets ON calibration.dataset_id=datasets.dataset_id";
 if(isset($_GET['search'])){
   $sql .= " WHERE calibration.datetime LIKE '%" . $_GET['search'] . "%'
   OR calibration.dataset_id LIKE '%" . $_GET['search'] . "%'
-  OR calibration_id LIKE '%" . $_GET['search'] . "%'
+  OR calibration.calibration_id LIKE '%" . $_GET['search'] . "%'
   OR comment LIKE '%" . $_GET['search'] . "%'
   OR system_id LIKE '%" . $_GET['search'] . "%'
   OR type_of_data LIKE '%" . $_GET['search'] . "%'
