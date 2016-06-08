@@ -148,23 +148,15 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 			die("Connection failed: " . $conn->connect_error);
 		}
 
-		// Get the names of the columns. Will be shown toghether with the list of changes
-		$sql_col_names = "SHOW COLUMNS FROM $table;";
-		$result_col_names = $conn->query($sql_col_names);
-		if ($result_col_names->num_rows > 0) {
-			// output data of each row
-			$i = 0;
-			while($row_col_names = $result_col_names->fetch_assoc()) {
-				$column_names[$i] = $row_col_names['Field'];
-				$i++;
-			}
-		}
-
 		$sql = "SELECT * FROM $table WHERE $id_name = '$id';";
 		$result = $conn->query($sql);
 		if ($result->num_rows < 1) {
+			$new = true;
+		}else {
+			$new = false;
+		}
 
-			debug_to_console("Creating new row");
+		if ($new) {
 			$query = "INSERT INTO $table SET $id_name = '$id', " . $database_columns . ";";
 			$type = 'Add';
 			if ($conn->query($query) === TRUE) {
@@ -173,18 +165,19 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 				$tags = explode(',',$database_columns);
 				//print only those that are not empty
 				foreach($tags as $key) {
-					$pos = strpos($key, "''");
-					if ($pos === false) {
+					$empty_result = strpos($key, "''");
+					$zero_result = strpos($key, "'0'");
+					if ($empty_result === false && $zero_result === false) {
 						$changes .= $key.'<br/>';
 					}
 				}
 			}else{
 				$status = "New record failed <br>" . $sql . "<br>" . $conn->error;
 			}
+		}
 
-		}else {
-			$row = $result->fetch_array(MYSQLI_BOTH);
-			debug_to_console("result added to row");
+		if (!$new) {
+			$row_assoc = $result->fetch_array(MYSQLI_ASSOC);
 			$query = "UPDATE $table SET " . $database_columns . " WHERE $id_name = '$id' ;";
 			$type = 'Update';
 			if ($conn->query($query) === TRUE) {
@@ -194,21 +187,17 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 				if (!$result2) {
 					$status .= "Failed to query new data :( <br>" . $sql . "<br>" . $conn->error;
 				}else {
-					$new_row = $result2->fetch_array(MYSQLI_NUM);
-					for ($x = 0; $x <= count($new_row); $x++) {
-						if(!empty($new_row[$x]) && !empty($new_row[$x])){
-							if(strcmp($new_row[$x], $row[$x]) === 0) {
-								debug_to_console("Skip unchanged item");
-							}else {
-								$this_col = "";
-								if (isset($column_names)) {
-									//$this_col = $column_names[$x];
-									$this_col = sprintf("%20s", $column_names[$x]); // left-justification with spaces
-								}
-								$changes .=  $this_col ." | ". $row[$x] ." -> ".$new_row[$x]."<br>";
+					$new_row_assoc = $result2->fetch_array(MYSQLI_ASSOC);
+					if (sizeof($new_row_assoc) != sizeof($row_assoc)) {
+						$changes .= "WARNING! The table might have been altered! Different amount of columns.<br>";
+					}
+					foreach ($new_row_assoc as $key => $value) {
+						if (isset($row_assoc[$key])) {
+							if (strcmp($row_assoc[$key], $value) !== 0) {
+								$changes .= $key. " | " .$row_assoc[$key]. " -> " .$value. "<br>";
 							}
-						}else {
-							debug_to_console("Minor error: Empty row");
+						}else{
+							$changes .= $key. " | " . "NEW VALUE". " -> " .$value. "<br>";
 						}
 					}
 				}
@@ -217,6 +206,8 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 			}
 		}
 		$conn->close();
+		//debug_to_console("column_names: " .sizeof($column_names));
+		//debug_to_console("Test!: " . $test_new_loop);
 		return array(
 			'updates'  => $changes,
 			'query' => $query,
