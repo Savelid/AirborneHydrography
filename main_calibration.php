@@ -40,6 +40,7 @@ include 'res/header.inc.php';
         <th>Dataset</th>
         <th>Type</th>
         <th>System</th>
+        <th class="hidden-print">PDF</th>
         <th class="hidden-print">Comment</th>
       </tr>
     </thead>
@@ -54,7 +55,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "  SELECT calibration.datetime AS datetime, calibration.dataset_id AS dataset_id, calibration.calibration_id AS calibration_id, comment, system_id, type_of_data FROM calibration ";
+$sql = "  SELECT calibration.datetime AS datetime, calibration.dataset_id AS dataset_id, calibration.calibration_id AS calibration_id, calibration.calibration_file AS calibration_file, comment, system_id, type_of_data FROM calibration ";
 $sql .= " LEFT JOIN datasets ON calibration.dataset_id=datasets.dataset_id";
 if(isset($_GET['search'])){
   $sql .= " WHERE calibration.datetime LIKE '%" . $_GET['search'] . "%'
@@ -81,12 +82,16 @@ if ($result->num_rows > 0) {
       . $row["comment"] .
       '">View</button>';
 
+      $calibrationFileButton = '
+      <a href="'.$row["calibration_file"].'" class="btn btn-sm btn-default">PDF</a>';
+
       echo '<tr>';
       echo '<td>' . substr($row["datetime"], 0 , 10)  . '</td>';
       echo '<td> <a href="edit_calibration.php?calibration_id=' . $row["calibration_id"] . '">' . $row["calibration_id"] . '</a> </td>';
       echo '<td> <a href="view_datasets.php?dataset_id=' . $row["dataset_id"] . '">' . $row["dataset_id"] . '</a> </td>';
       echo '<td>' . $row["type_of_data"]      . '</td>';
       echo '<td>' . $row["system_id"] . '</td>';
+      echo '<td class="hidden-print">' . $calibrationFileButton . '</td>';
       echo '<td class="hidden-print">' . $commentButton . '</td>';
       echo '</tr>';
     }

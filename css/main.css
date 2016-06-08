@@ -12,6 +12,7 @@ a.btn:empty {
   display: none;
 }
 
+a.btn[href=""],
 button[data-content=""],
 button[data-content="Firmware: "] {
   cursor: not-allowed;
