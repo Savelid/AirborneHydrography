@@ -255,6 +255,7 @@ CREATE TABLE datasets (
 	leica_cam_sn VARCHAR(30),
 
 	type_of_data VARCHAR(100),
+	calibration_id VARCHAR(100),
 	purpose_of_flight TEXT,
 	evaluation_of_flight TEXT,
 	flight_logs TEXT,

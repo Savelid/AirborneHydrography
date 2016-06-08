@@ -22,6 +22,14 @@ if (!empty($_GET['dataset_id'])) {
 	}
 	$query = $result->fetch_array(MYSQLI_ASSOC);
 
+	$checkboxes = array("nav_data_processing_log", "calibration_file", "processing_settings_file", "configuration_file", "calibration_report", "acceptance_report", "system_not_working", "camera_calibration", "delivered_data_in_archive", "raw_data_in_archive", "raw_data_in_back_up_archive");
+	foreach ($checkboxes as $key => $value) {
+		$sql = "SELECT user FROM log WHERE changes LIKE '%$value%' ORDER BY datetime DESC LIMIT 1;";
+		$result = $conn->query($sql);
+		$x = $result->fetch_array(MYSQLI_NUM);
+		$changed_by[$value] = $x[0];
+	}
+
 	$conn->close();
 }
 else {
@@ -139,11 +147,26 @@ $(function () {
 						<div class="col-xs-6"><a href="<?php echo $query['flight_logs'];?>"><?php echo $query['flight_logs'];?></a></div>
 					</div>
 
+				</div>
+			</div><!-- end panel -->
+
+			<div class="panel <?=($query['calibration_file'] == 'Final') ? 'panel-success' : 'panel-warning'; ?>">
+				<div class="panel-heading">
+					<h3 class="panel-title">Calibrations</h3>
+					<b style="padding-right: 30px !important;"><?php echo $query['calibration_file'] ?></b><?php echo $changed_by['calibration_file']; ?>
+				</div>
+				<div class="panel-body">
+
+					<div class="row">
+						<div class="col-xs-6"><strong>Calibration id</strong></div>
+						<div class="col-xs-6"><?php echo $query['calibration_id'];?></div>
+					</div>
+
 					<div class="row">
 						<div class="col-xs-6"><strong>Calibration file</strong></div>
 						<div class="col-xs-6">
 							<?php
-							$sql = "SELECT calibration_file FROM calibration WHERE dataset_id = '$query[dataset_id]';";
+							$sql = "SELECT calibration_file FROM calibration WHERE calibration_id = '$query[calibration_id]';";
 							$calibration_file_list = listAll($sql);
 							if ($calibration_file_list != NULL) {
 								foreach ($calibration_file_list as $key => $value) {
@@ -154,21 +177,21 @@ $(function () {
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="col-xs-6"><strong>Calibrations</strong></div>
-						<div class="col-xs-6">
-							<?php
-							$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
-							$calibration_id_list = listAll($sql);
-							if ($calibration_id_list != NULL) {
-								foreach ($calibration_id_list as $key => $value) {
-									echo '<a href="main_calibration.php?search=' .$value. '">' .$value. "</a><br>";
-								}
-							}
-							?>
-						</div>
-					</div>
 
+					<?php
+					$sql = "SELECT calibration_id FROM calibration WHERE dataset_id = '$query[dataset_id]';";
+					$calibration_id_list = listAll($sql);
+					if ($calibration_id_list != NULL) {
+						echo '<div class="row">';
+						echo '<div class="col-xs-6"><strong>Other calibrations pointing to here:</strong></div>';
+						echo '<div class="col-xs-6">';
+						foreach ($calibration_id_list as $key => $value) {
+							echo '<a href="main_calibration.php?search=' .$value. '">' .$value. "</a><br>";
+						}
+						echo '</div>';
+						echo '</div>';
+					}
+					?>
 				</div>
 			</div><!-- end panel -->
 
@@ -208,31 +231,8 @@ $(function () {
 
 		</div><!-- end col -->
 
-		<?php
-		// Create connection
-		$conn = new mysqli($servername, $username, $password, $dbname);
-		// Check connection
-		if ($conn->connect_error) {
-			die("Connection failed: " . $conn->connect_error);
-		}
-		$checkboxes = array("nav_data_processing_log", "calibration_file", "processing_settings_file", "configuration_file", "calibration_report", "acceptance_report", "system_not_working", "camera_calibration", "delivered_data_in_archive", "raw_data_in_archive", "raw_data_in_back_up_archive");
-		foreach ($checkboxes as $key => $value) {
-			$sql = "SELECT user FROM log WHERE changes LIKE '%$value%' ORDER BY datetime DESC LIMIT 1;";
-			$result = $conn->query($sql);
-			$x = $result->fetch_array(MYSQLI_NUM);
-			$changed_by[$value] = $x[0];
-		}
-
-		$conn->close();
-		?>
-
 		<div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
 			<ul class="list-group">
-				<li class="list-group-item <?=($query['calibration_file'] == 'Final') ? 'list-group-item-success' : 'list-group-item-warning'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['calibration_file']; ?>">
-					<?php echo substr($changed_by['calibration_file'], 0, 3) . "| "; ?>
-					Calibration file: <br>
-  				<b style="padding-left: 30px !important;"><?php echo $query['calibration_file'] ?></b>
-				</li>
 				<li class="list-group-item <?=$query['raw_data_in_archive'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_archive']; ?>">
 					<?php echo substr($changed_by['raw_data_in_archive'], 0, 3) . "| "; ?>
 					Raw data in archive

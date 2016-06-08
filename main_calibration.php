@@ -54,7 +54,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "  SELECT calibration.datetime AS datetime, calibration.dataset_id AS dataset_id, calibration_id, comment, system_id, type_of_data FROM calibration ";
+$sql = "  SELECT calibration.datetime AS datetime, calibration.dataset_id AS dataset_id, calibration.calibration_id AS calibration_id, comment, system_id, type_of_data FROM calibration ";
 $sql .= " LEFT JOIN datasets ON calibration.dataset_id=datasets.dataset_id";
 if(isset($_GET['search'])){
   $sql .= " WHERE calibration.datetime LIKE '%" . $_GET['search'] . "%'

@@ -117,6 +117,15 @@
         echo "Error: " . $query . "<br><br>" . $mysqli->error;
       }
 
+      $query = 'ALTER TABLE datasets ADD calibration_id VARCHAR(100) AFTER type_of_data';
+
+      if($mysqli->query($query)) {
+          echo "<br>Add calibration_id to datasets";
+      }
+      else {
+        echo "Error: " . $query . "<br><br>" . $mysqli->error;
+      }
+
   } catch (Exception $e) {
       print($e->getMessage());
   }

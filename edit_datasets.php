@@ -47,6 +47,7 @@ if(!empty($_POST)){
 			leica_cam_sn = '$_POST[leica_cam]',
 
 			type_of_data = '$_POST[type_of_data]',
+			calibration_id = '$_POST[calibration_id]',
 
 			nav_data_processing_log = '$_POST[nav_data_processing_log]',
 			calibration_file = '$_POST[calibration_file]',
@@ -348,6 +349,19 @@ include 'res/header.inc.php';
 								$s = '<option value="%s" %s>%s</option>';
 								echo sprintf($s, $i, $selected, $i);
 							}
+							?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="calibration_file" class="col-xs-12">Calibration id</label>
+					<div class="col-xs-12">
+						<select class="combobox form-control" name="calibration_id">
+							<?php
+							$sn = '';
+							if(!empty($row['calibration_id'])){ $sn = $row['calibration_id'];}
+							listAllX('calibration_id', 'calibration', '', $sn);
 							?>
 						</select>
 					</div>
