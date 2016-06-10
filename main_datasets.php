@@ -110,10 +110,19 @@ include 'res/header.inc.php';
 
       // shorten too long text
       $purpose_of_flight = $row["purpose_of_flight"];
-      if (strlen ($purpose_of_flight) >= 12) {
-        $purpose_of_flight = substr($purpose_of_flight, 0, 10) . "..";
+      $purpose_of_flight_array = explode('&|', $purpose_of_flight);
+
+      foreach ($purpose_of_flight_array as $key => $value) {
+        if (strlen($value) > 0 && $value[0] == 'M') {
+          $purpose_of_flight = substr($value, 1);
+        }
       }
-      $purpose_of_flight = '<span class="clickable" data-toggle="popover" data-placement="bottom" data-content="'.$row["purpose_of_flight"].'">'.$purpose_of_flight.'</span>';
+      if (strlen ($purpose_of_flight) >= 12) {
+        $short_purpose_of_flight = substr($purpose_of_flight, 0, 10) . "..";
+      }else{
+        $short_purpose_of_flight = $purpose_of_flight;
+      }
+      $purpose_of_flight = '<span class="clickable" data-toggle="popover" data-placement="bottom" data-content="'.$purpose_of_flight.'">'.$short_purpose_of_flight.'</span>';
 
       echo sprintf($table_row_formating,
       substr($row["datetime"], 0 , 10),
