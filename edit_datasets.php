@@ -69,21 +69,22 @@ $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$row2 = getDatabaseRow('datasets', 'dataset_id', $_POST['dataset_id']);
 	if (!empty($_POST['flight_comments'])) {
-		$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['flight_comments'];
+		$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['flight_comments'];
 	}else{
 		$flight_comments = $row2['flight_comments'];
 	}
 	if (!empty($_POST['data_comments'])) {
-		$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['data_comments'];
+		$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['data_comments'];
 	}else{
 		$data_comments = $row2['data_comments'];
 	}
 	if (!empty($_POST['purpose_of_flight'])) {
-		$purpose_of_flight = $row2['purpose_of_flight'] ."&|A". $_POST['user'] ."&|D". substr($row2['datetime'], 0 , 10) ."&|M". $_POST['purpose_of_flight'];
+		$purpose_of_flight = $row2['purpose_of_flight'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['purpose_of_flight'];
 	}else{
 		$purpose_of_flight = $row2['purpose_of_flight'];
 	}
 	$database_columns2 = "
+		datetime = '$_POST[datetime]',
 		flight_comments = '$flight_comments',
 		data_comments = '$data_comments',
 		purpose_of_flight = '$purpose_of_flight'
