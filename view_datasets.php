@@ -24,10 +24,12 @@ if (!empty($_GET['dataset_id'])) {
 
 	$checkboxes = array("nav_data_processing_log", "calibration_file", "processing_settings_file", "configuration_file", "calibration_report", "acceptance_report", "system_not_working", "camera_calibration", "delivered_data_in_archive", "raw_data_in_archive", "raw_data_in_back_up_archive");
 	foreach ($checkboxes as $key => $value) {
-		$sql = "SELECT user FROM log WHERE changes LIKE '%$value%' ORDER BY datetime DESC LIMIT 1;";
+		$sql = "SELECT user FROM log WHERE changes LIKE '%$value%' AND serial_nr = '$_GET[dataset_id]' ORDER BY datetime DESC LIMIT 1;";
 		$result = $conn->query($sql);
-		$x = $result->fetch_array(MYSQLI_NUM);
-		$changed_by[$value] = $x[0];
+		if (count($result) > 0) {
+			$x = $result->fetch_array(MYSQLI_NUM);
+			$changed_by[$value] = $x[0];
+		}
 	}
 
 	$conn->close();
