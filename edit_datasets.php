@@ -99,7 +99,7 @@ include 'res/header.inc.php';
 ?>
 <section class="content">
 
-	<form action= <?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?> method="post" class="form-horizontal" enctype="multipart/form-data">
+	<form action= <?php echo htmlspecialchars( $_SERVER['PHP_SELF'] );?> method="post" class="form-horizontal" enctype="multipart/form-data">
 
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-1">

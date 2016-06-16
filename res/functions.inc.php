@@ -1,4 +1,11 @@
 <?php
+/**
+* @description List all unreferenced serial_nr as options for a combobox.
+* @param {String} from
+* @param {String} where
+* @param {String} id
+* @returns {String} a list of results formated as HTML.
+*/
 function listUnusedSerialNr($from, $where, $id){
 	$list = listAll("SELECT serial_nr FROM " .$from. " WHERE " .$where);
 	if ($list == NULL) {
@@ -9,9 +16,15 @@ function listUnusedSerialNr($from, $where, $id){
 		echo $str;
 	}
 }
-?>
 
-<?php
+/**
+* @description List all items from one column as options for a combobox.
+* @param {String} select
+* @param {String} from
+* @param {String} where
+* @param {String} id
+* @returns {String} a list of results formated as HTML.
+*/
 function listAllX($select, $from, $where, $id){
 
 	$list = listAll('SELECT ' .$select. ' FROM ' .$from. ' ' .$where);
@@ -22,9 +35,12 @@ function listAllX($select, $from, $where, $id){
 		echo $str;
 	}
 }
-?>
 
-<?php
+/**
+* @description Run a database query and return the resulting items as an array.
+* @param {String} query
+* @returns {Array} a list of results corresponding to the values of the queried columns.
+*/
 function listAll($qurey){
 	// open db
 	include 'res/config.inc.php';
@@ -50,9 +66,19 @@ function listAll($qurey){
 		return NULL;
 	}
 }
-?>
 
-<?php
+/**
+* @description Formats a list if items into options for a combobox
+* @param {Array} listOfItems
+* @param {String} currentId
+* @returns {String} a list of results formated in HTML looking something like:
+*
+* <option value="currentId">currentId</option>
+* <option>-</option>
+* <option value="item1">item1</option>
+* <option value="item1">item2</option>
+* <option value="item1">item3</option>
+*/
 function formatForSelect($listOfItems, $currentId){
 	if($currentId != NULL && $currentId != ''){
 		$return_string = '<option value="' . $currentId . '">' . $currentId . '</option>';
@@ -67,11 +93,10 @@ function formatForSelect($listOfItems, $currentId){
 
 	return $return_string;
 }
-?>
 
-<?php
 /**
-* Send debug code to the Javascript console
+* @description Send debug code to the Javascript console
+* @param {String} data
 */
 function debug_to_console($data) {
 	if(is_array($data) || is_object($data))
@@ -81,15 +106,21 @@ function debug_to_console($data) {
 		echo("<script>console.log('PHP: ".$data."');</script>");
 	}
 }
-?>
 
-<?php
-// @param id_name - Set what column will be the key when picking one item for updates.
-// @param table - What table will the data be stored in.
-// @param database_columns - a string with all columns and the values.
-// @param redirect - Where will the user be sent after the query is done.
-// @return array with results from databse.
-
+/**
+* @description
+* Query for a database row, if there is an 'id_name' in GET.
+* Add or update data in the database row, if there are POSTs.
+* log the changes.
+* Write feedback in to the alert box.
+* Rederect to a given page.
+* @param {String} id_name
+* @param {String} table
+* @param {String} database_columns
+* @param {String} redirect
+* @returns {Array} If this row is not empty. Key is column name, Value is value of column.
+* @returns NULL If this row is empty.
+*/
 function postFunction($id_name, $table, $database_columns, $redirect){
 
 	if(!empty($_GET[$id_name])){
@@ -114,21 +145,21 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 		return NULL;
 	}
 }
-?>
 
-<?php
-// @param table - What table will the data be stored in.
-// @param id_name - Set what column will be the key when picking one item for updates.
-// @param id - Set the id coresponding to the id_name
-// @param database_columns - a string with all columns and the values.
-// @return an array with strings.
-// 'changes' made in the current row.
-// 'query' used to post to database.
-// 'type' update or add
-//
-// Updating a current row if awailable, otherwise posting to a new row.
-// Also makes a string with changes done to the affected row.
-
+/**
+* @description
+* Add or update data in the database row.
+* Write changes as a string
+* @param {String} table
+* @param {String} id_name
+* @param {String} id
+* @param {String} database_columns
+* @returns {Array} The keys are:
+* updates {string} changes made to the database.
+* query {string} A copy of the query used.
+* type {string} Add/Update table name.
+* status {string} Feedback text.
+*/
 function postToDatabase($table, $id_name, $id, $database_columns){
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$changes = "";
@@ -218,16 +249,15 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 	debug_to_console("postToDatabase: Return null");
 	return NULL;
 }
-?>
 
-<?php
-// @param table - What table will be queried.
-// @param id_name - Set what column will be the key when picking one row
-// @param id - Set the id coresponding to the id_name
-// @return array with results from databse.
-//
-// Querries the database and return exactly one row, or NULL
-
+/**
+* @description Querries the database and return exactly one row, or NULL
+* @param {String} table - What table will be queried.
+* @param {String} id_name - Set what column will be the key when picking one row
+* @param {String} id - Set the id coresponding to the id_name
+* @returns {Array} If this row is not empty. Key is column name, Value is value of column.
+* @returns NULL If this row is empty.
+*/
 function getDatabaseRow($table, $id_name, $id){
 
 	include 'res/config.inc.php';
@@ -261,10 +291,17 @@ function getDatabaseRow($table, $id_name, $id){
 		return NULL;
 	}
 }
-?>
 
-<?PHP
-// Add all requests saved by this page to LOG
+/**
+* @description Add a row to the LOG
+* @param {String} id
+* @param {String} type
+* @param {String} query
+* @param {String} changes
+* @param {String} user
+* @param {String} comment
+* @returns {String} Status feeldback.
+*/
 function postToLog($id, $type, $query, $changes, $user, $comment) {
 
 	// Create connection
@@ -286,9 +323,20 @@ function postToLog($id, $type, $query, $changes, $user, $comment) {
 	$conn->close();
 	return $status;
 }
-?>
 
-<?php
+/**
+* @description Upload a file from a form.
+* @param {Array or String} input_file_type
+* @param {String} name
+* @param {String} name_prefix
+* @param {String} target_dir
+* @param {String} max_size (bytes)
+* @returns {Array} The keys are:
+* status_msg {string} Feedback text.
+* upload_ok {boolean} Did the file upload.
+* file_name {string} Just the name of the file.
+* file_path {string} The full path for linking to the file.
+*/
 function uploadFile($input_file_type, $name, $name_prefix, $target_dir, $max_size){
 	//debug_to_console("POST true. flight_logs: " . $_FILES["flight_logs"]["name"]);
 	if ($_FILES[$name]['size'] > 0 && $_FILES[$name]['error'] == 0){
@@ -357,9 +405,12 @@ function _uploadFile_test_fileType($target_file, $input_file_type){
 	}
 	return false;
 }
-?>
 
-<?php
+/**
+* @description Format the specialy formated strings for comments as HTML.
+* @param {String} string
+* @returns {String} HTML.
+*/
 function formatComment($string){
 	$comments = explode("&|", $string);
 	$return_string = "";
