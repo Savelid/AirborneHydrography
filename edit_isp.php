@@ -6,15 +6,18 @@ include_once('res/functions.inc.php');
 $database_columns = "";
 if(!empty($_POST)){
 	$database_columns = "
-	datetime = '$_POST[datetime]',
-	product = '$_POST[product]',
-	amount = '$_POST[amount]',
-	value = '$_POST[value]',
-	receiver = '$_POST[receiver]',
-	country = '$_POST[country]',
-	code = '$_POST[code]',
-	comment = '$_POST[comment]'
-	";
+		datetime = '$_POST[datetime]',
+		product = '$_POST[product]',
+		amount = '$_POST[amount]',
+		value = '$_POST[value]',
+		receiver = '$_POST[receiver]',
+		lss = '$_POST[lss]',
+		shallow_sensor = '$_POST[shallow_sensor]',
+		deep_sensor = '$_POST[deep_sensor]',
+		country = '$_POST[country]',
+		code = '$_POST[code]',
+		comment = '$_POST[comment]'
+		";
 }
 $row = postFunction('isp_nr', 'isp', $database_columns, 'main_isp.php');
 if ($row == NULL) {
@@ -43,6 +46,18 @@ else $code = '6A008j';
 if (isset($_GET['receiver'])){$receiver = $_GET['receiver'];}
 elseif (!empty($row['receiver'])){$receiver = $row['receiver'];}
 else $receiver = '';
+
+if (isset($_GET['lss'])){$lss = $_GET['lss'];}
+elseif (!empty($row['lss'])){$iss = $row['lss'];}
+else $lss = '';
+
+if (isset($_GET['shallow_sensor'])){$shallow_sensor = $_GET['shallow_sensor'];}
+elseif (!empty($row['shallow_sensor'])){$shallow_sensor = $row['shallow_sensor'];}
+else $shallow_sensor = '';
+
+if (isset($_GET['deep_sensor'])){$deep_sensor = $_GET['deep_sensor'];}
+elseif (!empty($row['deep_sensor'])){$deep_sensor = $row['deep_sensor'];}
+else $deep_sensor = '';
 
 if (!empty($row['country'])) $country = $row['country'];
 else $country = '';
@@ -110,6 +125,27 @@ $(document).ready(function(){
 					<label for="receiver" class="col-xs-4 control-label">Receiver</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="receiver" value="<?php echo $receiver ?>" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="lss" class="col-xs-4 control-label">LSS</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="lss" value="<?php echo $lss ?>" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="shallow_sensor" class="col-xs-4 control-label">Shallow Sensor</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="shallow_sensor" value="<?php echo $shallow_sensor ?>" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="deep_sensor" class="col-xs-4 control-label">Deep Sensor</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="deep_sensor" value="<?php echo $deep_sensor ?>" />
 					</div>
 				</div>
 
