@@ -138,14 +138,22 @@ $(document).ready(function(){
 				<div class="form-group">
 					<label for="shallow_sensor" class="col-xs-4 control-label">Shallow Sensor</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="shallow_sensor" value="<?php echo $shallow_sensor ?>" />
+						<select class="combobox form-control" name="shallow_sensor">
+							<?php
+							listAllX('serial_nr', 'sensor', "WHERE sensor_type = 'shallow'"	, $shallow_sensor);
+							?>
+						</select>
 					</div>
 				</div>
 				
 				<div class="form-group">
 					<label for="deep_sensor" class="col-xs-4 control-label">Deep Sensor</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="deep_sensor" value="<?php echo $deep_sensor ?>" />
+						<select class="combobox form-control" name="deep_sensor">
+							<?php
+							listAllX('serial_nr', 'sensor', "WHERE sensor_type = 'deep'" , $deep_sensor);
+							?>
+						</select>
 					</div>
 				</div>
 
