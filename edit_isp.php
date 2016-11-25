@@ -48,7 +48,7 @@ elseif (!empty($row['receiver'])){$receiver = $row['receiver'];}
 else $receiver = '';
 
 if (isset($_GET['lss'])){$lss = $_GET['lss'];}
-elseif (!empty($row['lss'])){$iss = $row['lss'];}
+elseif (!empty($row['lss'])){$lss = $row['lss'];}
 else $lss = '';
 
 if (isset($_GET['shallow_sensor'])){$shallow_sensor = $_GET['shallow_sensor'];}
