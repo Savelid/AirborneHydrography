@@ -61,6 +61,9 @@ $(function () {
     <th>Product</th>
     <th>Code</th>
     <th>Receiver</th>
+    <th>LSS</th>
+    <th>Shallow Sensor</th>
+    <th>Deep Sensor</th>
     <th>Country</th>
     <th>Value</th>
     <th class="hidden-print"></th>
@@ -85,7 +88,10 @@ $(function () {
     <td> %4$s </td>
     <td> %5$s </td>
     <td> %6$s </td>
-    <td> %7$s pcs %8$s </td>
+    <td> %7$s </td>
+    <td> %8$s </td>
+    <td> %9$s </td>
+    <td> %10$s pcs %11$s </td>
 
     <td class="hidden-print"><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%9$s">
     <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
@@ -101,6 +107,9 @@ $(function () {
       $row["product"],
       $row["code"],
       $row["receiver"],
+      $row["lss"],
+      $row["shallow_sensor"],
+      $row["deep_sensor"],
       $row["country"],
       $row["amount"],
       $row["value"],
