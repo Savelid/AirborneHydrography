@@ -114,7 +114,7 @@ listUnusedSerialNr('scu', '	serial_nr NOT IN (
 		</div>
 
 		<div class="form-group col-xs-12">
-			<label for="log_comment">Log Comment</label>
+			<label for="log_comment">Comment saved in Log file</label>
 			<div>
 				<textarea class="form-control" name="log_comment" rows="3"></textarea>
 			</div>

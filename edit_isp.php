@@ -127,14 +127,14 @@ $(document).ready(function(){
 						<input type="text" class="form-control" name="receiver" value="<?php echo $receiver ?>" />
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="lss" class="col-xs-4 control-label">LSS</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="lss" value="<?php echo $lss ?>" />
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="shallow_sensor" class="col-xs-4 control-label">Shallow Sensor</label>
 					<div class="col-xs-8">
@@ -145,7 +145,7 @@ $(document).ready(function(){
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="deep_sensor" class="col-xs-4 control-label">Deep Sensor</label>
 					<div class="col-xs-8">
@@ -191,7 +191,7 @@ $(document).ready(function(){
 				</div>
 
 				<div class="form-group col-xs-12">
-					<label for="log_comment">Log Comment</label>
+					<label for="log_comment">Comment saved in Log file</label>
 					<div>
 						<textarea class="form-control" name="log_comment" rows="3"></textarea>
 					</div>
