@@ -80,9 +80,9 @@ $(function () {
       %1$s <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-      <li><a href="view_system.php?serial_nr=%12$s">View</a></li>
+      <li><a href="view_system.php?serial_nr=%11$s">View</a></li>
       <li role="separator" class="divider"></li>
-      <li><a href="edit_system.php?serial_nr=%12$s">Edit</a></li>
+      <li><a href="edit_system.php?serial_nr=%11$s">Edit</a></li>
       </ul>
       </div>
       </td>
@@ -99,28 +99,32 @@ $(function () {
       ';
 
       $topo_shallow_deep_formating = '
-      <td %11$s>
-      <a href="view_sensor.php?serial_nr=%4$s" class="btn btn-default btn-sm">%4$s</a>
-      %10$s
-      <a href="view_sensor.php?serial_nr=%5$s" class="btn btn-default btn-sm">%5$s</a>
+      <td>
+      <a href="view_sensor.php?serial_nr=%4$s">%4$s</a>
+      %12$s
+      <a href="view_sensor.php?serial_nr=%5$s">%5$s</a>
       </td>
 
       <td>
-      <a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a>
+      <a href="view_sensor.php?serial_nr=%6$s">%6$s</a>
+      </td>
+
+      <td>
+      <a href="view_sensor.php?serial_nr=%7$s">%7$s</a>
       </td>
       ';
       $scu_formating = '
       <td>
-      <a href="#" class="btn btn-default btn-sm">%7$s</a>
+      <a href="#">%8$s</a>
       </td>
       ';
       $system_formating = '
       <td>
-      %8$s
+      %9$s
       </td>
       ';
       $comment_formating = '
-      <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%9$s">
+      <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%10$s">
       <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
       </td>
       ';
@@ -164,14 +168,14 @@ $(function () {
           $client,
           $row["configuration"],
           $row["topo_sensor_sn"],
-          $topo2_shallow,
+          $row["topo_sensor_2_sn"],
+          $row["shallow_sensor_sn"],
           $row["deep_sensor_sn"],
           $row["scu_sn"],
           $row["status"],
           $row["comment"],
-          $formating1,
-          $formating2,
-          $row["serial_nr"]);
+          $row["serial_nr"],
+          empty($row["topo_sensor_2_sn"]) ? "" : ", ");
         }
       } else {
         echo "No messages";

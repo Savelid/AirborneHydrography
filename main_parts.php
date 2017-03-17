@@ -376,17 +376,26 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_sensor_unit.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a>%12$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s">%2$s</a> %12$s</td>
             <td>%3$s</td>
-            <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %11$s">
-            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
+            <td>
+              <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %4$s">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %5$s
+              </button>
             </td>
-            <td>%5$s</td>
-            <td %10$s><a href="view_sensor.php?serial_nr=%6$s" class="btn btn-default btn-sm">%6$s</a>
-            %9$s
-            <a href="view_sensor.php?serial_nr=%7$s" class="btn btn-default btn-sm">%7$s</a></td>
-            <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%8$s">
-            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+            <td>%6$s</td>
+            <td>
+              <a href="view_sensor.php?serial_nr=%7$s">%7$s</a>
+              %11$s
+              <a href="view_sensor.php?serial_nr=%8$s">%8$s</a>
+            </td>
+            <td>
+              <a href="view_sensor.php?serial_nr=%9$s">%9$s</a></td>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="%10$s">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+              </button>
             </td>
             </tr>
             ';
@@ -417,27 +426,18 @@ $(function(){
                   $eject = '<button type="button" class="btn btn-default btn-sm hidden-print" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
                 }
 
-                $topo2_shallow = $row["shallow_sensor_sn"];
-                $formating1 = '</td><td>';
-                $formating2 = '';
-                if(isset($row["topo_sensor_2_sn"]) && $row["topo_sensor_2_sn"] != '') {
-                  $topo2_shallow = $row["topo_sensor_2_sn"];
-                  $formating1 = '';
-                  $formating2 = 'colspan=2';
-                }
-
                 echo sprintf($table_row_formating,
                 $row["serial_nr"],
                 $parent["serial_nr"],
                 $row["imu"],
+                $row["firmware"],
                 $row["leica_cam_sn"],
                 $row["leica_lens"],
                 $row["topo_sensor_sn"],
-                $topo2_shallow,
+                $row["topo_sensor_2_sn"],
+                $row["shallow_sensor_sn"],
                 $row["comment"],
-                $formating1,
-                $formating2,
-                $row["firmware"],
+                empty($row["topo_sensor_2_sn"]) ? "" : " ,",
                 $eject);
               }
             } else {
