@@ -252,7 +252,9 @@ $(document).ready(function(){
 			<div class="col-sm-12">
 				<button type="submit" class="btn btn-default">Apply</button>
 				<a href="main_parts.php" class="btn btn-default">Cancel</a>
-				<a href="view_sensor.php?serial_nr=<?php echo $_GET['serial_nr']; ?>" class="btn btn-default">Go to Sensor</a>
+				<?php if(!empty($_GET['serial_nr'])):?>
+					<a href="view_sensor.php?serial_nr=<?php echo $_GET['serial_nr']; ?>" class="btn btn-default">Go to Sensor</a>
+				<?php endif;?>
 			</div>
 		</div>
 	</form>
