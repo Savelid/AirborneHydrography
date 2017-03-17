@@ -7,14 +7,15 @@
 * @returns {String} a list of results formated as HTML.
 */
 function listUnusedSerialNr($from, $where, $id){
+	$str = "";
 	$list = listAll("SELECT serial_nr FROM " .$from. " WHERE " .$where);
 	if ($list == NULL) {
 		debug_to_console("listUnusedSerialNr: Receved a NULL list");
+		$str = formatForEmptySelect($id);
 	}else {
 		$str = formatForSelect($list, $id);
-		//debug_to_console($str);
-		echo $str;
 	}
+	echo $str;
 }
 
 /**
@@ -91,6 +92,17 @@ function formatForSelect($listOfItems, $currentId){
 		$return_string .= '<option value="' .$value. '">' .$value. '</option>';
 	}
 
+	return $return_string;
+}
+
+function formatForEmptySelect($currentId){
+	if($currentId != NULL && $currentId != ''){
+		$return_string = '<option value="' . $currentId . '">' . $currentId . '</option>';
+	}
+	else {
+		$return_string = '<option></option>';
+	}
+	$return_string .= '<option>-</option>';
 	return $return_string;
 }
 

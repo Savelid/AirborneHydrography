@@ -84,8 +84,7 @@ $(document).ready(function(){
 						<select class="combobox form-control" name="topo_sensor">
 
 							<?php
-							$sn = '';
-							if(!empty($row['topo_sensor_sn'])){ $sn = $row['topo_sensor_sn'];}
+							$sn = empty($row['topo_sensor_sn']) ? "" : $row['topo_sensor_sn'];
 							listUnusedSerialNr('sensor', '		sensor_type = "topo" AND
 							serial_nr NOT IN (
 							SELECT sensor_unit.topo_sensor_sn
@@ -102,8 +101,7 @@ $(document).ready(function(){
 						<select class="combobox form-control" name="topo_sensor_2">
 
 							<?php
-							$sn = '';
-							if(!empty($row['topo_sensor_2_sn'])){ $sn = $row['topo_sensor_2_sn'];}
+							$sn = empty($row['topo_sensor_2_sn']) ? "" : $row['topo_sensor_2_sn'];
 							listUnusedSerialNr('sensor', '		sensor_type = "topo" AND
 							serial_nr NOT IN (
 							SELECT sensor_unit.topo_sensor_sn
