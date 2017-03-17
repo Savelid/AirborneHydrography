@@ -390,7 +390,7 @@ $(document).ready(function(){
 			<div class="col-sm-12">
 				<button type="submit" class="btn btn-default">Apply</button>
 				<a href="main_systems.php" class="btn btn-default">Cancel</a>
-				<a href="view_system.php?id=<?php echo $row['id']; ?>" class="btn btn-default">Go to System</a>
+				<a href="view_system.php?serial_nr=<?php echo $row['serial_nr']; ?>" class="btn btn-default">Go to System</a>
 			</div>
 		</div>
 	</form>
