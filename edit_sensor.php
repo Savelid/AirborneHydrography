@@ -194,7 +194,7 @@ $(document).ready(function(){
 			</div> <!-- end col -->
 
 			<div class="col-sm-3 col-sm-offset-1">
-				<h4>Pulse Values</h4>
+				<h4>DSP Settings</h4>
 
 				<div class="form-group col-xs-12">
 					<label for="dps_value_input_offset_t0">Input Offset t0</label>
