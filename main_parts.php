@@ -1212,9 +1212,10 @@ $(function(){
 
 
     </section>
-    <footer style="height:30px;">
+    <footer style="height:64px;">
 
     </footer>
+
     <div class="fixed-footer">
       <a href="#headingSensor">Sensor</a>
       <a href="#headingSensorUnit">Sensor unit</a>

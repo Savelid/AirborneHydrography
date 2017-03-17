@@ -215,8 +215,8 @@ main {
    left: 0;
    width: 100%;
    background-color: white;
-   border-top: grey solid 1px;
-   box-shadow: 0 -4px -4px gray;
+   /*border-top: grey solid 1px;*/
+   box-shadow: 0 -2px 10px grey;
    padding: 16px;
  }
  div.fixed-footer a::after {
