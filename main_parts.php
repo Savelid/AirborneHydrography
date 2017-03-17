@@ -1212,9 +1212,20 @@ $(function(){
 
 
     </section>
-    <footer>
+    <footer style="height:30px;">
 
     </footer>
+    <div class="fixed-footer">
+      <a href="#headingSensor">Sensor</a>
+      <a href="#headingSensorUnit">Sensor unit</a>
+      <a href="#headingControlSystem">Control system</a>
+      <a href="#headingDeepSystem">Deep system</a>
+      <a href="#headingSCU">SCU</a>
+      <a href="#headingLaser">Laser</a>
+      <a href="#headingHVCard">HV card</a>
+      <a href="#headingReceiver">Receiver</a>
+      <a href="#headingLeica">Leica</a>
+    </div>
 
     <?php
     $conn->close(); // close connection

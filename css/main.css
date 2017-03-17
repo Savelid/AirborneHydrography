@@ -209,6 +209,19 @@ main {
  * Footer
  *
  */
+ div.fixed-footer {
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   background-color: white;
+   border-top: grey solid 1px;
+   box-shadow: 0 -4px -4px gray;
+   padding: 16px;
+ }
+ div.fixed-footer a::after {
+   content: " | "
+ }
 
 footer {
   border-top: 1px solid #E0E0E0;
