@@ -74,7 +74,18 @@ $(document).ready(function(){
 				<div class="form-group">
 					<label for="leica_lens" class="col-xs-4 control-label">Leica Lens</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="leica_lens" <?= !empty($row['leica_lens']) ?  'value="' . $row['leica_lens'] . '"' : '' ; ?>>
+						<select class="combobox form-control" name="leica_lens">
+
+							<?php
+							$sn = '';
+							if(!empty($row['leica_lens'])){ $sn = $row['leica_lens'];}
+							listUnusedSerialNr('leica', '	type = "Leica Lens" AND
+							serial_nr NOT IN (
+							SELECT sensor_unit.leica_lens
+							FROM sensor_unit)'	, $sn);
+							?>
+
+						</select>
 					</div>
 				</div>
 

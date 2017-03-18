@@ -51,12 +51,18 @@ $(document).ready(function(){
 							<option value="Camera">Camera</option>
 							<option value="IMU">IMU</option>
 							<option value="Pilot Monitor">Pilot Monitor</option>
+							<option value="Leica Lens">Leica Lens</option>
 						</select>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="firmware" class="col-xs-4 control-label">Firmware</label>
+					<label for="firmware" class="col-xs-4 control-label">
+						Firmware
+						<div class ="comments">
+							Leica Lens does not have a firmware
+						</div>
+					</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="firmware" <?= !empty($row['firmware']) ?  'value="' . $row['firmware'] . '"' : '' ; ?>>
 					</div>
