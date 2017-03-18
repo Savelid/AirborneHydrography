@@ -160,7 +160,7 @@ $(function(){
           <thead>
             <tr>
               <th>Serial nr.</th>
-              <th>Parent</th>
+              <th>Parent sys.</th>
               <th>Config</th>
               <th>CAT</th>
               <th>FPGA id</th>
@@ -210,7 +210,7 @@ $(function(){
             </ul>
             </div>
             </td>
-            <td>%11$s %13$s</td>
+            <td><a href="view_system.php?serial_nr=%11$s">%11$s</a> %13$s</td>
             <td>%2$s</td>
             <td>%3$s</td>
             <td>%4$s</td>
@@ -326,7 +326,7 @@ $(function(){
           <thead>
             <tr>
               <th>Serial nr.</th>
-              <th>Parent</th>
+              <th>Parent sys.</th>
               <th>IMU</th>
               <th>Leica camera</th>
               <th>Leica lens</th>
@@ -360,7 +360,7 @@ $(function(){
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %5$s
               </button>
             </td>
-            <td>%6$s</td>
+            <td><a href="edit_leica.php?serial_nr=%6$s">%6$s</a></td>
             <td>
               <a href="view_sensor.php?serial_nr=%7$s">%7$s</a>
               %11$s
@@ -391,6 +391,7 @@ $(function(){
                 WHERE sensor_unit_sn = '$row[serial_nr]'
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -448,7 +449,7 @@ $(function(){
           <thead>
             <tr>
               <th>Serial nr.</th>
-              <th>Parent</th>
+              <th>Parent sys.</th>
               <th>Battery</th>
               <th>CC32</th>
               <th>PDU</th>
@@ -474,7 +475,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_control_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a> %9$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s">%2$s</a> %9$s</td>
             <td>%3$s</td>
             <td><button type="button" class="btn btn-sm btn-default" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content="Firmware: %8$s">
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> %4$s</button>
@@ -501,6 +502,7 @@ $(function(){
                 WHERE control_system_sn = '$row[serial_nr]'
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -554,7 +556,7 @@ $(function(){
           <thead>
             <tr>
               <th>Serial nr.</th>
-              <th>Parent</th>
+              <th>Parent sys.</th>
               <th>Cooling sys.</th>
               <th>IMU</th>
               <th>Pro pack</th>
@@ -579,7 +581,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_deep_system.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td><a href="view_system.php?serial_nr=%2$s" class="btn btn-default btn-sm">%2$s</a> %8$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s">%2$s</a> %8$s</td>
             <td>%3$s</td>
             <td>%4$s</td>
             <td>%5$s</td>
@@ -604,6 +606,7 @@ $(function(){
                 WHERE deep_system_sn = '$row[serial_nr]'
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -656,7 +659,7 @@ $(function(){
           <thead>
             <tr>
               <th>Serial nr.</th>
-              <th>Parent</th>
+              <th>Parent ctr-sys.</th>
               <th>Config</th>
               <th>Digitaizer1</th>
               <th>Digitaizer2</th>
@@ -683,7 +686,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_scu.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td>%2$s %10$s</td>
+            <td><a href="edit_control_system.php?serial_nr=%2$s">%2$s</a> %10$s</td>
             <td>%3$s</td>
             <td>%4$s</td>
             <td>%5$s</td>
@@ -710,6 +713,7 @@ $(function(){
                 WHERE scu_sn = '$row[serial_nr]'
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -765,7 +769,7 @@ $(function(){
             <tr>
               <th>Serial nr.</th>
               <th>Article nr.</th>
-              <th>Parent</th>
+              <th>Parent sens.</th>
               <th>K</th>
               <th>M</th>
             </tr>
@@ -808,6 +812,7 @@ $(function(){
                 WHERE (hv_card_sn = '$row[serial_nr]' OR hv_card_2_sn = '$row[serial_nr]')
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -858,7 +863,7 @@ $(function(){
           <thead>
             <tr>
               <th colspan=2>Serial nr.</th>
-              <th colspan=2>Parent</th>
+              <th colspan=2>Parent sens.</th>
               <th>0</th>
               <th>5</th>
               <th>10</th>
@@ -924,6 +929,7 @@ $(function(){
                 WHERE laser_sn = '$row[serial_nr]'
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -986,7 +992,7 @@ $(function(){
             <tr>
               <th>Serial nr.</th>
               <th>Article nr.</th>
-              <th>Parent</th>
+              <th>Parent sens.</th>
               <th>Chip</th>
               <th>Breakdown V</th>
               <th>Operating V</th>
@@ -1011,7 +1017,7 @@ $(function(){
             <tr>
             <td><a href="edit_receiver.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
             <td>%2$s</td>
-            <td><a href="view_sensor.php?serial_nr=%3$s" class="btn btn-default btn-sm">%3$s</a> %7$s</td>
+            <td><a href="view_sensor.php?serial_nr=%3$s">%3$s</a> %7$s</td>
             <td>%4$s</td>
             <td>%5$s</td>
             <td>%6$s</td>
@@ -1033,6 +1039,7 @@ $(function(){
                 WHERE (receiver_unit_sn = '$row[receiver_unit_serial_nr]' OR receiver_unit_2_sn = '$row[receiver_unit_serial_nr]')
                 LIMIT 1;";
 
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
                   echo "Error: " . $sql . "<br>" . $conn->error;
@@ -1083,7 +1090,7 @@ $(function(){
           <thead>
             <tr>
               <th>Serial nr.</th>
-              <th>Parent</th>
+              <th>Parent sys.</th>
               <th>Type</th>
               <th>Firmware</th>
             </tr>
@@ -1105,7 +1112,7 @@ $(function(){
             $table_row_formating = '
             <tr>
             <td><a href="edit_leica.php?serial_nr=%1$s" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> %1$s</a></td>
-            <td>%2$s %5$s</td>
+            <td><a href="view_system.php?serial_nr=%2$s">%2$s</a> %5$s</td>
             <td>%3$s</td>
             <td>%4$s</td>
             </tr>
@@ -1154,6 +1161,15 @@ $(function(){
                   $parent_sql = "  SELECT serial_nr
                   FROM sensor_unit
                   WHERE leica_cam_sn = '$row[serial_nr]'
+                  LIMIT 1;";
+                }
+                else if($row["type"] == 'Leica Lens'){
+                  $table = 'sensor_unit';
+                  $column = 'leica_lens';
+                  // Pick out parent
+                  $parent_sql = "  SELECT serial_nr
+                  FROM sensor_unit
+                  WHERE leica_lens = '$row[serial_nr]'
                   LIMIT 1;";
                 }
                 $parent_result = $conn->query($parent_sql);

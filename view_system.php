@@ -233,7 +233,10 @@ include 'res/header.inc.php';
 						<div id="leica_cam" class="panel-collapse collapse">
 							<div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $sensor_unit['leica_cam_sn'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit leica camera</a></div>
 						</div>
-						<li class="list-group-item">Leica lens: <?php echo $sensor_unit['leica_lens'];?></li>
+						<li class="list-group-item"><a href="#leica_lens" data-toggle="collapse" data-target="#leica_lens">Leica lens: <?php echo $sensor_unit['leica_lens'];?></a></li>
+						<div id="leica_lens" class="panel-collapse collapse">
+							<div class="panel-footer sub_item"><a href="edit_leica.php?serial_nr=<?php echo $sensor_unit['leica_lens'];?>"><span class="glyphicon glyphicon-pencil"></span>Edit leica lens</a></div>
+						</div>
 						<li class="list-group-item"><a href="#topo" data-toggle="collapse" class="active" data-target="#topo">Topo sensor: <?php echo $sensor_unit['topo_sensor_sn'];?></a></li>
 						<div id="topo" class="panel-collapse collapse">
 							<div class="panel-footer sub_item">
