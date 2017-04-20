@@ -49,7 +49,20 @@ $(document).ready(function(){
 				<div class="form-group">
 					<label for="imu" class="col-xs-4 control-label">IMU</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="imu" <?= !empty($row['imu']) ?  'value="' . $row['imu'] . '"' : '' ; ?>>
+
+					<select class="combobox form-control" name="imu">
+
+							<?php
+							$sn = '';
+							if(!empty($row['imu'])){ $sn = $row['imu'];}
+							listUnusedSerialNr('leica', '	type = "imu" AND
+							serial_nr NOT IN (
+							SELECT sensor_unit.imu
+							FROM sensor_unit)'	, $sn);
+							?>
+
+						</select>
+						
 					</div>
 				</div>
 
