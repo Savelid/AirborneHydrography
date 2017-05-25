@@ -41,17 +41,18 @@ $(document).ready(function(){
 					</div>
 				</div>
 
+				<!-- preselect the stored value for Type in the drop box meny -->
 				<div class="form-group">
 					<label for="config" class="col-xs-4 control-label">Type</label>
 					<div class="col-xs-8">
 						<select class="form-control" name="type">
-							<option value="OC60">OC60</option>
-							<option value="CC32">CC32</option>
-							<option value="PAV">PAV</option>
-							<option value="Camera">Camera</option>
-							<option value="IMU">IMU</option>
-							<option value="Pilot Monitor">Pilot Monitor</option>
-							<option value="Leica Lens">Leica Lens</option>
+							<option value="OC60" <?= !empty($row['type']) && $row['type'] == 'OC60' ? 'selected="selected"' : '' ; ?>>OC60</option>
+							<option value="CC32" <?= !empty($row['type']) && $row['type'] == 'CC32' ? 'selected="selected"' : '' ; ?>>CC32</option>
+							<option value="PAV" <?= !empty($row['type']) && $row['type'] == 'PAV' ? 'selected="selected"' : '' ; ?>>PAV</option>
+							<option value="Camera" <?= !empty($row['type']) && $row['type'] == 'Camera' ? 'selected="selected"' : '' ; ?>>Camera</option>
+							<option value="IMU" <?= !empty($row['type']) && $row['type'] == 'IMU' ? 'selected="selected"' : '' ; ?>>IMU</option>
+							<option value="Pilot Monitor" <?= !empty($row['type']) && $row['type'] == 'Pilot Monitor' ? 'selected="selected"' : '' ; ?>>Pilot Monitor</option>
+							<option value="Leica Lens" <?= !empty($row['type']) && $row['type'] == 'Leica Lens' ? 'selected="selected"' : '' ; ?>>Leica Lens</option>
 						</select>
 					</div>
 				</div>
@@ -60,7 +61,7 @@ $(document).ready(function(){
 					<label for="firmware" class="col-xs-4 control-label">
 						Firmware
 						<div class ="comments">
-							Leica Lens does not have a firmware
+							The IMU, Pilote Monitor and the Leica Lens does not have a firmware
 						</div>
 					</label>
 					<div class="col-xs-8">
@@ -97,7 +98,6 @@ $(document).ready(function(){
 	</form>
 </section>
 <footer>
-
 </footer>
 
 <?php include 'res/footer.inc.php'; ?>
