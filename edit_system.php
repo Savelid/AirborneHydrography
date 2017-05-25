@@ -185,9 +185,20 @@ $(document).ready(function(){
 				</div>
 
 				<div class="form-group">
-					<label for="pd60" class="col-xs-4 control-label">PD60</label>
+					<label for="pd60" class="col-xs-4 control-label">Pilot Monitor</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="pd60" <?= !empty($row['pd60']) ?  'value="' . $row['pd60'] . '"' : '' ; ?>>
+						<select class="combobox form-control" name="pilot_monitor">
+
+							<?php
+							$sn = '';
+							if(!empty($row['pd60'])){ $sn = $row['pd60'];}
+							listUnusedSerialNr('leica', ' 	type = "Pilot Monitor" AND
+							serial_nr NOT IN (
+							SELECT system.pd60
+							FROM system)'	, $sn);
+							?>
+						</select>
+
 					</div>
 				</div>
 
