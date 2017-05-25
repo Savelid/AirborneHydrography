@@ -1186,10 +1186,9 @@ $(function(){
                 }
                 $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
-                if($parent["serial_nr"] == '') {
+                //IMU: In HEIII there is an extra IMU in the deep_system, do an extra check)
+                if(empty($parent["serial_nr"]) && $row["type"] == 'IMU') {
 
-//IMU In HEIII there is an extra IMU in the deep_system)
-                    if($row["type"] == 'IMU'){
                       $column = 'imu';
                       $parent_sql = "  SELECT serial_nr FROM system
                       WHERE deep_system_sn = (SELECT serial_nr FROM deep_system WHERE $column = '$row[serial_nr]')
@@ -1203,12 +1202,9 @@ $(function(){
                           die();
                       }    
                       $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
-
-                      if($parent["serial_nr"] != '') {
-                        $eject = '<button type="button" class="btn btn-default btn-sm hidden-print" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
-                      }
-                   }
-                else $eject = '<button type="button" class="btn btn-default btn-sm hidden-print" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
+                }
+                if(!empty($parent["serial_nr"])) {
+                  $eject = '<button type="button" class="btn btn-default btn-sm hidden-print" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
                 }
 
                 //print out rows
