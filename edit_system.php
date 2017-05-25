@@ -187,7 +187,7 @@ $(document).ready(function(){
 				<div class="form-group">
 					<label for="pd60" class="col-xs-4 control-label">Pilot Monitor</label>
 					<div class="col-xs-8">
-						<select class="combobox form-control" name="pilot_monitor">
+						<select class="combobox form-control" name="pd60">
 
 							<?php
 							$sn = '';

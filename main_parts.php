@@ -708,9 +708,8 @@ $(function(){
                 $column = 'scu_sn';
                 $column2 = '';
                 // Pick out parent
-                $parent_sql = "  SELECT serial_nr
-                FROM control_system
-                WHERE scu_sn = '$row[serial_nr]'
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE control_system_sn = (SELECT sereial_nr FROM control_system WHERE scu_sn = '$row[serial_nr]')
                 LIMIT 1;";
 
                 $parent = null;
