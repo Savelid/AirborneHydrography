@@ -708,9 +708,8 @@ $(function(){
                 $column = 'scu_sn';
                 $column2 = '';
                 // Pick out parent
-                $parent_sql = "  SELECT serial_nr
-                FROM control_system
-                WHERE scu_sn = '$row[serial_nr]'
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE control_system_sn = (SELECT sereial_nr FROM control_system WHERE scu_sn = '$row[serial_nr]')
                 LIMIT 1;";
 
                 $parent = null;
@@ -1126,60 +1125,84 @@ $(function(){
                 $table = '';
                 $column = '';
                 $column2 = '';
+
+
+                // Pick out parent
+                //OC60
                 if($row["type"] == 'OC60'){
-                  $table = 'system';
-                  $column = 'oc60_1_sn';
-                  $column2 = 'oc60_2_sn';
-                  // Pick out parent
-                  $parent_sql = "  SELECT serial_nr
-                  FROM system
-                  WHERE (oc60_1_sn = '$row[serial_nr]' OR oc60_2_sn = '$row[serial_nr]')
-                  LIMIT 1;";
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE (oc60_1_sn = '$row[serial_nr]' OR oc60_2_sn = '$row[serial_nr]')
+                LIMIT 1;";
                 }
-                if($row["type"] == 'PAV'){
-                  $table = 'system';
-                  $column = 'pav_sn';
-                  // Pick out parent
-                  $parent_sql = "  SELECT serial_nr
-                  FROM system
-                  WHERE pav_sn = '$row[serial_nr]'
-                  LIMIT 1;";
-                }
-                else if($row["type"] == 'CC32'){
-                  $table = 'control_system';
-                  $column = 'cc32_sn';
-                  // Pick out parent
-                  $parent_sql = "  SELECT serial_nr
-                  FROM control_system
-                  WHERE cc32_sn = '$row[serial_nr]'
-                  LIMIT 1;";
-                }
-                else if($row["type"] == 'Camera'){
-                  $table = 'sensor_unit';
-                  $column = 'leica_cam_sn';
-                  // Pick out parent
-                  $parent_sql = "  SELECT serial_nr
-                  FROM sensor_unit
-                  WHERE leica_cam_sn = '$row[serial_nr]'
-                  LIMIT 1;";
-                }
-                else if($row["type"] == 'Leica Lens'){
-                  $table = 'sensor_unit';
-                  $column = 'leica_lens';
-                  // Pick out parent
-                  $parent_sql = "  SELECT serial_nr
-                  FROM sensor_unit
-                  WHERE leica_lens = '$row[serial_nr]'
-                  LIMIT 1;";
-                }
+
+                //PAV
+                if($row["type"] == 'PAV') {
+                $column = 'pav_sn';
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE $column = '$row[serial_nr]'
+                LIMIT 1;"; }
+
+                //Pilote Monitor
+                if($row["type"] == 'Pilote Monitor') {
+                $column = 'pd60';
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE $column = '$row[serial_nr]'
+                LIMIT 1;";}
+                
+                //Leica Camera
+                if($row["type"] == 'Camera'){
+                $column = 'leica_cam_sn';
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
+                LIMIT 1;";}
+
+                //Leica Camera Lens
+                if($row["type"] == 'Leica Lens'){
+                $column = 'leica_lens';
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
+                LIMIT 1;";}
+
+                //IMU (in the sensor_unit - Chiroptera system)
+                if($row["type"] == 'IMU'){
+                $column = 'imu';
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
+                LIMIT 1;";}
+
+                //CC32
+                if($row["type"] == 'CC32'){
+                $column = 'cc32_sn';
+                $parent_sql = "  SELECT serial_nr FROM system
+                WHERE control_system_sn = (SELECT serial_nr FROM control_system WHERE $column = '$row[serial_nr]')
+                LIMIT 1;";}
+
+                $parent = null;
                 $parent_result = $conn->query($parent_sql);
                 if (!$parent_result) {
-                  echo "Error: " . $parent_sql . "<br>" . $conn->error;
+                  echo "Error: " . $sql . "<br>" . $conn->error;
                   die();
                 }
                 $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
 
-                if($parent["serial_nr"] != '') {
+                //IMU: In HEIII there is an extra IMU in the deep_system, do an extra check)
+                if(empty($parent["serial_nr"]) && $row["type"] == 'IMU') {
+
+                      $column = 'imu';
+                      $parent_sql = "  SELECT serial_nr FROM system
+                      WHERE deep_system_sn = (SELECT serial_nr FROM deep_system WHERE $column = '$row[serial_nr]')
+                      LIMIT 1;";
+                    
+                      $parent = null;
+                      $parent_result = $conn->query($parent_sql);
+                      
+                      if (!$parent_result) {
+                          echo "Error: " . $sql . "<br>" . $conn->error;
+                          die();
+                      }    
+                      $parent = $parent_result->fetch_array(MYSQLI_ASSOC);
+                }
+                if(!empty($parent["serial_nr"])) {
                   $eject = '<button type="button" class="btn btn-default btn-sm hidden-print" data-toggle="modal" data-target="#confirmModal" data-form_serial_nr="' . $row["serial_nr"] . '" data-form_table="' . $table . '" data-form_column="' . $column . '" data-form_column2="' . $column2 . '"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span></button>';
                 }
 
