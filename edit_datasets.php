@@ -337,61 +337,7 @@ include 'res/header.inc.php';
 			</div>
 			<div class="col-sm-3 col-sm-offset-1">
 
-				<h4>Data processor</h4>
-
-				<div class="form-group">
-					<label for="calibration_file" class="col-xs-12">Calibration file</label>
-					<div class="col-xs-12">
-						<select class="form-control" name="calibration_file">
-							<?php
-							foreach($calibration_file_values as $i){
-								$selected = '';
-								if(!empty($row['calibration_file']) && $row['calibration_file'] == $i){$selected = 'selected';}
-								$s = '<option value="%s" %s>%s</option>';
-								echo sprintf($s, $i, $selected, $i);
-							}
-							?>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="calibration_file" class="col-xs-12">Calibration id</label>
-					<div class="col-xs-12">
-						<select class="combobox form-control" name="calibration_id">
-							<?php
-							$sn = '';
-							if(!empty($row['calibration_id'])){ $sn = $row['calibration_id'];}
-							listAllX('calibration_id', 'calibration', '', $sn);
-							?>
-						</select>
-					</div>
-				</div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="raw_data_in_archive" value=0 />
-					<input type="checkbox" name="raw_data_in_archive" value=1 <?= !empty($row['raw_data_in_archive']) && $row['raw_data_in_archive'] ? 'checked' : ''; ?>/> raw_data_in_archive
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="raw_data_in_back_up_archive" value=0 />
-					<input type="checkbox" name="raw_data_in_back_up_archive" value=1 <?= !empty($row['raw_data_in_back_up_archive']) && $row['raw_data_in_back_up_archive'] ? 'checked' : ''; ?>/> raw_data_in_back_up_archive
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="nav_data_processing_log" value=0 />
-					<input type="checkbox" name="nav_data_processing_log" value=1 <?= !empty($row['nav_data_processing_log']) && $row['nav_data_processing_log'] ? 'checked' : ''; ?>/> nav_data_processing_log
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="processing_settings_file" value=0 />
-					<input type="checkbox" name="processing_settings_file" value=1 <?= !empty($row['processing_settings_file']) && $row['processing_settings_file'] ? 'checked' : ''; ?>/> processing_settings_file
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="configuration_file" value=0 />
-					<input type="checkbox" name="configuration_file" value=1 <?= !empty($row['configuration_file']) && $row['configuration_file'] ? 'checked' : ''; ?>/> configuration_file
-				</label></div>
+				<h4>Acceptance report</h4>
 
 				<div class="checkbox"><label>
 					<input type="hidden" name="calibration_report" value=0 />
@@ -404,18 +350,8 @@ include 'res/header.inc.php';
 				</label></div>
 
 				<div class="checkbox"><label>
-					<input type="hidden" name="delivered_data_in_archive" value=0 />
-					<input type="checkbox" name="delivered_data_in_archive" value=1 <?= !empty($row['delivered_data_in_archive']) && $row['delivered_data_in_archive'] ? 'checked' : ''; ?>/> delivered_data_in_archive
-				</label></div>
-
-				<div class="checkbox"><label>
 					<input type="hidden" name="camera_calibration" value=0 />
 					<input type="checkbox" name="camera_calibration" value=1 <?= !empty($row['camera_calibration']) && $row['camera_calibration'] ? 'checked' : ''; ?>/> camera_calibration
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="system_not_working" value=0 />
-					<input type="checkbox" name="system_not_working" value=1 <?= !empty($row['system_not_working']) && $row['system_not_working'] ? 'checked' : ''; ?>/> system_not_working
 				</label></div>
 
 				<h4>Log</h4>
