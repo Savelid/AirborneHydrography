@@ -201,34 +201,21 @@ $(function () {
 				<div class="panel-heading">
 					<h3 class="panel-title">Purpose of flight</h3>
 				</div>
-				<div class="panel-body">
-					<?php
-						echo formatComment($query['purpose_of_flight']);
-					?>
-				</div>
+				<textarea class="form-control" readonly name="purpose_of_flight_v" rows="5"><?php echo $query['purpose_of_flight'];?> </textarea>
 			</div><!-- end panel -->
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">Flight comments</h3>
 				</div>
-				<div class="panel-body">
-					<?php
-						echo formatComment($query['flight_comments']);
-					?>
-				</div>
+				<textarea class="form-control" readonly name="flight_comments_v" rows="5"><?php echo $query['flight_comments'];?> </textarea>
 			</div><!-- end panel -->
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">Data comments</h3>
 				</div>
-				<div class="panel-body">
-					<?php
-						echo formatComment($query['data_comments']);
-					?>
-					<?php //echo nl2br($query['data_comments']); ?>
-				</div>
+				<textarea class="form-control" readonly name="data_comments_v" rows="5"><?php echo $query['data_comments'];?> </textarea>
 			</div><!-- end panel -->
 
 		</div><!-- end col -->

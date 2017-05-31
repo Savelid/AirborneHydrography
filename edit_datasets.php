@@ -68,20 +68,20 @@ if(!empty($_POST)){
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$row2 = getDatabaseRow('datasets', 'dataset_id', $_POST['dataset_id']);
-	if (!empty($_POST['flight_comments'])) {
-		$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['flight_comments'];
+	if (!empty($_POST['flight_comments_n'])) {
+		$flight_comments =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['flight_comments_n'] ."\r\n" . $_POST['flight_comments'] ."\r\n";
 	}else{
-		$flight_comments = $row2['flight_comments'];
+		$flight_comments = $_POST['flight_comments'];
 	}
-	if (!empty($_POST['data_comments'])) {
-		$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['data_comments'];
+	if (!empty($_POST['data_comments_n'])) {
+		$data_comments =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['data_comments_n'] ."\r\n" . $_POST['data_comments'] ."\r\n";
 	}else{
-		$data_comments = $row2['data_comments'];
+		$data_comments = $_POST['data_comments'];
 	}
-	if (!empty($_POST['purpose_of_flight'])) {
-		$purpose_of_flight = $row2['purpose_of_flight'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['purpose_of_flight'];
+	if (!empty($_POST['purpose_of_flight_n'])) {
+		$purpose_of_flight =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['purpose_of_flight_n'] ."\r\n" . $_POST['purpose_of_flight'] ."\r\n";
 	}else{
-		$purpose_of_flight = $row2['purpose_of_flight'];
+		$purpose_of_flight = $_POST['purpose_of_flight'];
 	}
 	$database_columns2 = "
 		datetime = '$_POST[datetime]',
@@ -379,15 +379,15 @@ include 'res/header.inc.php';
 						Purpose of flight
 						<div class ="comments">A not too short explanation of why the flight was done. It must be long enough to be useful three years later</div>
 					</label>
-					<div class="col-sm-8 col-xs-12">
-						<div class ="ahab-scroll-box">
-							<?php
-								if (!empty($row['purpose_of_flight'])) {
-									echo formatComment($row['purpose_of_flight']);
-								}
-						 	?>
-						</div>
-						<textarea class="form-control" name="purpose_of_flight" rows="5"></textarea>
+					<div class="col-sm-8 col-xs-12">		
+						<textarea class="form-control" name="purpose_of_flight_n" rows="5"></textarea>
+					</div>
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">	
+						<textarea class="form-control" name="purpose_of_flight" rows="5"><?php if (!empty($row['purpose_of_flight'])) {
+							echo $row['purpose_of_flight'];} ?> </textarea>	
 					</div>
 				</div>
 
@@ -397,14 +397,14 @@ include 'res/header.inc.php';
 						<div class ="comments">Describe encountered problems during flight</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<div class ="ahab-scroll-box">
-							<?php
-								if (!empty($row['flight_comments'])) {
-									echo formatComment($row['flight_comments']);
-								}
-						 	?>
-						</div>
-						<textarea class="form-control" name="flight_comments" rows="5"></textarea>
+						<textarea class="form-control" name="flight_comments_n" rows="5"></textarea>
+					</div>
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">	
+						<textarea class="form-control" name="flight_comments" rows="5"><?php if (!empty($row['flight_comments'])) {
+									echo $row['flight_comments'];} ?> </textarea>	
 					</div>
 				</div>
 
@@ -414,14 +414,14 @@ include 'res/header.inc.php';
 						<div class ="comments">Describe the results regarding the purpose of the flight but also if other issues was noted. Must also be long enough to be useful after three years.</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<div class ="ahab-scroll-box">
-							<?php
-								if (!empty($row['data_comments'])) {
-									echo formatComment($row['data_comments']);
-								}
-						 	?>
-						</div>
-						<textarea class="form-control" name="data_comments" rows="5"></textarea>
+						<textarea class="form-control" name="data_comments_n" rows="5"></textarea>
+					</div>	
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">
+						<textarea class="form-control" name="data_comments" rows="5"><?php if (!empty($row['data_comments'])) {
+									echo $row['data_comments'];} ?></textarea>		
 					</div>
 				</div>
 
