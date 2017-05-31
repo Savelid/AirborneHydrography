@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 * @description List all unreferenced serial_nr as options for a combobox.
 * @param {String} from
 * @param {String} where
@@ -18,7 +18,7 @@ function listUnusedSerialNr($from, $where, $id){
 	echo $str;
 }
 
-/**
+/*
 * @description List all items from one column as options for a combobox.
 * @param {String} select
 * @param {String} from
@@ -37,7 +37,7 @@ function listAllX($select, $from, $where, $id){
 	}
 }
 
-/**
+/*
 * @description Run a database query and return the resulting items as an array.
 * @param {String} query
 * @returns {Array} a list of results corresponding to the values of the queried columns.
@@ -68,7 +68,7 @@ function listAll($qurey){
 	}
 }
 
-/**
+/*
 * @description Formats a list if items into options for a combobox
 * @param {Array} listOfItems
 * @param {String} currentId
@@ -106,7 +106,7 @@ function formatForEmptySelect($currentId){
 	return $return_string;
 }
 
-/**
+/*
 * @description Send debug code to the Javascript console
 * @param {String} data
 */
@@ -119,7 +119,7 @@ function debug_to_console($data) {
 	}
 }
 
-/**
+/*
 * @description
 * Query for a database row, if there is an 'id_name' in GET.
 * Add or update data in the database row, if there are POSTs.
@@ -158,7 +158,7 @@ function postFunction($id_name, $table, $database_columns, $redirect){
 	}
 }
 
-/**
+/*
 * @description
 * Add or update data in the database row.
 * Write changes as a string
@@ -262,7 +262,7 @@ function postToDatabase($table, $id_name, $id, $database_columns){
 	return NULL;
 }
 
-/**
+/*
 * @description Querries the database and return exactly one row, or NULL
 * @param {String} table - What table will be queried.
 * @param {String} id_name - Set what column will be the key when picking one row
@@ -304,7 +304,7 @@ function getDatabaseRow($table, $id_name, $id){
 	}
 }
 
-/**
+/*
 * @description Add a row to the LOG
 * @param {String} id
 * @param {String} type
@@ -336,7 +336,7 @@ function postToLog($id, $type, $query, $changes, $user, $comment) {
 	return $status;
 }
 
-/**
+/*
 * @description Upload a file from a form.
 * @param {Array or String} input_file_type
 * @param {String} name
@@ -418,7 +418,7 @@ function _uploadFile_test_fileType($target_file, $input_file_type){
 	return false;
 }
 
-/**
+/*
 * @description Format the specialy formated strings for comments as HTML.
 * @param {String} string
 * @returns {String} HTML.
