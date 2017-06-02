@@ -1130,52 +1130,67 @@ $(function(){
                 // Pick out parent
                 //OC60
                 if($row["type"] == 'OC60'){
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE (oc60_1_sn = '$row[serial_nr]' OR oc60_2_sn = '$row[serial_nr]')
-                LIMIT 1;";
+                  $table = 'system';
+                  $column = 'oc60_1_sn';
+                  $column2 = 'oc60_2_sn';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE (oc60_1_sn = '$row[serial_nr]' OR oc60_2_sn = '$row[serial_nr]')
+                  LIMIT 1;";
                 }
 
                 //PAV
                 if($row["type"] == 'PAV') {
-                $column = 'pav_sn';
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE $column = '$row[serial_nr]'
-                LIMIT 1;"; }
+                  $table = 'system';
+                  $column = 'pav_sn';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE $column = '$row[serial_nr]'
+                  LIMIT 1;";
+                }
 
                 //Pilote Monitor
                 if($row["type"] == 'Pilote Monitor') {
-                $column = 'pd60';
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE $column = '$row[serial_nr]'
-                LIMIT 1;";}
+                  $table = 'system';
+                  $column = 'pd60';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE $column = '$row[serial_nr]'
+                  LIMIT 1;";
+                }
                 
                 //Leica Camera
                 if($row["type"] == 'Camera'){
-                $column = 'leica_cam_sn';
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
-                LIMIT 1;";}
+                  $table = 'sensor_unit';
+                  $column = 'leica_cam_sn';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
+                  LIMIT 1;";
+                }
 
                 //Leica Camera Lens
                 if($row["type"] == 'Leica Lens'){
-                $column = 'leica_lens';
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
-                LIMIT 1;";}
+                  $table = 'sensor_unit';
+                  $column = 'leica_lens';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
+                  LIMIT 1;";
+                }
 
                 //IMU (in the sensor_unit - Chiroptera system)
                 if($row["type"] == 'IMU'){
-                $column = 'imu';
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
-                LIMIT 1;";}
+                  $table = 'sensor_unit';
+                  $column = 'imu';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE sensor_unit_sn = (SELECT serial_nr FROM sensor_unit WHERE $column = '$row[serial_nr]')
+                  LIMIT 1;";
+                }
 
                 //CC32
                 if($row["type"] == 'CC32'){
-                $column = 'cc32_sn';
-                $parent_sql = "  SELECT serial_nr FROM system
-                WHERE control_system_sn = (SELECT serial_nr FROM control_system WHERE $column = '$row[serial_nr]')
-                LIMIT 1;";}
+                  $table = 'control_system';
+                  $column = 'cc32_sn';
+                  $parent_sql = "  SELECT serial_nr FROM system
+                  WHERE control_system_sn = (SELECT serial_nr FROM control_system WHERE $column = '$row[serial_nr]')
+                  LIMIT 1;";
+                }
 
                 $parent = null;
                 $parent_result = $conn->query($parent_sql);
