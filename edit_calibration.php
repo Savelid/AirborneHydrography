@@ -21,6 +21,14 @@ $int_calibration_id = intval($int_calibration_id);
 $int_calibration_id = $int_calibration_id + 1;
 debug_to_console("Calibration id nummer" . $int_calibration_id);
 
+//Get all dataset_id from dataset table
+$sql1 = "SELECT dataset_id FROM datasets ORDER BY dataset_id;";
+$result_dataset_id = $conn->query($sql1);
+while ($i = $result_dataset_id->fetch_array(MYSQLI_NUM)) {
+	$row_dataset_id[] = $i[0];
+}
+
+
 $conn->close();
 
 $status_msg = "";
@@ -30,9 +38,15 @@ if(!empty($_POST)){
 	$uploaded_calibration_file = uploadFile("pdf", "calibration_file", $_POST['calibration_id'] . "__", "calibrations/", 50000000);
 	$status_msg .= $uploaded_calibration_file["status_msg"];
 
+		if (!empty($_POST['comment_n'])) {
+			$comment =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['comment_n'] ."\r\n" . $_POST['comment'] ."\r\n";
+		}else{
+			$comment = $_POST['comment'];
+		}
+		
 		$database_columns = "
 			dataset_id = '$_POST[dataset_id]',
-			comment = '$_POST[comment]'
+			comment = '$comment' 
 			";
 			if ($uploaded_calibration_file != NULL && $uploaded_calibration_file["upload_ok"]) {
 				$database_columns .= ", calibration_file = '$uploaded_calibration_file[file_path]'";
@@ -48,7 +62,7 @@ if (!empty($row['dataset_id'])){
 	$dataset = 'value="' . $_GET['dataset_id'] . '"';
 }
 
-$titel = 'Edit dataset';
+$titel = 'Edit Calibration';
 include 'res/header.inc.php';
 ?>
 <section class="content">
@@ -76,7 +90,17 @@ include 'res/header.inc.php';
 						<div class="comments">AHAB-DATA-xxxx</div>
 					</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="dataset_id" <?php echo $dataset; ?> required/>
+						<select class="form-control" name="dataset_id">
+							<option>  </option>
+							<?php
+							foreach ($row_dataset_id as $i)  {
+								$selected = '';
+								if ($row['dataset_id'] == $i) {$selected = 'selected';}
+								$s = '<option value="%s" %s>%s</option>';
+								echo sprintf($s, $i, $selected, $i);
+							}
+							?>
+						</select>
 					</div>
 				</div>
 
@@ -109,7 +133,13 @@ include 'res/header.inc.php';
 						<div class ="comments">Calibration comments</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<textarea class="form-control" name="comment" rows="5"><?= !empty($row['comment']) ?  $row['comment'] : '' ; ?></textarea>
+						<textarea class="form-control" name="comment_n" rows="5"></textarea>
+					</div>
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">
+						<textarea class="form-control" name="comment" rows="5"><?php if (!empty($row['comment'])) { echo $row['comment'];} ?></textarea>
 					</div>
 				</div>
 
@@ -117,11 +147,13 @@ include 'res/header.inc.php';
 					<label for="calibration_file" class="col-sm-3 col-xs-12 control-label">
 						Calibration file
 						<div class ="comments">
-							Warning: Sorry the system can not hadle some special characters like Å,Ä,Ö in the file name for now :(
+							Warning: Sorry, no special characters like Å,Ä,Ö in the file name for now :(
 						</div>
 					</label>
+
 					<div class="col-sm-8 col-xs-12">
-						<input type="file" class="form-control" name="calibration_file" id="calibration_file" >
+						<input type="file"  name="calibration_file" id="calibration_file" >
+						<b> <?php if(!empty($row['calibration_file']))  {echo ($row['calibration_file']);} ?> </b> 
 					</div>
 				</div>
 

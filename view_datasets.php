@@ -201,60 +201,28 @@ $(function () {
 				<div class="panel-heading">
 					<h3 class="panel-title">Purpose of flight</h3>
 				</div>
-				<div class="panel-body">
-					<?php
-						echo formatComment($query['purpose_of_flight']);
-					?>
-				</div>
+				<textarea class="form-control" readonly name="purpose_of_flight_v" rows="5"><?php echo $query['purpose_of_flight'];?> </textarea>
 			</div><!-- end panel -->
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">Flight comments</h3>
 				</div>
-				<div class="panel-body">
-					<?php
-						echo formatComment($query['flight_comments']);
-					?>
-				</div>
+				<textarea class="form-control" readonly name="flight_comments_v" rows="5"><?php echo $query['flight_comments'];?> </textarea>
 			</div><!-- end panel -->
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">Data comments</h3>
 				</div>
-				<div class="panel-body">
-					<?php
-						echo formatComment($query['data_comments']);
-					?>
-					<?php //echo nl2br($query['data_comments']); ?>
-				</div>
+				<textarea class="form-control" readonly name="data_comments_v" rows="5"><?php echo $query['data_comments'];?> </textarea>
 			</div><!-- end panel -->
 
 		</div><!-- end col -->
 
 		<div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
 			<ul class="list-group">
-				<li class="list-group-item <?=$query['raw_data_in_archive'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_archive']; ?>">
-					<?php echo substr($changed_by['raw_data_in_archive'], 0, 3) . "| "; ?>
-					Raw data in archive
-				</li>
-				<li class="list-group-item <?=$query['raw_data_in_back_up_archive'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['raw_data_in_back_up_archive']; ?>">
-					<?php echo substr($changed_by['raw_data_in_back_up_archive'], 0, 3) . "| "; ?>
-					Raw data in back up archive
-				</li>
-				<li class="list-group-item <?=$query['nav_data_processing_log'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['nav_data_processing_log']; ?>">
-					<?php echo substr($changed_by['nav_data_processing_log'], 0, 3) . "| "; ?>
-					Nav. data processing log
-				</li>
-				<li class="list-group-item <?=$query['processing_settings_file'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['processing_settings_file']; ?>">
-					<?php echo substr($changed_by['processing_settings_file'], 0, 3) . "| "; ?>
-					Processing settings file
-				</li>
-				<li class="list-group-item <?=$query['configuration_file'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['configuration_file']; ?>">
-					<?php echo substr($changed_by['configuration_file'], 0, 3) . "| "; ?>
-					Configuration file
-				</li>
+				
 				<li class="list-group-item <?=$query['calibration_report'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['calibration_report']; ?>">
 					<?php echo substr($changed_by['calibration_report'], 0, 3) . "| "; ?>
 					Calibration report
@@ -263,18 +231,11 @@ $(function () {
 					<?php echo substr($changed_by['acceptance_report'], 0, 3) . "| "; ?>
 					Acceptance report
 				</li>
-				<li class="list-group-item <?=$query['delivered_data_in_archive'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['delivered_data_in_archive']; ?>">
-					<?php echo substr($changed_by['delivered_data_in_archive'], 0, 3) . "| "; ?>
-					Delivered data into archive
-				</li>
 				<li class="list-group-item <?=$query['camera_calibration'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['camera_calibration']; ?>">
 					<?php echo substr($changed_by['camera_calibration'], 0, 3) . "| "; ?>
 					Camera calibration
-				</li>
-				<li class="list-group-item <?=$query['system_not_working'] ? 'list-group-item-danger ahab-checked' : 'list-group-item-success ahab-unchecked'; ?>" data-toggle="tooltip" title="<?php echo $changed_by['system_not_working']; ?>">
-					<?php echo substr($changed_by['system_not_working'], 0, 3) . "| "; ?>
-					System not working
-				</li>
+				</li>	
+				
 			</ul>
 
 		</div><!-- end col -->

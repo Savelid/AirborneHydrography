@@ -62,6 +62,15 @@ if (!empty($_GET['serial_nr'])) {
 	}
 	$deep_system = $result->fetch_array(MYSQLI_ASSOC);
 
+	$sql = " SELECT *
+	FROM datasets
+	WHERE system_id = '$_GET[serial_nr]';";
+	$result = $conn->query($sql);
+	if (!$result) {
+		die("Query 1 failed! <br>Error:" . $sql . "<br>" . $conn->error);
+	}
+	$acceptance = $result->fetch_array(MYSQLI_ASSOC);
+
 	$conn->close();
 }
 else {
@@ -134,34 +143,42 @@ include 'res/header.inc.php';
 		</div><!-- end col -->
 
 		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-			<ul class="list-group">
-				<li class="list-group-item <?=$system['status_potta_heat'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					Potta Heat Upgrade
-				</li>
-				<li class="list-group-item <?=$system['status_shallow_heat'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					Shallow Heat Upgrade
-				</li>
-				<li class="list-group-item <?=$system['status_scu_pdu'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					SCU & PDU Upgrade
-				</li>
-				<li class="list-group-item <?=$system['status_hv_topo'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					HV Card Topo Upgrade
-				</li>
-				<li class="list-group-item <?=$system['status_hv_shallow'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					HV Card Shallow Upgrade
-				</li>
-				<li class="list-group-item <?=$system['status_hv_deep'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					HV Card Deep Upgrade
-				</li>
-				<li class="list-group-item <?=$system['status_cat'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					CAT DC/DC
-				</li>
-				<li class="list-group-item <?=$system['status_pwr_cable'] ? 'list-group-item-success' : 'list-group-item-warning'; ?>">
-					Ground PWR Pupply Cable
-				</li>
-			</ul>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Upgrades</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						
+						<li class="list-group-item <?=$system['status_potta_heat'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						Potta Heat Upgrade
+						</li>
+						<li class="list-group-item <?=$system['status_shallow_heat'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						Shallow Heat Upgrade
+						</li>
+						<li class="list-group-item <?=$system['status_scu_pdu'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+							SCU & PDU Upgrade
+						</li>
+						<li class="list-group-item <?=$system['status_hv_topo'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						HV Card Topo Upgrade
+						</li>
+						<li class="list-group-item <?=$system['status_hv_shallow'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						HV Card Shallow Upgrade
+						</li>
+						<li class="list-group-item <?=$system['status_hv_deep'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						HV Card Deep Upgrade
+						</li>
+						<li class="list-group-item <?=$system['status_cat'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						CAT DC/DC
+						</li>
+						<li class="list-group-item <?=$system['status_pwr_cable'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						Ground PWR Pupply Cable
+						</li>
+					</ul>
+				</div><!-- end col -->
+			</div>
+		</div>
 
-		</div><!-- end col -->
 		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -207,8 +224,24 @@ include 'res/header.inc.php';
 				</div>
 			</div><!-- end panel -->
 
-		</div><!-- end col -->
-
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Acceptance reports</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item <?=$acceptance['calibration_report'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						Calibration report
+						</li>
+						<li class="list-group-item <?=$acceptance['acceptance_report'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						Acceptance report
+						</li>
+						<li class="list-group-item <?=$acceptance['camera_calibration'] ? 'list-group-item-success ahab-checked' : 'list-group-item-warning ahab-unchecked'; ?>">
+						Camera calibration
+						</li>	
+					</ul>
+				</div>
+			</div><!-- end panel -->
 	</div><!-- end row -->
 
 

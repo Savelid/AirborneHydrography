@@ -68,20 +68,20 @@ if(!empty($_POST)){
 $row = postFunction('dataset_id', 'datasets', $database_columns, 'main_datasets.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$row2 = getDatabaseRow('datasets', 'dataset_id', $_POST['dataset_id']);
-	if (!empty($_POST['flight_comments'])) {
-		$flight_comments = $row2['flight_comments'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['flight_comments'];
+	if (!empty($_POST['flight_comments_n'])) {
+		$flight_comments =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['flight_comments_n'] ."\r\n" . $_POST['flight_comments'] ."\r\n";
 	}else{
-		$flight_comments = $row2['flight_comments'];
+		$flight_comments = $_POST['flight_comments'];
 	}
-	if (!empty($_POST['data_comments'])) {
-		$data_comments = $row2['data_comments'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['data_comments'];
+	if (!empty($_POST['data_comments_n'])) {
+		$data_comments =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['data_comments_n'] ."\r\n" . $_POST['data_comments'] ."\r\n";
 	}else{
-		$data_comments = $row2['data_comments'];
+		$data_comments = $_POST['data_comments'];
 	}
-	if (!empty($_POST['purpose_of_flight'])) {
-		$purpose_of_flight = $row2['purpose_of_flight'] ."&|A". $_POST['user'] ."&|D". date('Y-m-d') ."&|M". $_POST['purpose_of_flight'];
+	if (!empty($_POST['purpose_of_flight_n'])) {
+		$purpose_of_flight =  $_POST['user'] ."  ". date('Y-m-d') ."\r\n". $_POST['purpose_of_flight_n'] ."\r\n" . $_POST['purpose_of_flight'] ."\r\n";
 	}else{
-		$purpose_of_flight = $row2['purpose_of_flight'];
+		$purpose_of_flight = $_POST['purpose_of_flight'];
 	}
 	$database_columns2 = "
 		datetime = '$_POST[datetime]',
@@ -119,7 +119,7 @@ include 'res/header.inc.php';
 				<div class="form-group">
 					<label for="disc_id" class="col-xs-4 control-label">
 						Disc ID
-						<div class="comments">Example: D012 D014</div>
+						<div class="comments">Example: D012</div>
 					</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="disc_id" <?= !empty($row['disc_id']) ?  'value="' . $row['disc_id'] . '"' : '' ; ?> />
@@ -152,7 +152,7 @@ include 'res/header.inc.php';
 				<div class="form-group">
 					<label for="location" class="col-xs-4 control-label">Location</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="location" <?= !empty($row['location']) ?  'value="' . $row['location'] . '"' : '' ; ?>>
+						<input type="text" class="form-control" name="location"  <?= !empty($row['location']) ?  'value="' . $row['location'] . '"' : '' ; ?>>
 					</div>
 				</div>
 
@@ -337,61 +337,7 @@ include 'res/header.inc.php';
 			</div>
 			<div class="col-sm-3 col-sm-offset-1">
 
-				<h4>Data processor</h4>
-
-				<div class="form-group">
-					<label for="calibration_file" class="col-xs-12">Calibration file</label>
-					<div class="col-xs-12">
-						<select class="form-control" name="calibration_file">
-							<?php
-							foreach($calibration_file_values as $i){
-								$selected = '';
-								if(!empty($row['calibration_file']) && $row['calibration_file'] == $i){$selected = 'selected';}
-								$s = '<option value="%s" %s>%s</option>';
-								echo sprintf($s, $i, $selected, $i);
-							}
-							?>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="calibration_file" class="col-xs-12">Calibration id</label>
-					<div class="col-xs-12">
-						<select class="combobox form-control" name="calibration_id">
-							<?php
-							$sn = '';
-							if(!empty($row['calibration_id'])){ $sn = $row['calibration_id'];}
-							listAllX('calibration_id', 'calibration', '', $sn);
-							?>
-						</select>
-					</div>
-				</div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="raw_data_in_archive" value=0 />
-					<input type="checkbox" name="raw_data_in_archive" value=1 <?= !empty($row['raw_data_in_archive']) && $row['raw_data_in_archive'] ? 'checked' : ''; ?>/> raw_data_in_archive
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="raw_data_in_back_up_archive" value=0 />
-					<input type="checkbox" name="raw_data_in_back_up_archive" value=1 <?= !empty($row['raw_data_in_back_up_archive']) && $row['raw_data_in_back_up_archive'] ? 'checked' : ''; ?>/> raw_data_in_back_up_archive
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="nav_data_processing_log" value=0 />
-					<input type="checkbox" name="nav_data_processing_log" value=1 <?= !empty($row['nav_data_processing_log']) && $row['nav_data_processing_log'] ? 'checked' : ''; ?>/> nav_data_processing_log
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="processing_settings_file" value=0 />
-					<input type="checkbox" name="processing_settings_file" value=1 <?= !empty($row['processing_settings_file']) && $row['processing_settings_file'] ? 'checked' : ''; ?>/> processing_settings_file
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="configuration_file" value=0 />
-					<input type="checkbox" name="configuration_file" value=1 <?= !empty($row['configuration_file']) && $row['configuration_file'] ? 'checked' : ''; ?>/> configuration_file
-				</label></div>
+				<h4>Acceptance report</h4>
 
 				<div class="checkbox"><label>
 					<input type="hidden" name="calibration_report" value=0 />
@@ -404,18 +350,8 @@ include 'res/header.inc.php';
 				</label></div>
 
 				<div class="checkbox"><label>
-					<input type="hidden" name="delivered_data_in_archive" value=0 />
-					<input type="checkbox" name="delivered_data_in_archive" value=1 <?= !empty($row['delivered_data_in_archive']) && $row['delivered_data_in_archive'] ? 'checked' : ''; ?>/> delivered_data_in_archive
-				</label></div>
-
-				<div class="checkbox"><label>
 					<input type="hidden" name="camera_calibration" value=0 />
 					<input type="checkbox" name="camera_calibration" value=1 <?= !empty($row['camera_calibration']) && $row['camera_calibration'] ? 'checked' : ''; ?>/> camera_calibration
-				</label></div>
-
-				<div class="checkbox"><label>
-					<input type="hidden" name="system_not_working" value=0 />
-					<input type="checkbox" name="system_not_working" value=1 <?= !empty($row['system_not_working']) && $row['system_not_working'] ? 'checked' : ''; ?>/> system_not_working
 				</label></div>
 
 				<h4>Log</h4>
@@ -443,15 +379,15 @@ include 'res/header.inc.php';
 						Purpose of flight
 						<div class ="comments">A not too short explanation of why the flight was done. It must be long enough to be useful three years later</div>
 					</label>
-					<div class="col-sm-8 col-xs-12">
-						<div class ="ahab-scroll-box">
-							<?php
-								if (!empty($row['purpose_of_flight'])) {
-									echo formatComment($row['purpose_of_flight']);
-								}
-						 	?>
-						</div>
-						<textarea class="form-control" name="purpose_of_flight" rows="5"></textarea>
+					<div class="col-sm-8 col-xs-12">		
+						<textarea class="form-control" name="purpose_of_flight_n" rows="5"></textarea>
+					</div>
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">	
+						<textarea class="form-control" name="purpose_of_flight" rows="5"><?php if (!empty($row['purpose_of_flight'])) {
+							echo $row['purpose_of_flight'];} ?> </textarea>	
 					</div>
 				</div>
 
@@ -461,14 +397,14 @@ include 'res/header.inc.php';
 						<div class ="comments">Describe encountered problems during flight</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<div class ="ahab-scroll-box">
-							<?php
-								if (!empty($row['flight_comments'])) {
-									echo formatComment($row['flight_comments']);
-								}
-						 	?>
-						</div>
-						<textarea class="form-control" name="flight_comments" rows="5"></textarea>
+						<textarea class="form-control" name="flight_comments_n" rows="5"></textarea>
+					</div>
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">	
+						<textarea class="form-control" name="flight_comments" rows="5"><?php if (!empty($row['flight_comments'])) {
+									echo $row['flight_comments'];} ?> </textarea>	
 					</div>
 				</div>
 
@@ -478,14 +414,14 @@ include 'res/header.inc.php';
 						<div class ="comments">Describe the results regarding the purpose of the flight but also if other issues was noted. Must also be long enough to be useful after three years.</div>
 					</label>
 					<div class="col-sm-8 col-xs-12">
-						<div class ="ahab-scroll-box">
-							<?php
-								if (!empty($row['data_comments'])) {
-									echo formatComment($row['data_comments']);
-								}
-						 	?>
-						</div>
-						<textarea class="form-control" name="data_comments" rows="5"></textarea>
+						<textarea class="form-control" name="data_comments_n" rows="5"></textarea>
+					</div>	
+					<div class="col-sm-3 col-xs-12 control-label">
+						<div class ="comments">Alredy stored comments:</div>
+					</div>
+					<div class="col-sm-8 col-xs-12">
+						<textarea class="form-control" name="data_comments" rows="5"><?php if (!empty($row['data_comments'])) {
+									echo $row['data_comments'];} ?></textarea>		
 					</div>
 				</div>
 
@@ -498,6 +434,7 @@ include 'res/header.inc.php';
 					</label>
 					<div class="col-sm-8 col-xs-12">
 						<input type="file" class="form-control" name="flight_logs" id="flight_logs" >
+						<b> <?php if(!empty($row['flight_logs']))  {echo ($row['flight_logs']);} ?> </b> 
 					</div>
 				</div>
 
