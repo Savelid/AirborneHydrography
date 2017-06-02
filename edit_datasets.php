@@ -119,7 +119,7 @@ include 'res/header.inc.php';
 				<div class="form-group">
 					<label for="disc_id" class="col-xs-4 control-label">
 						Disc ID
-						<div class="comments">Example: D012 D014</div>
+						<div class="comments">Example: D012</div>
 					</label>
 					<div class="col-xs-8">
 						<input type="text" class="form-control" name="disc_id" <?= !empty($row['disc_id']) ?  'value="' . $row['disc_id'] . '"' : '' ; ?> />
@@ -152,7 +152,7 @@ include 'res/header.inc.php';
 				<div class="form-group">
 					<label for="location" class="col-xs-4 control-label">Location</label>
 					<div class="col-xs-8">
-						<input type="text" class="form-control" name="location" <?= !empty($row['location']) ?  'value="' . $row['location'] . '"' : '' ; ?>>
+						<input type="text" class="form-control" name="location"  <?= !empty($row['location']) ?  'value="' . $row['location'] . '"' : '' ; ?>>
 					</div>
 				</div>
 
@@ -434,6 +434,7 @@ include 'res/header.inc.php';
 					</label>
 					<div class="col-sm-8 col-xs-12">
 						<input type="file" class="form-control" name="flight_logs" id="flight_logs" >
+						<b> <?php if(!empty($row['flight_logs']))  {echo ($row['flight_logs']);} ?> </b> 
 					</div>
 				</div>
 
