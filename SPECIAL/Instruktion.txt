@@ -1,0 +1,7 @@
+
+
+config.inc.php
+
+Unik fil för lokal test. Innehåller inloggningsuppgifter till databasen
+Behäövs en annan fil till AHAB
+ 

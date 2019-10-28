@@ -8,10 +8,12 @@ if(!empty($_POST)){
 	$database_columns = "
 	imu = '$_POST[imu]',
 	leica_cam_sn = '$_POST[leica_cam]',
+	leica_config = '$_POST[leica_config]',
 	leica_lens = '$_POST[leica_lens]',
 	topo_sensor_sn = '$_POST[topo_sensor]',
 	topo_sensor_2_sn = '$_POST[topo_sensor_2]',
 	shallow_sensor_sn = '$_POST[shallow_sensor]',
+	microeye_config = '$_POST[microeye_config]',
 	comment = '$_POST[comment]'
 	";
 }
@@ -83,6 +85,24 @@ $(document).ready(function(){
 						</select>
 					</div>
 				</div>
+
+
+				<div class="form-group">
+					<label for="camera_config" class="col-xs-4 control-label">Camera configuration</label>
+					<div class="col-xs-8">
+						<select class="combobox form-control" name="leica_config">
+							<?php
+							foreach($leica_camera_configuration as $i){
+								$selected = '';
+								if(!empty($row['leica_config']) && $row['leica_config'] == $i){$selected = 'selected';}
+								$s = '<option value="%s" %s>%s</option>';
+								echo sprintf($s, $i, $selected, $i);
+							}
+							?>
+						</select>
+					</div>
+				</div>
+
 
 				<div class="form-group">
 					<label for="leica_lens" class="col-xs-4 control-label">Leica Lens</label>
@@ -157,6 +177,22 @@ $(document).ready(function(){
 						</select>
 					</div>
 				</div>
+
+				<div class="form-group">
+					<label for="microeye_conf" class="col-xs-4 control-label">Micro Eye interface</label>
+					<div class="col-xs-8">
+						<select class="combobox form-control" name="microeye_config">
+							<?php
+							foreach($microeye_camera_configuration as $i){
+								$selected = '';
+								if(!empty($row['microeye_config']) && $row['microeye_config'] == $i){$selected = 'selected';}
+								$s = '<option value="%s" %s>%s</option>';
+								echo sprintf($s, $i, $selected, $i);
+							}
+							?>
+						</select>
+					</div>
+				</div>				
 
 				<div class="form-group">
 					<label for="comment" class="col-xs-4 control-label">Comment</label>
